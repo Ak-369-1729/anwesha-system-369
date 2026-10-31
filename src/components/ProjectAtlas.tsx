@@ -1,12 +1,20 @@
 'use client';
 
 import Link from 'next/link';
-import { CSSProperties, PointerEvent, useMemo, useRef, useState } from 'react';
+import { CSSProperties, PointerEvent, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { categories, projects } from '@/data/portfolio';
 import type { ProjectCategory } from '@/types/portfolio';
+import './projects/atlas-controls.css';
 
 type ProjectAtlasProps = { onDiscover?: (id: string) => void; compact?: boolean };
-type PanState = { startX: number; scrollLeft: number; pointerId: number | null; dragged: boolean };
+type PanState = {
+  startX: number;
+  startY: number;
+  scrollLeft: number;
+  scrollTop: number;
+  pointerId: number | null;
+  dragged: boolean;
+};
 
 const connections = categories.flatMap((category) => {
   const constellation = projects.filter((project) => project.category === category);
@@ -19,8 +27,14 @@ export function ProjectAtlas({ onDiscover, compact = false }: ProjectAtlasProps)
   const [view, setView] = useState<'map' | 'list'>(compact ? 'list' : 'map');
   const [selectedId, setSelectedId] = useState('nexus');
   const [dragging, setDragging] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const [rotation, setRotation] = useState(0);
+  const [geometry, setGeometry] = useState({ width: 940, height: 620 });
   const viewportRef = useRef<HTMLDivElement>(null);
   const panRef = useRef<PanState | null>(null);
+  const instanceId = useId().replaceAll(':', '');
+  const queryId = `${instanceId}-project-query`;
+  const patternId = `${instanceId}-atlas-grid`;
   const filtered = useMemo(
     () =>
       projects.filter((project) => {
@@ -35,17 +49,58 @@ export function ProjectAtlas({ onDiscover, compact = false }: ProjectAtlasProps)
   );
   const visibleIds = new Set(filtered.map((project) => project.id));
   const selected = filtered.find((project) => project.id === selectedId) || filtered[0];
+  const angle = (Math.abs(rotation) * Math.PI) / 180;
+  const transformedWidth =
+    (geometry.width * Math.cos(angle) + geometry.height * Math.sin(angle)) * zoom;
+  const transformedHeight =
+    (geometry.width * Math.sin(angle) + geometry.height * Math.cos(angle)) * zoom;
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    const observer = new ResizeObserver(([entry]) => {
+      const mobile = window.matchMedia('(max-width: 600px)').matches;
+      const width = Math.max(mobile ? 810 : 940, entry.contentRect.width);
+      const height = mobile ? 570 : 620;
+      setGeometry((previous) =>
+        previous.width === width && previous.height === height ? previous : { width, height },
+      );
+    });
+    observer.observe(viewport);
+    return () => observer.disconnect();
+  }, [view, filtered.length]);
 
   function clearFilters() {
     setQuery('');
     setCategory('All');
   }
 
+  function changeZoom(delta: number) {
+    setZoom((previous) => Math.min(1.5, Math.max(0.8, Math.round((previous + delta) * 10) / 10)));
+  }
+
+  function resetMap() {
+    setZoom(1);
+    setRotation(0);
+    requestAnimationFrame(() => {
+      const viewport = viewportRef.current;
+      if (viewport) {
+        viewport.scrollTo({
+          left: Math.max(0, (viewport.scrollWidth - viewport.clientWidth) / 2),
+          top: Math.max(0, (viewport.scrollHeight - viewport.clientHeight) / 2),
+          behavior: 'instant',
+        });
+      }
+    });
+  }
+
   function pointerDown(event: PointerEvent<HTMLDivElement>) {
     if (event.pointerType === 'touch' || event.button !== 0) return;
     panRef.current = {
       startX: event.clientX,
+      startY: event.clientY,
       scrollLeft: event.currentTarget.scrollLeft,
+      scrollTop: event.currentTarget.scrollTop,
       pointerId: event.pointerId,
       dragged: false,
     };
@@ -55,7 +110,8 @@ export function ProjectAtlas({ onDiscover, compact = false }: ProjectAtlasProps)
     const pan = panRef.current;
     if (!pan || pan.pointerId !== event.pointerId) return;
     const delta = event.clientX - pan.startX;
-    if (!pan.dragged && Math.abs(delta) < 6) return;
+    const deltaY = event.clientY - pan.startY;
+    if (!pan.dragged && Math.hypot(delta, deltaY) < 6) return;
     if (!pan.dragged) {
       pan.dragged = true;
       setDragging(true);
@@ -63,6 +119,7 @@ export function ProjectAtlas({ onDiscover, compact = false }: ProjectAtlasProps)
     }
     event.preventDefault();
     event.currentTarget.scrollLeft = pan.scrollLeft - delta;
+    event.currentTarget.scrollTop = pan.scrollTop - deltaY;
   }
 
   function pointerUp(event: PointerEvent<HTMLDivElement>) {
@@ -77,11 +134,11 @@ export function ProjectAtlas({ onDiscover, compact = false }: ProjectAtlasProps)
       <div className="atlas-controls">
         <div className="atlas-search">
           <span aria-hidden="true">⌕</span>
-          <label htmlFor="project-query" className="sr-only">
+          <label htmlFor={queryId} className="sr-only">
             Search projects, categories or technologies
           </label>
           <input
-            id="project-query"
+            id={queryId}
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
@@ -113,6 +170,50 @@ export function ProjectAtlas({ onDiscover, compact = false }: ProjectAtlasProps)
           </button>
         ))}
       </div>
+      {view === 'map' && filtered.length > 0 && (
+        <div
+          className="atlas-spatial-controls"
+          role="group"
+          aria-label="Map zoom and orbit controls"
+        >
+          <div className="atlas-spatial-buttons">
+            <button type="button" onClick={() => changeZoom(-0.1)} disabled={zoom <= 0.8}>
+              <span aria-hidden="true">−</span>
+              <span className="sr-only">Zoom map out</span>
+            </button>
+            <button type="button" onClick={() => changeZoom(0.1)} disabled={zoom >= 1.5}>
+              <span aria-hidden="true">+</span>
+              <span className="sr-only">Zoom map in</span>
+            </button>
+            <span className="atlas-spatial-divider" aria-hidden="true" />
+            <button
+              type="button"
+              onClick={() => setRotation((old) => Math.max(-30, old - 15))}
+              disabled={rotation <= -30}
+            >
+              <span aria-hidden="true">↶</span>
+              <span className="sr-only">Orbit map counterclockwise</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setRotation((old) => Math.min(30, old + 15))}
+              disabled={rotation >= 30}
+            >
+              <span aria-hidden="true">↷</span>
+              <span className="sr-only">Orbit map clockwise</span>
+            </button>
+          </div>
+          <output className="atlas-spatial-position" aria-live="polite" aria-atomic="true">
+            <span className="sr-only">Map zoom </span>
+            {Math.round(zoom * 100)}%<span aria-hidden="true"> / </span>
+            <span className="sr-only"> and orbit </span>
+            {rotation}°
+          </output>
+          <button type="button" className="atlas-spatial-reset" onClick={resetMap}>
+            RESET MAP
+          </button>
+        </div>
+      )}
       <div className="atlas-map-topline">
         <span aria-live="polite" aria-atomic="true">
           {String(filtered.length).padStart(2, '0')} / {projects.length} SIGNALS VISIBLE
@@ -135,10 +236,11 @@ export function ProjectAtlas({ onDiscover, compact = false }: ProjectAtlasProps)
       ) : view === 'map' ? (
         <div
           ref={viewportRef}
+          data-cursor="DRAG"
           className={`atlas-viewport${dragging ? ' is-dragging' : ''}`}
           tabIndex={0}
           role="region"
-          aria-label="Project constellation. Swipe or drag horizontally; use Tab to visit every project."
+          aria-label="Project constellation. Swipe or drag to explore; use the zoom and orbit controls, or Tab to visit every project."
           onPointerDown={pointerDown}
           onPointerMove={pointerMove}
           onPointerUp={pointerUp}
@@ -154,85 +256,94 @@ export function ProjectAtlas({ onDiscover, compact = false }: ProjectAtlasProps)
             }
           }}
         >
-          <div className="atlas-stage">
-            <svg
-              className="atlas-grid"
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none"
-              aria-hidden="true"
+          <div
+            className="atlas-transform-space"
+            style={{ width: transformedWidth, height: transformedHeight }}
+          >
+            <div
+              className="atlas-stage atlas-spatial-stage"
+              style={{
+                width: geometry.width,
+                minWidth: geometry.width,
+                height: geometry.height,
+                transform: `translate(-50%, -50%) scale(${zoom}) rotate(${rotation}deg)`,
+              }}
             >
-              <defs>
-                <pattern
-                  id="atlas-grid-pattern"
-                  width="10"
-                  height="10"
-                  patternUnits="userSpaceOnUse"
-                >
-                  <path d="M 10 0 L 0 0 0 10" fill="none" />
-                </pattern>
-              </defs>
-              <rect width="100" height="100" fill="url(#atlas-grid-pattern)" />
-              <circle cx="47" cy="44" r="26" className="atlas-orbit" />
-              <circle cx="47" cy="44" r="41" className="atlas-orbit" />
-            </svg>
-            <svg
-              className="atlas-connections"
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none"
-              aria-hidden="true"
-            >
-              {connections
-                .filter(([from, to]) => visibleIds.has(from.id) && visibleIds.has(to.id))
-                .map(([from, to]) => (
-                  <line
-                    key={`${from.id}-${to.id}`}
-                    x1={from.coordinates.x}
-                    y1={from.coordinates.y}
-                    x2={to.coordinates.x}
-                    y2={to.coordinates.y}
-                    style={{ stroke: from.visualIdentity.color }}
-                  />
-                ))}
-            </svg>
-            <div className="atlas-axis atlas-axis-x" aria-hidden="true">
-              <span>36.900</span>
-              <span>37.269</span>
-              <span>37.638</span>
-            </div>
-            <div className="atlas-axis atlas-axis-y" aria-hidden="true">
-              <span>17.29</span>
-              <span>18.36</span>
-            </div>
-            {filtered.map((project) => (
-              <Link
-                key={project.id}
-                href={`/missions/${project.id}`}
-                className={`project-node shape-${project.visualIdentity.shape}${project.featured ? ' featured' : ''}${selected?.id === project.id ? ' is-selected' : ''}`}
-                style={
-                  {
-                    left: `${project.coordinates.x}%`,
-                    top: `${project.coordinates.y}%`,
-                    '--node-color': project.visualIdentity.color,
-                  } as CSSProperties
-                }
-                onMouseEnter={() => setSelectedId(project.id)}
-                onFocus={() => setSelectedId(project.id)}
-                onClick={() => onDiscover?.(project.id)}
-                draggable={false}
-                data-cursor="SCAN"
+              <svg
+                className="atlas-grid"
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+                aria-hidden="true"
               >
-                <span className="project-celestial" aria-hidden="true">
-                  <i className="project-orbit" />
-                  <span>{project.visualIdentity.symbol}</span>
-                </span>
-                <span className="project-node-name">{project.title}</span>
-                <span className="project-node-code">{project.codename}</span>
-                <span className="sr-only">. {project.category}. Open mission file.</span>
-              </Link>
-            ))}
-            <span className="atlas-sector-label" aria-hidden="true">
-              THE KNOWN UNIVERSE / SECTOR 369
-            </span>
+                <defs>
+                  <pattern id={patternId} width="10" height="10" patternUnits="userSpaceOnUse">
+                    <path d="M 10 0 L 0 0 0 10" fill="none" />
+                  </pattern>
+                </defs>
+                <rect width="100" height="100" fill={`url(#${patternId})`} />
+                <circle cx="47" cy="44" r="26" className="atlas-orbit" />
+                <circle cx="47" cy="44" r="41" className="atlas-orbit" />
+              </svg>
+              <svg
+                className="atlas-connections"
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                {connections
+                  .filter(([from, to]) => visibleIds.has(from.id) && visibleIds.has(to.id))
+                  .map(([from, to]) => (
+                    <line
+                      key={`${from.id}-${to.id}`}
+                      x1={from.coordinates.x}
+                      y1={from.coordinates.y}
+                      x2={to.coordinates.x}
+                      y2={to.coordinates.y}
+                      style={{ stroke: from.visualIdentity.color }}
+                    />
+                  ))}
+              </svg>
+              <div className="atlas-axis atlas-axis-x" aria-hidden="true">
+                <span>36.900</span>
+                <span>37.269</span>
+                <span>37.638</span>
+              </div>
+              <div className="atlas-axis atlas-axis-y" aria-hidden="true">
+                <span>17.29</span>
+                <span>18.36</span>
+              </div>
+              {filtered.map((project) => (
+                <Link
+                  key={project.id}
+                  href={`/missions/${project.id}`}
+                  className={`project-node shape-${project.visualIdentity.shape}${project.featured ? ' featured' : ''}${selected?.id === project.id ? ' is-selected' : ''}`}
+                  style={
+                    {
+                      left: `${project.coordinates.x}%`,
+                      top: `${project.coordinates.y}%`,
+                      '--node-color': project.visualIdentity.color,
+                      transform: `translate(-50%, -50%) rotate(${-rotation}deg)`,
+                    } as CSSProperties
+                  }
+                  onMouseEnter={() => setSelectedId(project.id)}
+                  onFocus={() => setSelectedId(project.id)}
+                  onClick={() => onDiscover?.(project.id)}
+                  draggable={false}
+                  data-cursor="OPEN"
+                >
+                  <span className="project-celestial" aria-hidden="true">
+                    <i className="project-orbit" />
+                    <span>{project.visualIdentity.symbol}</span>
+                  </span>
+                  <span className="project-node-name">{project.title}</span>
+                  <span className="project-node-code">{project.codename}</span>
+                  <span className="sr-only">. {project.category}. Open mission file.</span>
+                </Link>
+              ))}
+              <span className="atlas-sector-label" aria-hidden="true">
+                THE KNOWN UNIVERSE / SECTOR 369
+              </span>
+            </div>
           </div>
         </div>
       ) : (

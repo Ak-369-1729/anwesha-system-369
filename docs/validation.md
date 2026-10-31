@@ -1,36 +1,50 @@
-# Validation record
+# Validation record — version 2
 
-Validated locally on 31 October 2026 with Node 24.21.0, Next.js 16.4.3, React 19.3.1, TypeScript 6.0.3, and installed Google Chrome.
+The second pass is a redesign of the existing System 369 repository, not a new project. Portfolio data, contact channels, mission routes, and useful interactions were retained while the primary presentation changed to the continuous story.
 
-## Completed checks
+## V2 release verification
 
-- Dependency installation completed and exact versions are recorded in the lockfile.
-- Development server started successfully; the homepage returned HTTP 200.
-- ESLint completed without errors or warnings.
-- Strict TypeScript checking completed successfully.
-- Production static export completed successfully: homepage, not-found output, and 17 mission routes.
-- All 13 Playwright checks passed against the final source-backed production export.
-- Lighthouse 13.6.0 against the local production export: Performance 97, Accessibility 100, Best Practices 100, SEO 100. This used the mobile form factor, simulated network throttling, and a 4× CPU slowdown, with no audit warnings.
-- The homepage and NEXUS mission page had no serious or critical WCAG A/AA violations in the automated axe scan.
-- Visually reviewed desktop at 1440 × 1000, tablet at 768 × 1024, and mobile at 390 × 844. Verified no page-level horizontal overflow at these widths.
-- Reviewed the constellation and the full-page mission-file treatment; corrected oversized SVG connection strokes and overlapping mobile annotations.
+**Final integrated validation: passed, 31 October 2026.**
 
-The browser suite covers project search and filtering, empty states, mission navigation, command-palette keyboard and focus behavior, terminal commands and history, threat containment, deduplicated persistent scoring, unavailable storage, recruiter preferences, reduced motion, responsive layout, static MIME types, traversal rejection, and true 404 responses.
+- Production export: 20 prerendered pages, including all 17 preserved mission routes.
+- Strict TypeScript, ESLint, and formatting: passed.
+- Browser regression: all 35 checks passed against the final optimized production export.
+- Accessibility: no serious or critical axe violations across Story, Quick, mission pages, and interactive scenes in both skies.
+- Visual review: 1440 × 1000 desktop, 1280 × 800 laptop, 768 × 1024 tablet, and 390 × 844 mobile.
+- Lighthouse 13.6.0: **99 Performance / 100 Accessibility / 100 Best Practices / 100 SEO**, simulated mobile network and 4× CPU slowdown, no warnings. FCP and LCP: 1.2 seconds; total blocking time: 70 ms; layout shift: zero.
+
+The opening text paints without an opacity delay. Interactive panels load when the journey reaches them. Scene transitions retain their motion, and the reduced-motion alternative remains available.
+
+The release checks cover lint, strict TypeScript, formatting, production export, browser regression, desktop/laptop/tablet/mobile layouts, both night and day, Story and Quick modes, project exploration, keyboard navigation, reduced motion, storage failure, accessible alternatives, and performance. Final results belong to this revision and must be recorded separately from the earlier design.
+
+The original world renderer was reviewed at 1440 × 1000 and 390 × 844 during implementation, including night/day fields, code forest, rocket assembly, orbit, and the child/adult mirror. Those focused reviews informed corrections to cloud-gradient coordinates and mobile composition; they do not replace the integrated release checks.
+
+## Historical reference: first version
+
+The first version passed its production build, lint, strict TypeScript, and 13 browser checks. Its local Lighthouse 13.6.0 audit measured Performance 97, Accessibility 100, Best Practices 100, and SEO 100 using simulated mobile networking and 4× CPU slowdown.
+
+These are historical results for the previous renderer and interface. They are not asserted as the scores of the redesigned world. A deployed audit and physical-device review remain distinct from local measurements.
+
+## What changed and what must remain true
+
+The narrative now uses one `1700svh` native scroll track, one fixed stage, and 17 structured scenes. The same girl, signal, and structural anchors carry the journey across field, code, machines, network, infrastructure, rocket, orbit, laboratory, memories, mirror, and final sky. Day/night changes the illustrated atmosphere and lighting over approximately 1.2 seconds, with an immediate reduced-motion alternative.
+
+Story is the primary mode; Quick retains immediate access to every technical record and recruiter action. The project atlas keeps its search, filtering, focus, drag/swipe, index, and mission links, with zoom and orbit controls added. The security sandbox, command palette, controlled terminal, contact draft, local discoveries, source-backed data, and 17 static mission routes are preserved.
+
+Canvas is decorative and has no exclusive essential content. The HTML story outline, Skip Story/Quick Mode, direct chapter navigation, Continue actions, semantic panels, and no-script project-route fallback must remain usable. No interaction may gate a project, résumé, or contact link.
 
 ## Content sources
 
-Contact details are supplied by the owner. The creative brief supplies the narrative direction and project catalogue. Source-backed project descriptions, career dates and milestone records also draw on Anwesha’s existing GitHub portfolio, including its project catalogue and timeline, plus repository READMEs such as BoundaryLens and ChronoHeritage.
+The redesign leaves the factual editorial model intact. Contact details come from the owner. The creative brief supplies the symbolic narrative and project catalogue. Source-backed details and career records also draw on the existing GitHub portfolio’s project catalogue and timeline, plus READMEs such as BoundaryLens and ChronoHeritage.
 
-Mission files label their evidence state: `Source available` links to project documentation, `Portfolio record` cites an owner-maintained portfolio entry, and `Concept record` describes a proposed design. Individual contributions are asserted only where the source establishes them. The Adxania Cyber Solutions internship dates and IEEE, NCSC and INSPIRE MANAK milestones are owner-documented records, rather than independently audited credentials. Research interests and proposed experiments remain labeled accordingly.
+The 17 mission files comprise three `Source available` projects, six `Portfolio record` entries, and eight `Concept record` designs. Five sourced career phases include the August 2025–February 2026 Adxania Cyber Solutions internship. Memory logs also include owner-documented IEEE SIGHT leadership, NCSC, INSPIRE–MANAK, and Google Cloud Arcade milestones. Research interests and proposed experiments remain labeled accurately.
 
-At this revision, the 17 mission files comprise three source-available projects, six owner-documented portfolio records, and eight concept records. The flight path contains five sourced phases, including the August 2025–February 2026 internship. The vault also includes owner-documented Google Cloud Arcade facilitation. Post-quantum security and orbital telemetry logs distinguish existing portfolio research from their further proposed experiments.
+The girl represents curiosity and the younger engineer symbolically. Her visual journey does not add invented dated childhood events, credentials, scientific results, or project outcomes.
 
-The résumé download is a printable HTML profile compiled from these owner records and supplied contact details. A separate official CV file was not supplied. No project benchmarks, scientific validation or adoption results were inferred from the presence of a repository.
+The résumé remains a generated printable HTML profile compiled from owner records. The contact form opens an email draft and does not send mail. No login, cookies, analytics, backend database, API key, or external telemetry service is required. Preferences and discoveries stay local to the browser.
 
-The site prepares an email draft and does not send mail. No login, analytics, cookies, backend database, API key, or telemetry service is required. Exploration preferences remain in local storage.
+## Production configuration
 
-## Production notes
+Set `NEXT_PUBLIC_SITE_URL` to the deployed HTTPS origin before building. Publish the contents of `out/` with directory indexes and a real 404 fallback. Static generation is bounded to two workers and one page per worker, with retry handling for transient export failures.
 
-Set `NEXT_PUBLIC_SITE_URL` to the deployed HTTPS origin before the final build so social-image URLs resolve on the correct domain. Publish `out/` with directory indexes and a real 404 fallback. The measured Lighthouse result is a local benchmark; repeat it in the deployment environment and on representative physical devices.
-
-Static-export concurrency is bounded to two workers and one page per worker through Next.js experimental settings, reducing Windows resource contention without changing the standard npm scripts.
+Repeat accessibility and performance checks on the deployed site and representative physical devices after changing content, rendering, or hosting. The current validation status above must describe version 2 rather than inheriting version 1’s results.

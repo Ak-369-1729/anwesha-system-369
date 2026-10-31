@@ -51,7 +51,7 @@ export function Terminal({ onNavigate, onAward, onAction, onClose }: TerminalPro
     switch (normalized) {
       case 'help':
         response =
-          'NAVIGATE  projects · skills · research · experience · contact\nIDENTITY  whoami · github · resume\nSYSTEM    scan · launch · clear · matrix · coffee\nTry reading a file. Curiosity is a useful permission.';
+          'NAVIGATE  projects · skills · research · timeline · contact\nIDENTITY  whoami · github · resume\nJOURNEY   why · scan · launch · orbit\nSYSTEM    clear · matrix · coffee\nTry reading a file. Curiosity is a useful permission.';
         break;
       case 'whoami':
         response =
@@ -73,8 +73,9 @@ export function Terminal({ onNavigate, onAward, onAction, onClose }: TerminalPro
         onNavigate('lab');
         break;
       case 'experience':
+      case 'timeline':
         response =
-          'Opening the flight path. Dated employment and academic records have not been supplied; the path records engineering themes.';
+          'Opening the memory corridor: engineering, research, leadership, and the Adxania cybersecurity internship recorded in the existing portfolio.';
         onNavigate('flight-path');
         break;
       case 'contact':
@@ -87,12 +88,12 @@ export function Terminal({ onNavigate, onAward, onAction, onClose }: TerminalPro
         break;
       case 'resume':
         response =
-          'Opening the downloadable profile overview. It contains supplied information; a verified résumé can replace it in the configuration.';
+          'Opening the printable engineering profile: source-linked projects, documented experience, and the questions still open.';
         onAction?.('resume');
         break;
       case 'sudo hire anwesha':
         response =
-          'PERMISSION GRANTED.\nExcellent decision. A good conversation is the first dependency.';
+          'Evaluating candidate...\nCuriosity: detected\nSystems thinking: detected\nPermission granted.\nThe next dependency is a conversation.';
         tone = 'success';
         onAward('hire-command', 50);
         break;
@@ -108,8 +109,19 @@ export function Terminal({ onNavigate, onAward, onAction, onClose }: TerminalPro
         break;
       case 'launch':
         response =
-          'TRAJECTORY SET / PROJECT CONSTELLATION\nFollow the work. The coordinates are a starting point.';
-        onNavigate('universe');
+          'ENGINE / SECURITY / NAVIGATION / TELEMETRY / COMMUNICATION\nTrajectory ready. Returning to the launch sequence.';
+        if (onAction) onAction('launch');
+        else onNavigate('launch');
+        break;
+      case 'orbit':
+        response =
+          'LINK ACQUIRED\nPosition is a question of timing. Opening the orbital telemetry view.';
+        onNavigate('space');
+        break;
+      case 'why':
+        response =
+          'Because an answer is useful.\nAnd understanding why it works lets you build the next one.\n\nThe oldest key still opens the most interesting doors.';
+        onAward('why-command', 10);
         break;
       case 'scan':
         response =
@@ -130,7 +142,7 @@ export function Terminal({ onNavigate, onAward, onAction, onClose }: TerminalPro
         response = '/universe/sol/earth/curiosity';
         break;
       case 'ls':
-        response = 'projects/  research/  future.txt  369.txt';
+        response = 'projects/  research/  memories/  future.txt  369.txt';
         break;
       case 'clear':
         setEntries([]);

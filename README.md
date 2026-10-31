@@ -1,19 +1,23 @@
 # ANWESHA // SYSTEM 369
 
-A personal portfolio built as a continuous engineering expedition: an astronomical identity core becomes a project constellation, security topology, engine room, orbital laboratory, flight path, and final transmission.
+## How a question became an engineer
 
-Built with Next.js, React and strict TypeScript. Original procedural Canvas and SVG artwork carries the narrative without requiring WebGL or downloaded artwork. Fonts are bundled locally through Fontsource.
+The second pass transforms the existing portfolio into one illustrated journey. A small girl follows a question from a quiet field through code, machinery, cybersecurity, infrastructure, launch, orbit, research, and memory. Her reflection becomes the present-day engineer near the end. The same signal and the same world objects carry the story between scenes.
+
+**Story** is the primary experience. **Quick** immediately exposes Anwesha’s profile, projects, technical skills, experience, research, milestones, résumé, and contact channels. The original project data, 17 mission routes, contact links, security challenge, terminal, local discoveries, and static deployment model are retained.
+
+Built with Next.js, React, strict TypeScript, and original procedural Canvas/SVG illustration. There are no external character assets, WebGL requirements, autoplay videos, or animation-framework dependencies. Fonts are bundled locally.
 
 ## Run locally
 
-Use Node.js 20.9 or later and npm. An installed Google Chrome browser is used by the browser tests.
+Use Node.js 20.9 or later and npm.
 
 ```sh
 npm install
 npm run dev
 ```
 
-Open [localhost:3000](http://localhost:3000). For a clean dependency install after the lockfile exists, use `npm ci`.
+Open [localhost:3000](http://localhost:3000). Use `npm ci` for a clean install from the committed lockfile.
 
 ```sh
 npm run lint
@@ -21,85 +25,84 @@ npm run typecheck
 npm run build
 npm start
 npm test
+npm run format:check
 ```
 
-`build` produces the complete static website in `out/`. `start` serves that export with the included dependency-free Node server; build first. Browser tests automatically start that server or reuse one already running on port 3000. To inspect a failure, run `npx playwright show-report`.
+`build` creates the complete static export in `out/`. `start` serves that export with the included dependency-free Node server; build first. Browser tests start the production server or reuse one already running on port 3000. Tests use the installed Google Chrome channel. If Chrome is unavailable, install it or configure an installed Playwright browser in `playwright.config.ts`. Use `npx playwright show-report` to inspect a test report.
 
-`next.config.ts` bounds experimental static-export concurrency to two workers and one page per worker, reducing Windows filesystem and memory contention. The normal npm commands above remain unchanged.
+No runtime secrets, database, or API keys are required. Set `NEXT_PUBLIC_SITE_URL` to the final HTTPS origin before the deployment build so metadata references the correct domain. `.env.example` documents this optional setting. Asset preparation generates `public/og.png` from the original SVG before development and production builds. The local static server also accepts `PORT` and `HOST`.
 
-Tests use the installed Chrome channel, so no Playwright browser download is required on a machine with Chrome. If Chrome is unavailable, install it or change `channel` in `playwright.config.ts` to an available Playwright browser after installing that browser with the appropriate Playwright command.
+`next.config.ts` bounds experimental static generation to two workers and one page per worker, with a retry for transient export failures. These settings reduce Windows filesystem and memory contention without changing the normal npm commands.
 
-No runtime secrets, API keys, or database are required. For deployment, optionally copy .env.example to .env.local and set NEXT_PUBLIC_SITE_URL to the final HTTPS origin for absolute social-image metadata. The build generates public/og.png from the original SVG automatically. The local static server optionally accepts `PORT` (default `3000`) and `HOST` (default `127.0.0.1`). Configure these with your shell or hosting platform, rather than committing them.
+## The experience
 
-## What is implemented
+- One native `1700svh` scroll track controls a fixed, full-viewport stage. Camera position, character pose, shared structural anchors, and the original signal change with fractional scroll progress; content is not presented as 17 stacked sections.
+- Seventeen structured story scenes move from the night field to the next unexplored star. Optional interactions connect nodes, inspect machines, contain a threat, align telemetry, launch the rocket, open research logs, and unlock the door with a question. Continue and Quick Mode keep every destination accessible without completing a game.
+- The original articulated protagonist looks, walks, reaches, reacts, and carries collected artifacts. The shield acquired through containment remains visible. The mirror and final two-figure scene complete the symbolic identity reveal.
+- The celestial **Change Sky** control transforms night into day. The moon sets, the sun rises, stars fade, clouds appear, materials brighten, and shadows change over about 1.2 seconds. Day and night are authored palettes and environments; the choice persists and initially follows the system preference.
+- The retained project atlas supports search, category filters, map/index views, drag or swipe, zoom, orbit rotation, hover telemetry, keyboard focus, and mission links.
+- Mission dossiers remain real, statically generated routes with problem, architecture, technology, decisions, challenges, outcomes, learning, evidence, and source links.
+- Quick Mode reuses the same editorial records and provides direct technical navigation. Switching modes preserves the existing local preference store and discovery history.
+- Ctrl/Cmd + K opens the command palette. The optional terminal keeps an explicit command allowlist, history, navigation, and hidden discoveries; it cannot execute a shell or scan a remote system.
+- Sound remains off by default. Reduced motion, visible focus, native modal behavior, a semantic story outline, and a no-script profile/project-route fallback support alternate ways through the work.
 
-- Twelve connected narrative chapters, with one persistent scene that changes geometry as the visitor travels.
-- A searchable, filterable project constellation with drag/swipe navigation, keyboard-accessible mission objects, and a conventional index alternative.
-- Seventeen statically generated mission-file routes with architecture, design decisions, challenges, evaluation questions, source links and evidence status.
-- An interactive security sandbox: inspect ten network nodes, compare telemetry, and isolate the node crossing its trust boundary.
-- A technology engine linked to the project records, expandable research logs, flight path, milestone vault, current-mission feed, black-hole interlude, human introduction, and contact interface.
-- Explorer and Recruiter modes; recruiter mode surfaces the profile and removes the cinematic opening and interludes.
-- A searchable command palette opened with Ctrl/Cmd + K, plus a controlled terminal with history and discovery commands.
-- Locally persisted signal awards, discovery levels and preferences. Awards are deduplicated by discovery ID. The experience still works when browser storage is unavailable.
-- Sound off by default, a user-controlled reduced-motion setting, and support for the operating system’s motion preference.
-- Responsive mission HUD, mobile navigation, semantic content, visible keyboard focus, modal focus management, a real 404 page, metadata, favicon, and an OpenGraph image.
-- Mail and social links supplied by Anwesha. The transmission form prepares a draft in the visitor’s email app; it does not claim to send a message.
+## Edit content and story
+
+The portfolio records remain in `src/data/portfolio.ts`, with strict interfaces in `src/types/portfolio.ts`.
+
+| Export           | Controls                                                                                                   |
+| ---------------- | ---------------------------------------------------------------------------------------------------------- |
+| `profile`        | Identity, introduction, institution, contact/social links, résumé path, and editorial sources              |
+| `projects`       | Mission records, technology, architecture, outcomes, evidence, links, map coordinates, and visual identity |
+| `categories`     | Constellation filters                                                                                      |
+| `skills`         | Technical systems and connected project IDs                                                                |
+| `research`       | Questions, hypotheses, proposed systems, methods, and accurate status                                      |
+| `milestones`     | Career and engineering memory records                                                                      |
+| `achievements`   | Owner-documented milestone logs and sources                                                                |
+| `currentMission` | Current editorial transmission                                                                             |
+
+Project IDs are durable URLs: `/missions/<id>/`. Keep technology-to-project references valid. Rebuild after editorial changes because the site is statically exported.
+
+`src/story/chapters.ts` is the narrative score. Each chapter defines its ID, copy, accessible scene description, camera, character pose/focus, environment, day/night lighting, objects, interaction, transition, collectible, and ambient layer. Keep its 17-scene order aligned with the authored world transformations. `StoryPanels.tsx` supplies the semantic interactions; `world/` contains the original illustration and articulated character drawing. Story copy and portfolio facts are deliberately separate.
 
 ## Content and evidence
 
-The portfolio combines the creative brief with Anwesha’s existing GitHub portfolio and project documentation. Each mission distinguishes a **source-available project**, an **owner-documented portfolio record**, or an explicitly **proposed concept record**. Repository documentation supports the features and limitations it describes; it does not establish production adoption, independently measured outcomes, or an individual contribution unless the source says so.
+The redesign preserves the source distinctions from the first version. Three mission files are source-available projects, six cite owner-maintained portfolio records, and eight remain explicitly proposed concepts. A repository or portfolio entry supports documented features; it does not independently establish adoption, scientific validation, measured outcomes, or contribution scope.
 
-The flight path and vault include owner-documented career milestones, including the Adxania Cyber Solutions internship from August 2025 to February 2026 and IEEE, National Children’s Science Congress and INSPIRE MANAK references. Source links remain attached to those records. Research logs distinguish documented research from exploratory interests and proposed experiments.
+Career and memory records include the owner-documented Adxania Cyber Solutions internship from August 2025 to February 2026, IEEE SIGHT leadership, NCSC and INSPIRE–MANAK recognition, and Google Cloud Arcade milestones. Research logs distinguish documented research directions from interests and proposed experiments. The girl’s journey is a symbolic narrative, not an invented dated childhood biography.
 
 Editorial sources include the existing [project catalogue](https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/projects.ts), [timeline](https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/timeline.ts), [BoundaryLens README](https://github.com/Ak-369-1729/BoundaryLens/blob/main/README.md), and [ChronoHeritage README](https://github.com/Ak-369-1729/Chrono_Heritage/blob/main/README.md).
 
-The résumé action downloads `public/resume.html`, a printable HTML profile compiled from the supplied contact details and owner-maintained records. It is a generated portfolio résumé; no separate official CV file was provided. To use an approved PDF instead, add it to `public/` and update `profile.resume`.
+The résumé action downloads `public/resume.html`, a printable HTML profile compiled from owner-maintained records and supplied contact details. To use an approved PDF, add it to `public/` and update `profile.resume`.
 
-### Edit the portfolio
-
-The central editorial file is `src/data/portfolio.ts`, with its interfaces in `src/types/portfolio.ts`.
-
-| Export           | Controls                                                                                                                                |
-| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `profile`        | Name, roles, introduction, human copy, email, GitHub, LinkedIn and résumé path                                                          |
-| `projects`       | Mission records, evidence, source citations, categories, technologies, diagrams, source/demo links, map coordinates, symbols and colors |
-| `categories`     | Constellation filters                                                                                                                   |
-| `skills`         | Engine-room modules and connected project IDs                                                                                           |
-| `research`       | Hypotheses, problems, proposed systems and experiments                                                                                  |
-| `milestones`     | Flight-path entries                                                                                                                     |
-| `achievements`   | Vault records and evidence state                                                                                                        |
-| `currentMission` | Current transmission copy                                                                                                               |
-
-Each project needs a stable unique `id`; its route is `/missions/<id>/`. Coordinates are percentages of the constellation stage. Keep labels separated, and keep node coordinates away from the stage’s outer edges. Add a local asset to `public/` and reference it with a root-relative URL, such as `/resume.pdf`.
-
-Use the existing `Concept record`, `Portfolio record`, and `Source available` statuses consistently with each record’s evidence and citations. Add roles, dates, implementation details, measurements and working URLs when supported by the source. Keep illustrative architecture and proposed evaluation separate from documented behavior. Rebuild after editing: this is a static export.
+The contact form prepares a URL-encoded `mailto:` draft. The visitor sends it through their email application; the website does not claim to send mail.
 
 ## Deployment
 
-Deploy the **contents of `out/`** to any static host with HTTPS support. No application server or API environment is needed.
+Publish the **contents of `out/`** to a static HTTPS host.
 
-1. Install dependencies with `npm ci`.
-2. Run `npm run lint`, `npm run typecheck`, and `npm run build`.
-3. Run `npm test` against the production export.
-4. Upload `out/` or configure your host’s build command as `npm run build` and its publish directory as `out`.
-5. Configure directory indexes, so `/missions/nexus/` serves `/missions/nexus/index.html`.
-6. Configure the host’s not-found document as `404.html`, preserving HTTP status 404. Avoid rewriting all missing paths to the homepage.
-7. Cache `/_next/static/` with `public, max-age=31536000, immutable`; serve HTML with revalidation or no-cache. The included local server demonstrates these rules.
+1. Install with `npm ci`.
+2. Set `NEXT_PUBLIC_SITE_URL` to the final origin.
+3. Run lint, type checking, the production build, and browser tests.
+4. Configure the host’s build command as `npm run build` and publish directory as `out`, or upload the generated export.
+5. Enable directory indexes so `/missions/nexus/` serves `/missions/nexus/index.html`.
+6. Serve `404.html` for missing paths with HTTP status 404. Avoid rewriting every missing path to the homepage.
+7. Cache hashed `/_next/static/` assets immutably and revalidate HTML. The included Node server demonstrates these rules.
 
-Set `NEXT_PUBLIC_SITE_URL` to the production origin before building for deployment. Review owner-maintained source records when publishing substantive content changes. The repository does not contain hosting credentials or a forced publishing integration.
+The code contains no hosting credentials or required backend integration.
 
-## Accessibility
+## Accessibility and performance
 
-The core information is real HTML and remains available without animation, Canvas, or WebGL. Projects have a text index alternative. All mission nodes, controls and research disclosures work with a keyboard. Dialogs use native modal semantics and restore focus; command navigation moves focus to its destination. Native mouse and touch behavior remain available alongside the optional cursor label.
+Essential information and controls are semantic HTML. Canvas is decorative and `aria-hidden`; project details, research, technical records, and contact actions have HTML interfaces. The story provides scene descriptions, chapter navigation, Continue, and Quick Mode. Without JavaScript, a profile and project index link to the prerendered mission pages. If Canvas is unavailable, the HTML controls and technical routes remain usable.
 
-Both `prefers-reduced-motion` and the HUD toggle reduce motion. Disabling persistence or sound does not block browsing. The contact form has explicit labels and validation and accurately describes its email-draft behavior.
+Reduced motion selects static world states, disables ambient movement and animated theme transitions, and retains scroll-based navigation. Native mouse, touch, keyboard, and visible focus remain available. Local storage failure does not block browsing. No login, cookies, analytics, or remote telemetry is required.
 
-The Playwright suite checks keyboard flows, storage failure, score deduplication, reduced motion, 390/768/1440 px layouts, true 404s, and serious/critical WCAG A/AA issues with axe. Automated checks complement manual keyboard, screen-reader and device review; they do not prove full accessibility compliance.
+The world renders bounded procedural geometry using a single Canvas context. It caps pixel ratio, uses fewer stars on mobile, updates quiet scenes at 30 fps and moving transitions at up to 60 fps, pauses when the document is hidden, and removes listeners and frames when unmounted. Quick Mode unmounts the world. Security, terminal, command-palette, and Quick Mode interfaces are split into separate loads.
 
-## Performance
+Version 2 is measured separately from the first version. See `docs/validation.md` for the current release-check record; the earlier version’s Lighthouse result is historical, not a performance claim for the redesigned renderer. Repeat performance and accessibility audits on the deployed site and representative devices.
 
-The static export serves prerendered content with locally bundled fonts. The background uses a single Canvas context, a capped pixel ratio, bounded geometry, animation cleanup, and visibility-aware scheduling. Security, terminal and command-palette components load dynamically. Expensive artwork is procedural; there are no autoplay videos, giant textures, trackers, third-party font requests, or multiple animation frameworks.
+See `docs/architecture.md` for the audit decisions, state boundaries, continuous-scene model, and maintenance guidance.
 
-Local Lighthouse 13.6.0 measured **97 Performance / 100 Accessibility / 100 Best Practices / 100 SEO** on the production export with simulated mobile network conditions and 4× CPU slowdown. The final source-backed export passed all 13 browser checks. These are local measurements, not guarantees for every device or host. Re-measure after changing content or hosting. See `docs/validation.md` for the validation record and source distinctions.
+## Release verification
 
-See `docs/architecture.md` for the component boundaries, state model, rendering decisions and maintenance notes.
+Version 2 measured 99 Performance, 100 Accessibility, 100 Best Practices, and 100 SEO in a local mobile Lighthouse 13.6.0 audit with 4× CPU slowdown. Production build, TypeScript, lint, formatting, and 35 browser checks pass. See `docs/validation.md` for scope and the distinction between local measurements and deployed-device testing.

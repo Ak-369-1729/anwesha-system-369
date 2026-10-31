@@ -15,9 +15,15 @@ const commands = [
   { label: 'Go to engine room', hint: 'Inspect the technology map', target: 'engine', icon: '⌘' },
   {
     label: 'Go to flight path',
-    hint: 'Follow the engineering journey',
+    hint: 'Experience and memory logs',
     target: 'flight-path',
     icon: '↗',
+  },
+  {
+    label: 'Go to achievements',
+    hint: 'Open the documented milestone archive',
+    target: 'vault',
+    icon: '◇',
   },
   { label: 'Contact Anwesha', hint: 'Establish a connection', target: 'contact', icon: '↗' },
   {
@@ -34,17 +40,18 @@ const commands = [
   },
   { label: 'Open LinkedIn', hint: 'Visit the configured profile', action: 'linkedin', icon: '↗' },
   {
-    label: 'Enable Explorer Mode',
-    hint: 'Follow the full mission narrative',
+    label: 'Story Mode',
+    hint: 'Follow how a question became an engineer',
     action: 'explorer',
     icon: '◎',
   },
   {
-    label: 'Enable Recruiter Mode',
-    hint: 'Surface the work without cinematic delays',
+    label: 'Quick Mode',
+    hint: 'Projects, skills, experience, and contact at a glance',
     action: 'recruiter',
     icon: '≡',
   },
+  { label: 'Change sky', hint: 'Move between night and day', action: 'sky', icon: '☼' },
   {
     label: 'Toggle sound',
     hint: 'Sound starts off; entirely optional',

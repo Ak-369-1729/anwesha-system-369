@@ -1,0 +1,29 @@
+name: Portfolio quality
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+      - run: npm run typecheck
+      - run: npx playwright install --with-deps chrome
+      - run: npm test
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: browser-report
+          path: playwright-report/
+          retention-days: 7

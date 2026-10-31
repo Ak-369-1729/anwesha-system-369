@@ -133,13 +133,29 @@ function sky(ctx: CanvasRenderingContext2D, f: WorldFrame, c: Palette, space: nu
     else ellipse(ctx, x, y, radius, radius, i % 5 === 0 ? '#c7d9e1' : '#8aa6bb', 0, true);
   }
   ctx.restore();
+  // Observatory tracings give the sky a readable focal point and a sense of scale.
+  ctx.save();
+  ctx.globalAlpha = (1 - space * 0.8) * 0.17;
+  const focus = getStorySignal(p, w, h);
+  for (let orbit = 0; orbit < 3; orbit++) {
+    ellipse(
+      ctx,
+      focus.x,
+      focus.y,
+      w * (0.13 + orbit * 0.055),
+      h * (0.16 + orbit * 0.055),
+      c.rim,
+      -0.5,
+    );
+  }
+  ctx.restore();
   // The moon sets as the sun rises: two actual celestial paths, not a CSS inversion.
-  const r = Math.min(w, h) * (w < 650 ? 0.062 : 0.061);
+  const r = Math.min(w, h) * (w < 650 ? 0.085 : 0.095);
   for (let celestial = 0; celestial < 2; celestial++) {
     const sun = celestial === 1;
     const opacity = (sun ? day : 1 - day) * (1 - space * 0.8);
     if (opacity < 0.002) continue;
-    const cx = w * (sun ? 0.69 : 0.78);
+    const cx = w * (sun ? 0.78 : 0.84);
     const cy = h * (sun ? 0.91 - smooth(0, 1, day) * 0.55 : 0.22 + smooth(0, 1, day) * 0.65);
     ctx.save();
     ctx.globalAlpha = opacity;
@@ -1055,7 +1071,7 @@ export function renderWorld(ctx: CanvasRenderingContext2D, f: WorldFrame) {
   const mirrorApproach = band(13.5, 14.2, 15.4, 16, p);
   const girlX = w * (w < 650 ? lerp(0.72, 0.55, mirrorApproach) : lerp(0.72, 0.6, mirrorApproach));
   const girlY = lerp(floor - h * 0.006, h * 0.79, space);
-  const characterHeight = w < 650 ? Math.min(92, h * 0.11) : Math.min(104, h * 0.104);
+  const characterHeight = w < 650 ? Math.min(102, h * 0.12) : Math.min(145, h * 0.15);
   let pose = (chapter?.character?.pose ?? 'look-up') as CharacterPose;
   if (f.walk > 0.15 && pose !== 'react' && pose !== 'reach' && pose !== 'point') pose = 'walk';
   if (f.idle > 16 && (p < 0.8 || p > 15.7)) pose = 'sit';

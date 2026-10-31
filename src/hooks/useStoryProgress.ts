@@ -49,6 +49,9 @@ export function useStoryProgress(
 
   useEffect(() => {
     if (!enabled) return;
+    // The virtual story owns restoration; browser restoration can otherwise race the first frame.
+    const previousRestoration = window.history.scrollRestoration;
+    window.history.scrollRestoration = 'manual';
     let frame = 0;
     let currentChapter = -1;
     const save = () => {
@@ -117,6 +120,7 @@ export function useStoryProgress(
     window.addEventListener('pagehide', save);
     return () => {
       save();
+      window.history.scrollRestoration = previousRestoration;
       active.current = false;
       cancelAnimationFrame(frame);
       window.removeEventListener('scroll', schedule);

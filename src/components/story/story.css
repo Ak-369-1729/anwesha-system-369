@@ -2675,3 +2675,568 @@ html[data-sky='light'] .mission-file {
 .chapter-night .story-copy {
   animation: none;
 }
+/* The scene has one layout owner. Narrative, instruments and navigation never share a cell. */
+:root {
+  --story-accent: #f1c591;
+}
+html[data-sky='light'] {
+  --story-accent: #865218;
+}
+.field-header {
+  height: 96px;
+  background: linear-gradient(var(--bg), transparent);
+}
+.field-mark b {
+  letter-spacing: 0.26em;
+}
+.field-edition {
+  font-size: 9px;
+  letter-spacing: 0.16em;
+}
+.experience-switch {
+  padding: 0 15px;
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  background: color-mix(in srgb, var(--panel), transparent 20%);
+}
+.experience-switch button {
+  font-size: 10px;
+}
+.scene-watermark {
+  position: absolute;
+  right: 4vw;
+  top: 12%;
+  font: 500 clamp(160px, 24vw, 360px)/1 var(--display);
+  letter-spacing: -0.06em;
+  color: var(--cyan);
+  opacity: 0.045;
+  pointer-events: none;
+}
+.story-stage::before {
+  background: linear-gradient(90deg, #071722ed 0%, #071722a0 34%, #07172216 70%);
+}
+html[data-sky='light'] .story-stage::before {
+  background: linear-gradient(90deg, #eef1e9ef 0%, #eef1e9ad 34%, #eef1e911 70%);
+}
+.story-stage .scene-composition {
+  position: absolute;
+  inset: 155px 5vw 155px 7vw;
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: clamp(36px, 6vw, 110px);
+  align-items: center;
+  min-height: 0;
+  pointer-events: none;
+}
+.story-stage .scene-composition .story-copy {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  min-width: 0;
+  max-height: 100%;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+  padding: 3px 0 12px;
+}
+.story-stage .story-copy h1 {
+  font: 400 clamp(32px, 3.6vw, 62px)/1.1 var(--story-serif);
+  letter-spacing: -0.045em;
+  margin: 0;
+  text-wrap: balance;
+}
+.story-stage .story-copy h1 > span {
+  display: block;
+  margin-right: 0;
+}
+.story-stage .story-copy h1 .story-emphasis,
+.story-stage .story-copy h1 > em {
+  color: var(--story-accent);
+  margin-top: 0.2em;
+}
+.story-stage .story-kicker {
+  font: 9px/1.65 var(--mono);
+  margin-bottom: 24px;
+  letter-spacing: 0.1em;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.story-stage .chapter-number {
+  color: var(--story-accent);
+}
+.story-stage .scene-composition.is-prologue {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+}
+.story-stage .is-prologue .story-copy {
+  max-width: 730px;
+}
+.story-stage .is-prologue h1 {
+  font-size: clamp(42px, 4.6vw, 82px);
+  line-height: 1.12;
+}
+.story-stage .is-prologue .story-kicker {
+  margin-bottom: 32px;
+}
+.story-stage .opening-note {
+  font-size: 9px;
+  margin-top: 30px;
+}
+.scene-instrument {
+  pointer-events: auto;
+  min-width: 0;
+  min-height: 0;
+  max-height: 100%;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+  padding: 3px;
+  overscroll-behavior: contain;
+}
+.story-stage .scene-instrument > * {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+}
+.story-stage
+  .scene-instrument
+  > :is(
+    .story-interaction,
+    .story-console,
+    .machine-hotspots,
+    .launch-telemetry,
+    .mirror-stages,
+    .story-signal-action
+  ) {
+  background: color-mix(in srgb, var(--panel), transparent 8%);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: clamp(20px, 2.4vw, 36px);
+  box-shadow: 0 24px 90px #00000018;
+}
+.story-stage .scene-instrument > .story-signal-action {
+  align-items: center;
+  padding: 36px;
+  gap: 24px;
+}
+.story-stage .scene-instrument .story-action {
+  font-size: 11px;
+  line-height: 1.6;
+  gap: 16px;
+  padding: 16px 0;
+}
+.story-stage .scene-instrument :is(p, dd) {
+  font-size: 12px;
+  line-height: 1.8;
+}
+.story-stage .scene-instrument .eyebrow {
+  font-size: 9px;
+  line-height: 1.8;
+}
+.story-stage .scene-instrument > .machine-hotspots {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 22px;
+}
+.story-stage .machine-link {
+  padding: 17px 4px;
+  border-bottom: 1px solid var(--line);
+}
+.story-stage .machine-link strong {
+  font-size: 13px;
+}
+.story-stage .machine-link > span:not(.machine-symbol) {
+  font-size: 8px;
+  line-height: 1.6;
+}
+.story-stage .machine-symbol {
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+.story-stage .machine-link > small {
+  display: none;
+}
+.story-stage .scene-instrument > .security-console,
+.story-stage .scene-instrument > .constellation-console {
+  padding: 0;
+}
+.story-stage .security-workspace {
+  grid-template-columns: 1fr;
+}
+.story-stage .security-console .network-map {
+  min-height: 275px;
+}
+.story-stage .security-console .node-inspector {
+  border-top: 1px solid var(--line);
+}
+.story-stage .research-console {
+  display: block;
+}
+.story-stage .experiment-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 20px;
+  padding: 0;
+  border-right: 0;
+  border-bottom: 1px solid var(--line);
+}
+.story-stage .experiment-index > button {
+  width: auto;
+  min-height: 44px;
+  font-size: 10px;
+  padding: 8px 0;
+}
+.story-stage .experiment-log {
+  padding: 20px 0 0;
+}
+.story-stage .experiment-log h3 {
+  font-size: 29px;
+}
+.story-stage .infrastructure-select small {
+  font-size: 8px;
+  line-height: 1.6;
+}
+.story-stage .infrastructure-select strong {
+  font-size: 14px;
+}
+.story-stage .syntax-puzzle small {
+  font-size: 9px;
+}
+.story-stage .orbit-readout {
+  font-size: 10px;
+}
+.story-stage .present-links {
+  flex-wrap: wrap;
+  gap: 8px 24px;
+}
+.story-stage .story-copy .identity-reveal {
+  font: 600 clamp(68px, 8vw, 145px)/0.85 var(--display);
+  letter-spacing: -0.025em;
+}
+.story-stage .story-copy .identity-reveal .identity-point {
+  display: inline;
+}
+.story-stage .scene-instrument > .mirror-stages {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 10px;
+  gap: 20px;
+}
+.story-stage .final-transmission {
+  position: fixed;
+  inset: 18% 7% 20% 54%;
+  z-index: 10;
+  background: var(--panel);
+  box-shadow: 0 0 0 100vmax #0008;
+}
+.story-stage .final-links > a {
+  overflow-wrap: anywhere;
+}
+.chapter-progress {
+  position: absolute;
+  bottom: 141px;
+  left: 4.3vw;
+  right: 4.3vw;
+  height: 1px;
+  background: var(--line);
+}
+.chapter-progress > span {
+  display: block;
+  height: 1px;
+  background: var(--story-accent);
+  box-shadow: 0 0 12px var(--story-accent);
+  transition: width 0.7s ease;
+}
+.story-navigation {
+  bottom: 65px;
+  height: 60px;
+}
+.story-index-button > span {
+  font-size: 9px;
+}
+.story-index-button b {
+  font-size: 10px;
+}
+.next-scene {
+  background: var(--cyan);
+  color: var(--bg);
+  padding: 0 22px;
+  border-radius: 2px;
+  min-height: 48px;
+  font-size: 10px;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+.next-scene > span {
+  color: inherit;
+}
+.next-scene:hover {
+  transform: translateY(-3px);
+  background: var(--story-accent);
+}
+html[data-sky='light'] .story-navigation .next-scene {
+  color: var(--bg);
+}
+.scroll-direction {
+  font-size: 8px;
+}
+.field-footer {
+  font-size: 9px;
+}
+.field-footer button {
+  font-size: 9px;
+}
+.field-footer-note {
+  font-size: 8px;
+}
+.collected-artifacts > span:last-child {
+  font-size: 8px;
+}
+@media (min-width: 1101px) and (min-height: 850px) {
+  .story-stage .scene-composition {
+    top: 180px;
+    bottom: 190px;
+  }
+}
+@media (max-width: 1000px) {
+  .story-stage .scene-composition {
+    inset: 140px 5vw 155px;
+    gap: 30px;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  }
+  .story-stage .story-copy h1 {
+    font-size: clamp(32px, 4vw, 45px);
+  }
+  .story-stage .is-prologue h1 {
+    font-size: clamp(42px, 5.2vw, 65px);
+  }
+  .story-stage .story-kicker {
+    font-size: 8px;
+    margin-bottom: 20px;
+  }
+  .story-stage
+    .scene-instrument
+    > :is(
+      .story-interaction,
+      .story-console,
+      .machine-hotspots,
+      .launch-telemetry,
+      .mirror-stages
+    ) {
+    padding: 20px;
+  }
+  .story-stage .scene-instrument > .security-console,
+  .story-stage .scene-instrument > .constellation-console {
+    padding: 0;
+  }
+}
+@media (max-width: 700px) {
+  .field-header {
+    height: 78px;
+    padding: 0 20px;
+  }
+  .field-controls {
+    gap: 12px;
+  }
+  .experience-switch {
+    padding: 0 10px;
+    gap: 7px;
+  }
+  .field-command {
+    display: none;
+  }
+  .scene-coordinates {
+    top: 94px;
+    left: 24px;
+    right: 24px;
+    font-size: 8px;
+  }
+  .scene-watermark {
+    top: 90px;
+    font-size: 180px;
+  }
+  .story-stage::before {
+    background: linear-gradient(180deg, #071722ed, #071722b3 45%, #07172226);
+  }
+  html[data-sky='light'] .story-stage::before {
+    background: linear-gradient(180deg, #eef1e9ed, #eef1e9b3 45%, #eef1e926);
+  }
+  .story-stage .scene-composition {
+    inset: 130px 24px 158px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
+  }
+  .story-stage .scene-composition .story-copy {
+    max-height: 34svh;
+    padding: 0 2px 4px;
+  }
+  .story-stage .story-copy h1 {
+    font-size: clamp(26px, 7.4vw, 40px);
+    line-height: 1.1;
+    text-wrap: pretty;
+  }
+  .story-stage .story-kicker {
+    font-size: 8px;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .story-stage .kicker-line {
+    width: 18px;
+  }
+  .story-stage .scene-composition.is-prologue {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    bottom: 190px;
+  }
+  .story-stage .is-prologue .story-copy {
+    width: 100%;
+    max-height: 100%;
+  }
+  .story-stage .is-prologue h1 {
+    font-size: clamp(36px, 9.5vw, 55px);
+    line-height: 1.14;
+  }
+  .story-stage .is-prologue .story-kicker {
+    margin-bottom: 24px;
+  }
+  .story-stage .opening-note {
+    font-size: 8px;
+    margin-top: 24px;
+    gap: 8px;
+  }
+  .scene-instrument {
+    height: 100%;
+    width: 100%;
+  }
+  .story-stage
+    .scene-instrument
+    > :is(
+      .story-interaction,
+      .story-console,
+      .machine-hotspots,
+      .launch-telemetry,
+      .mirror-stages,
+      .story-signal-action
+    ) {
+    padding: 20px;
+  }
+  .story-stage .scene-instrument > .security-console,
+  .story-stage .scene-instrument > .constellation-console {
+    padding: 0;
+  }
+  .story-stage .machine-link strong {
+    font-size: 12px;
+  }
+  .story-stage .machine-link > span:not(.machine-symbol) {
+    font-size: 8px;
+  }
+  .story-stage .machine-link {
+    padding: 15px 2px;
+  }
+  .story-stage .story-copy .identity-reveal {
+    font-size: clamp(68px, 21vw, 100px);
+  }
+  .story-stage .present-interaction > p {
+    max-width: none;
+  }
+  .story-stage .final-transmission {
+    inset: 16% 20px 19%;
+    padding: 24px;
+  }
+  .story-navigation {
+    left: 24px;
+    right: 24px;
+    bottom: 62px;
+    gap: 12px;
+  }
+  .story-index-button svg {
+    display: none;
+  }
+  .story-index-button > span {
+    font-size: 8px;
+  }
+  .story-index-button b {
+    font-size: 9px;
+    max-width: 100px;
+  }
+  .chapter-travel {
+    gap: 8px;
+  }
+  .next-scene {
+    padding: 0 14px;
+    font-size: 9px;
+    gap: 12px;
+  }
+  .chapter-progress {
+    bottom: 140px;
+    left: 24px;
+    right: 24px;
+  }
+  .field-footer {
+    padding: 0 20px;
+  }
+  .field-footer > div:first-child {
+    gap: 13px;
+  }
+  .field-footer button {
+    font-size: 8px;
+  }
+  .collected-artifacts > span:not(:last-child) {
+    display: none;
+  }
+  .collected-artifacts > span:last-child {
+    font-size: 8px;
+    margin: 0;
+  }
+}
+@media (max-height: 600px) {
+  .story-stage .scene-composition {
+    top: 110px;
+    bottom: 122px;
+  }
+  .scene-coordinates {
+    display: none;
+  }
+  .story-stage .story-copy h1 {
+    font-size: 28px;
+  }
+  .story-stage .is-prologue h1 {
+    font-size: 34px;
+  }
+  .story-stage .story-kicker {
+    margin-bottom: 12px;
+  }
+  .chapter-progress {
+    bottom: 115px;
+  }
+  .story-navigation {
+    bottom: 47px;
+  }
+  .story-stage .scene-composition.is-prologue {
+    bottom: 122px;
+  }
+  .story-stage .opening-note {
+    margin-top: 16px;
+  }
+}
+@media (max-width: 700px) {
+  .field-header {
+    gap: 12px;
+  }
+  .field-controls {
+    gap: 8px;
+  }
+  .field-command {
+    display: block;
+    padding: 8px 0 8px 8px;
+    font-size: 10px;
+  }
+}

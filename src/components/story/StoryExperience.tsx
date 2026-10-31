@@ -318,6 +318,9 @@ export default function StoryExperience() {
           aria-label="How a question became an engineer"
         >
           <div className={`story-stage chapter-${current.id}`}>
+            <div className="scene-watermark" aria-hidden="true">
+              {String(chapter + 1).padStart(2, '0')}
+            </div>
             <div className="scene-coordinates" aria-hidden="true">
               <span>
                 0{Math.floor(chapter / 6) + 1} /{' '}
@@ -325,60 +328,67 @@ export default function StoryExperience() {
               </span>
               <span>36.9 / 17.29</span>
             </div>
-            <div className="story-copy" key={current.id}>
-              <div className="story-kicker">
-                <span className="chapter-number">{String(chapter + 1).padStart(2, '0')}</span>
-                <span className="kicker-line" />
-                {current.kicker}
-              </div>
-              <h1 ref={heading} tabIndex={-1} className={chapter === 15 ? 'identity-reveal' : ''}>
-                {chapter === 0 ? (
-                  <>
-                    Some people looked at the stars
-                    <br />
-                    <span className="story-soft">and saw light.</span>
-                    <em>She saw questions.</em>
-                  </>
-                ) : chapter === 15 ? (
-                  <>
-                    ANWESHA
-                    <br />
-                    KAR<span className="identity-point">.</span>
-                  </>
-                ) : (
-                  current.copy.map((line, i) => (
-                    <span
-                      className={i === current.copy.length - 1 ? 'story-emphasis' : ''}
-                      key={line}
-                    >
-                      {line}
-                    </span>
-                  ))
+            <div className={`scene-composition ${chapter === 0 ? 'is-prologue' : ''}`}>
+              <div className="story-copy" key={current.id}>
+                <div className="story-kicker">
+                  <span className="chapter-number">{String(chapter + 1).padStart(2, '0')}</span>
+                  <span className="kicker-line" />
+                  {current.kicker}
+                </div>
+                <h1 ref={heading} tabIndex={-1} className={chapter === 15 ? 'identity-reveal' : ''}>
+                  {chapter === 0 ? (
+                    <>
+                      Some people looked at the stars
+                      <br />
+                      <span className="story-soft">and saw light.</span>
+                      <em>She saw questions.</em>
+                    </>
+                  ) : chapter === 15 ? (
+                    <>
+                      ANWESHA
+                      <br />
+                      KAR<span className="identity-point">.</span>
+                    </>
+                  ) : (
+                    current.copy.map((line, i) => (
+                      <span
+                        className={i === current.copy.length - 1 ? 'story-emphasis' : ''}
+                        key={line}
+                      >
+                        {line}
+                      </span>
+                    ))
+                  )}
+                </h1>
+                {chapter !== 0 && chapter !== 15 && (
+                  <p className="scene-description sr-only">{current.description}</p>
                 )}
-              </h1>
-              {chapter !== 0 && chapter !== 15 && (
-                <p className="scene-description sr-only">{current.description}</p>
-              )}
-              {chapter === 0 && (
-                <div className="opening-note">
-                  <span className="opening-spark" /> HOW A QUESTION BECAME AN ENGINEER.
+                {chapter === 0 && (
+                  <div className="opening-note">
+                    <span className="opening-spark" /> HOW A QUESTION BECAME AN ENGINEER.
+                  </div>
+                )}
+              </div>
+              {chapter > 0 && (
+                <div className="scene-instrument">
+                  <StoryPanels
+                    chapter={chapter}
+                    localProgress={localProgress}
+                    unlocked={experience.unlocked}
+                    onAward={award}
+                    onGoTo={travel}
+                    onAction={action}
+                    onReact={react}
+                    onStatus={setStatus}
+                  />
                 </div>
               )}
             </div>
-            {chapter > 0 && (
-              <StoryPanels
-                chapter={chapter}
-                localProgress={localProgress}
-                unlocked={experience.unlocked}
-                onAward={award}
-                onGoTo={travel}
-                onAction={action}
-                onReact={react}
-                onStatus={setStatus}
-              />
-            )}
             <div className="scene-alt sr-only" aria-live="polite">
               Scene {chapter + 1} of {storyChapters.length}. {current.name}. {current.description}
+            </div>
+            <div className="chapter-progress" aria-hidden="true">
+              <span style={{ width: `${((chapter + 1) / storyChapters.length) * 100}%` }} />
             </div>
             <footer className="story-navigation">
               <button className="story-index-button" onClick={() => setNavigation(true)}>

@@ -476,3 +476,68 @@ test('static server preserves 404 responses, asset MIME and path boundaries', as
   const source = await request.get('/%2e%2e%5cpackage.json');
   expect([400, 403]).toContain(source.status());
 });
+
+for (const [width, height] of [
+  [1366, 768],
+  [768, 1024],
+  [390, 844],
+  [320, 568],
+  [844, 390],
+]) {
+  test(`all scene text and instruments have separate layout space at ${width}x${height}`, async ({
+    page,
+  }) => {
+    test.setTimeout(90_000);
+    await page.setViewportSize({ width, height });
+    await openStory(page);
+    for (const scene of scenes) {
+      if (scene !== 'night') await jumpTo(page, scene);
+      if (scene !== 'night')
+        await expect(page.locator('.scene-instrument > *').first()).toBeVisible();
+      const geometry = await page.evaluate(() => {
+        const rect = (s: string) => {
+          const r = document.querySelector(s)!.getBoundingClientRect();
+          return {
+            x: r.x,
+            y: r.y,
+            right: r.right,
+            bottom: r.bottom,
+            width: r.width,
+            height: r.height,
+          };
+        };
+        const copy = rect('.story-copy');
+        const instrument = document.querySelector('.scene-instrument')
+          ? rect('.scene-instrument')
+          : null;
+        return {
+          copy,
+          instrument,
+          nav: rect('.story-navigation'),
+          header: rect('.field-header'),
+          pageWidth: document.documentElement.scrollWidth,
+          width: innerWidth,
+        };
+      });
+      expect(geometry.copy.y, scene + ' clears header').toBeGreaterThanOrEqual(
+        geometry.header.bottom,
+      );
+      expect(geometry.copy.bottom, scene + ' clears navigation').toBeLessThanOrEqual(
+        geometry.nav.y - 8,
+      );
+      expect(geometry.pageWidth, scene + ' fits viewport').toBeLessThanOrEqual(geometry.width + 1);
+      if (geometry.instrument) {
+        const a = geometry.copy,
+          b = geometry.instrument;
+        const overlap =
+          Math.max(0, Math.min(a.right, b.right) - Math.max(a.x, b.x)) *
+          Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.y, b.y));
+        expect(overlap, scene + ' text never overlaps controls').toBeLessThanOrEqual(1);
+        expect(b.height, scene + ' controls remain usable').toBeGreaterThanOrEqual(44);
+        expect(b.bottom, scene + ' controls clear navigation').toBeLessThanOrEqual(
+          geometry.nav.y - 8,
+        );
+      }
+    }
+  });
+}

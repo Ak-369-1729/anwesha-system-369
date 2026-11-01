@@ -3839,3 +3839,43 @@ html[data-sky='light'] .story-navigation .next-scene {
 html[data-motion='reduced'] :is(.orbital-stage, .orbital-webgl) {
   transition: none;
 }
+.motion-invite {
+  position: absolute;
+  top: 156px;
+  right: 5vw;
+  z-index: 4;
+  pointer-events: auto;
+  display: flex;
+  gap: 13px;
+  align-items: center;
+  text-align: left;
+  padding: 12px 0;
+  color: var(--white);
+  border-bottom: 1px solid var(--story-accent);
+  font: 650 12px var(--sans);
+}
+.motion-invite > span:first-child {
+  font-size: 28px;
+  color: var(--story-accent);
+}
+.motion-invite small {
+  display: block;
+  margin-top: 4px;
+  font: 400 10px var(--sans);
+  color: var(--muted);
+}
+@media (max-width: 700px) {
+  .motion-invite {
+    top: 126px;
+    right: 24px;
+    font-size: 11px;
+  }
+}
+@media (max-height: 600px) and (min-width: 701px) {
+  .motion-invite {
+    top: 78px;
+    right: 5vw;
+    font-size: 10px;
+    padding: 4px 0;
+  }
+}

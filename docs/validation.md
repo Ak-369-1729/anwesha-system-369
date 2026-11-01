@@ -2,6 +2,12 @@
 
 The second pass is a redesign of the existing System 369 repository, not a new project. Portfolio data, contact channels, mission routes, and useful interactions were retained while the primary presentation changed to the continuous story.
 
+## Motion refinement — 1 November 2026
+
+All 47 production browser checks passed, including four added checks that exercise full motion: the WebGL image changes without user input; cursor and continuous scroll change the real camera; reduced motion remains still until explicit playback; and project orbits pause under keyboard selection and resume afterwards. The existing route, game, accessibility, layout, storage and fallback checks also pass. Build, TypeScript, lint and formatting pass.
+
+The camera now follows a depth path across all 17 scenes. Cursor parallax, faster planet/satellite orbits, gyroscopic rings and travelling network packets make motion visible within a few seconds. Project and skill targets pause their orbital motion during hover or keyboard selection. A visible opening control lets visitors explicitly enable animation when their system preference requests reduced motion.
+
 ## Observatory edition — 1 November 2026
 
 - Production build, strict TypeScript, ESLint and formatting: passed.

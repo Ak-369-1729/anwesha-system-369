@@ -598,3 +598,71 @@ test('skill constellation opens the selected technical system', async ({ page })
   await page.keyboard.press('Enter');
   await expect(page.locator('.infrastructure-readout h3')).toHaveText('Python');
 });
+
+test('full motion visibly animates the world without user input', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await openStory(page);
+  const stage = page.locator('.orbital-stage');
+  await expect(stage).toHaveClass(/is-ready/);
+  await expect
+    .poll(async () => Number(await stage.getAttribute('data-orbit-time')))
+    .toBeGreaterThan(0.25);
+  const start = Number(await stage.getAttribute('data-orbit-time'));
+  const before = await page.locator('canvas.orbital-webgl').screenshot();
+  await expect
+    .poll(async () => Number(await stage.getAttribute('data-orbit-time')) - start)
+    .toBeGreaterThan(0.8);
+  const after = await page.locator('canvas.orbital-webgl').screenshot();
+  expect(before.equals(after)).toBe(false);
+});
+
+test('cursor and continuous scroll move the actual 3D camera', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await openStory(page);
+  const stage = page.locator('.orbital-stage');
+  await expect(stage).toHaveClass(/is-ready/);
+  const camera = async () => (await stage.getAttribute('data-camera'))!.split(',').map(Number);
+  await expect(stage).toHaveAttribute('data-camera', /.+,/);
+  const initial = await camera();
+  await page.mouse.move(1380, 160);
+  await expect.poll(async () => Math.abs((await camera())[0] - initial[0])).toBeGreaterThan(0.2);
+  await page.mouse.wheel(0, 800);
+  await expect.poll(async () => Math.abs((await camera())[2] - initial[2])).toBeGreaterThan(0.5);
+});
+
+test('reduced motion stays still and has an explicit play control', async ({ page }) => {
+  await openStory(page);
+  const stage = page.locator('.orbital-stage');
+  await expect(stage).toHaveClass(/is-ready/);
+  await expect(stage).toHaveAttribute('data-orbit-time', '0.000');
+  await page.waitForTimeout(350);
+  await expect(stage).toHaveAttribute('data-orbit-time', '0.000');
+  await page.getByRole('button', { name: /Play the animated world/ }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-motion', 'full');
+  await expect
+    .poll(async () => Number(await stage.getAttribute('data-orbit-time')))
+    .toBeGreaterThan(0.2);
+  await page.getByRole('button', { name: 'FULL MOTION', exact: true }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-motion', 'reduced');
+  const paused = await stage.getAttribute('data-orbit-time');
+  await page.waitForTimeout(350);
+  await expect(stage).toHaveAttribute('data-orbit-time', paused!);
+});
+
+test('project orbits pause for keyboard selection and resume afterwards', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await openStory(page, '/#workshop', false);
+  const stage = page.locator('.orbital-stage');
+  await expect(stage).toHaveClass(/is-ready/);
+  await expect
+    .poll(async () => Number(await stage.getAttribute('data-orbit-time')))
+    .toBeGreaterThan(0.2);
+  await page.getByRole('link', { name: 'Open project satellite — NEXUS', exact: true }).focus();
+  const paused = Number(await stage.getAttribute('data-orbit-time'));
+  await page.waitForTimeout(350);
+  expect(Number(await stage.getAttribute('data-orbit-time')) - paused).toBeLessThan(0.1);
+  await page.getByRole('button', { name: 'STORY', exact: true }).focus();
+  await expect
+    .poll(async () => Number(await stage.getAttribute('data-orbit-time')) - paused)
+    .toBeGreaterThan(0.2);
+});

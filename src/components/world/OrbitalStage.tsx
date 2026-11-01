@@ -170,6 +170,23 @@ export default function OrbitalStage(props: Props) {
           orbitMaterial,
         );
         graph.add(networkLines);
+        // Signals travel along the same topology the visitor can inspect.
+        const packetGeometry = new T.SphereGeometry(0.045, 8, 6);
+        const packets = Array.from({ length: 5 }, (_, i) => {
+          const packet = new T.Mesh(
+            packetGeometry,
+            new T.MeshBasicMaterial({ color: i === 4 ? 0xff7454 : 0xf3ddab }),
+          );
+          graph.add(packet);
+          return packet;
+        });
+        const cameraPath = [
+          7.6, 5.9, 8.8, 5.6, 8.3, 7.1, 7.5, 8.2, 7.7, 6.8, 7.2, 7.1, 8.4, 8.8, 8.2, 8.5, 8.8,
+        ];
+        const cameraTarget = new T.Vector3();
+        const aim = new T.Vector3(0, 0.45, 0);
+        const pointerTarget = new T.Vector2();
+        const pointerView = new T.Vector2();
         scene.add(new T.HemisphereLight(0xf6e8c9, 0x24352c, 2.5));
         const key = new T.DirectionalLight(0xffe6c1, 4);
         key.position.set(-3, 4, 5);
@@ -194,6 +211,9 @@ export default function OrbitalStage(props: Props) {
           pulse = 0,
           previousId = '',
           hovered = '';
+        let orbitTime = 0,
+          cameraProgress = 0,
+          hoveredControl = false;
         let coreWeight = 1,
           graphWeight = 0;
         const satelliteWeights = projects.map(() => 0);
@@ -273,6 +293,26 @@ export default function OrbitalStage(props: Props) {
             if (seen.size >= 3) live.current.onDiscover();
           } else live.current.onInspect();
         };
+        const trackPointer = (event: PointerEvent) => {
+          if (
+            event.pointerType !== 'mouse' ||
+            hoveredControl ||
+            document.activeElement?.matches('.orbital-project-link,.orbital-skill')
+          )
+            return;
+          pointerTarget.set(
+            (event.clientX / innerWidth) * 2 - 1,
+            (event.clientY / innerHeight) * 2 - 1,
+          );
+          force = true;
+        };
+        const hoverControl = (event: PointerEvent) => {
+          const target = event.type === 'pointerout' ? event.relatedTarget : event.target;
+          hoveredControl =
+            target instanceof Element &&
+            element.contains(target) &&
+            !!target.closest('.orbital-project-link,.orbital-skill');
+        };
         const cancel = () => {
           dragging = false;
         };
@@ -285,6 +325,9 @@ export default function OrbitalStage(props: Props) {
         element.addEventListener('pointermove', move);
         element.addEventListener('pointerup', up);
         element.addEventListener('pointercancel', cancel);
+        window.addEventListener('pointermove', trackPointer, { passive: true });
+        element.addEventListener('pointerover', hoverControl);
+        element.addEventListener('pointerout', hoverControl);
         renderer.domElement.addEventListener('webglcontextlost', lost);
         rotate.current = (delta) => {
           targetRotation += delta;
@@ -317,6 +360,13 @@ export default function OrbitalStage(props: Props) {
             : T.MathUtils.lerp(day, targetDay, dt * 4);
           if (!settings.reducedMotion) {
             time += dt;
+            // Moving targets become still under the pointer or keyboard focus.
+            if (
+              !dragging &&
+              !hoveredControl &&
+              !document.activeElement?.matches('.orbital-project-link,.orbital-skill')
+            )
+              orbitTime += dt;
             if (!dragging) {
               targetRotation += velocity;
               velocity *= 0.9;
@@ -348,9 +398,37 @@ export default function OrbitalStage(props: Props) {
           element.dataset.rotation = rotation.toFixed(3);
           element.dataset.scene = id;
           rig.scale.setScalar(isQuiet ? 0.55 : 1);
-          rig.rotation.y = rotation + (settings.reducedMotion ? 0 : time * 0.025);
-          rig.rotation.x = 0.15 + Math.sin(settings.progressRef.current * 0.3) * 0.2;
-          core.rotation.y = time * 0.035;
+          const desiredProgress = settings.progressRef.current;
+          cameraProgress = settings.reducedMotion
+            ? desiredProgress
+            : T.MathUtils.lerp(cameraProgress, desiredProgress, Math.min(1, dt * 5));
+          const lower = Math.max(0, Math.min(16, Math.floor(cameraProgress))),
+            upper = Math.min(16, lower + 1);
+          const phase = cameraProgress - lower,
+            eased = phase * phase * (3 - 2 * phase);
+          const depth = T.MathUtils.lerp(cameraPath[lower], cameraPath[upper], eased);
+          pointerView.lerp(
+            settings.reducedMotion ? new T.Vector2() : pointerTarget,
+            Math.min(1, dt * 5),
+          );
+          cameraTarget.set(
+            pointerView.x * 0.65 + Math.sin(cameraProgress * 0.8) * 0.24,
+            0.25 - pointerView.y * 0.38 + Math.sin(cameraProgress * 1.1) * 0.28,
+            depth,
+          );
+          camera.position.lerp(cameraTarget, settings.reducedMotion ? 1 : Math.min(1, dt * 5));
+          camera.lookAt(aim);
+          const ambient = settings.reducedMotion ? 0 : orbitTime;
+          rig.rotation.y = rotation + ambient * 0.14 + cameraProgress * 0.32;
+          rig.rotation.x =
+            0.15 + Math.sin(cameraProgress * 0.65) * 0.22 + Math.sin(ambient * 0.38) * 0.07;
+          core.rotation.y = ambient * 0.18;
+          core.position.y = settings.reducedMotion ? 0 : Math.sin(ambient * 0.8) * 0.045;
+          element.dataset.camera = camera.position
+            .toArray()
+            .map((value) => value.toFixed(3))
+            .join(',');
+          element.dataset.orbitTime = orbitTime.toFixed(3);
           uniforms.uTime.value = time;
           uniforms.uCyber.value = T.MathUtils.lerp(
             uniforms.uCyber.value,
@@ -361,7 +439,9 @@ export default function OrbitalStage(props: Props) {
           uniforms.uPulse.value = pulse;
           rings.forEach((ring, i) => {
             ring.visible = !isQuiet;
-            ring.rotation.z = i * 0.2 + settings.progressRef.current * 0.07;
+            ring.rotation.z =
+              i * 0.2 + cameraProgress * 0.18 + ambient * (i % 2 === 0 ? 0.12 : -0.09);
+            ring.rotation.x = 0.35 + i * 0.27 + Math.sin(ambient * 0.3 + i) * 0.18;
           });
           satellites.forEach((satellite, i) => {
             satelliteWeights[i] = T.MathUtils.lerp(
@@ -370,8 +450,7 @@ export default function OrbitalStage(props: Props) {
               blend,
             );
             satellite.visible = satelliteWeights[i] > 0.005;
-            const angle =
-              (i / projects.length) * Math.PI * 2 + time * (settings.reducedMotion ? 0 : 0.018);
+            const angle = (i / projects.length) * Math.PI * 2 + ambient * 0.18;
             const radius = id === 'universe' ? 2.1 + (i % 3) * 0.18 : 2.2;
             satellite.position.set(
               Math.cos(angle) * radius,
@@ -383,6 +462,18 @@ export default function OrbitalStage(props: Props) {
                 Math.max(0.001, satelliteWeights[i]),
             );
           });
+          packets.forEach((packet, i) => {
+            const route =
+              (settings.reducedMotion ? i * 0.9 : orbitTime * 0.7 + i * 1.8) % (nodes.length - 1);
+            const start = Math.floor(route),
+              local = route - start;
+            packet.position.lerpVectors(nodes[start].position, nodes[start + 1].position, local);
+          });
+          nodes.forEach((node, i) =>
+            node.scale.setScalar(
+              settings.reducedMotion ? 1 : 1 + Math.sin(orbitTime * 1.6 + i) * 0.13,
+            ),
+          );
           const color = settings.theme === 'light' ? 0x4c5a43 : 0xc7c5a8;
           orbitMaterial.color.setHex(color);
           nodeMat.color.setHex(settings.theme === 'light' ? 0x9e472a : 0xefbda1);
@@ -412,6 +503,9 @@ export default function OrbitalStage(props: Props) {
           element.removeEventListener('pointermove', move);
           element.removeEventListener('pointerup', up);
           element.removeEventListener('pointercancel', cancel);
+          window.removeEventListener('pointermove', trackPointer);
+          element.removeEventListener('pointerover', hoverControl);
+          element.removeEventListener('pointerout', hoverControl);
           renderer.domElement.removeEventListener('webglcontextlost', lost);
           const geometries = new Set<InstanceType<typeof T.BufferGeometry>>();
           const materials = new Set<InstanceType<typeof T.Material>>();

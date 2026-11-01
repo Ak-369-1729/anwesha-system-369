@@ -350,6 +350,14 @@ export default function StoryExperience() {
                 }}
               />
             )}
+            {chapter === 0 && experience.reducedMotion && (
+              <button className="motion-invite" onClick={experience.toggleMotion}>
+                <span aria-hidden="true">▷</span>
+                <span>
+                  Play the animated world<small>Motion is currently reduced</small>
+                </span>
+              </button>
+            )}
             <div className="scene-watermark" aria-hidden="true">
               {String(chapter + 1).padStart(2, '0')}
             </div>

@@ -38,7 +38,7 @@ No runtime secrets, database, or API keys are required. Set `NEXT_PUBLIC_SITE_UR
 
 The opening is a typographic poster, not a résumé hero. The journey now runs from the field and observatory into launch, orbit, skill constellations, project satellites, cybersecurity, research, memory, and the identity reveal. The girl remains in the illustrated world throughout.
 
-- Drag the orbital model horizontally, or use its keyboard-accessible rotation/reset controls. Vertical touch movement remains native scrolling.
+- Drag the orbital model horizontally, or use its keyboard-accessible rotation/reset controls. Vertical touch movement remains native scrolling. The scroll-driven camera travels along a depth path; cursor parallax, gyroscopic rings, orbiting satellites and network packets animate the world. Moving targets pause for hover and keyboard selection.
 - Skill labels in the constellation open the corresponding technical system. Project satellites open the same real mission routes as Quick Mode and the project index.
 - The orbital sphere uses an original lighting, engraving, and scan shader. The network, orbit rings, satellites and solar panels are procedural geometry. These are portfolio visualizations, not live telemetry.
 - A scene starts with its world visible. **Explore** opens its field instrument; Close or Escape returns to the world and restores focus. No interaction gates Continue or Quick Mode.

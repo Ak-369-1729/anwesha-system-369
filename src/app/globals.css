@@ -137,26 +137,6 @@ small {
 .skip-link:focus {
   transform: none;
 }
-.live-dot {
-  display: inline-block;
-  width: 5px;
-  height: 5px;
-  background: var(--cyan);
-  border-radius: 50%;
-  box-shadow: 0 0 10px #a7ebeb55;
-}
-.command-toggle {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  border: 1px solid var(--line);
-  padding: 6px 9px;
-  color: var(--muted);
-  font-size: 15px;
-}
-.command-toggle span {
-  font: 10px var(--mono);
-}
 main {
   position: relative;
   z-index: 1;
@@ -169,7 +149,7 @@ main {
   justify-content: space-between;
   align-items: center;
   gap: 28px;
-  font: 9px/1.5 var(--mono);
+  font: 12px/1.5 var(--mono);
   letter-spacing: 0.07em;
   transition:
     background 0.2s,
@@ -196,22 +176,12 @@ main {
   font: 19px var(--sans);
 }
 .text-button {
-  font: 9px var(--mono);
+  font: 12px var(--mono);
   letter-spacing: 0.06em;
   color: var(--muted);
   padding: 12px 0;
 }
 .text-button:hover {
-  color: var(--cyan);
-}
-.terminal-caret {
-  color: var(--cyan);
-  margin-left: 6px;
-  animation: blink 1.2s steps(2) infinite;
-}
-.origin-layout .eyebrow {
-  display: block;
-  margin-bottom: 21px;
   color: var(--cyan);
 }
 .project-atlas {
@@ -234,7 +204,7 @@ main {
   color: var(--dim);
 }
 .atlas-search input {
-  font: 11px var(--mono);
+  font: 12px var(--mono);
   color: var(--white);
   width: 100%;
   border: 0;
@@ -252,7 +222,7 @@ main {
 }
 .atlas-view-toggle button {
   border: 1px solid var(--line);
-  font: 9px var(--mono);
+  font: 12px var(--mono);
   padding: 8px 12px;
   color: var(--muted);
 }
@@ -268,7 +238,7 @@ main {
   border-bottom: 1px solid var(--line);
 }
 .atlas-filters button {
-  font: 8px var(--mono);
+  font: 12px var(--mono);
   letter-spacing: 0.025em;
   padding: 7px 0;
   color: var(--dim);
@@ -278,7 +248,7 @@ main {
 }
 .atlas-filters button[aria-pressed='true']:before {
   content: '●';
-  font-size: 5px;
+  font-size: 12px;
   margin-right: 6px;
   vertical-align: middle;
 }
@@ -286,7 +256,7 @@ main {
   display: flex;
   justify-content: space-between;
   padding: 15px 22px;
-  font: 8px var(--mono);
+  font: 10px var(--mono);
   color: var(--dim);
   letter-spacing: 0.06em;
 }
@@ -355,7 +325,7 @@ main {
   position: absolute;
   bottom: 15px;
   left: 22px;
-  font: 8px var(--mono);
+  font: 12px var(--mono);
   color: var(--dim);
 }
 .project-node {
@@ -388,14 +358,6 @@ main {
   color: var(--node-color);
   text-shadow: 0 0 17px color-mix(in srgb, var(--node-color), transparent 65%);
 }
-.project-celestial-orbit {
-  position: absolute;
-  inset: -7px;
-  border: 1px solid color-mix(in srgb, var(--node-color), transparent 70%);
-  border-radius: 50%;
-  transform: rotate(-35deg) scaleY(0.4);
-  pointer-events: none;
-}
 .project-node.featured .project-celestial {
   width: 52px;
   height: 52px;
@@ -424,7 +386,7 @@ main {
   color: #cbd4d5;
 }
 .project-node-code {
-  font: 6px var(--mono);
+  font: 10px var(--mono);
   letter-spacing: 0.08em;
   color: var(--dim);
   text-transform: uppercase;
@@ -439,7 +401,7 @@ main {
   display: flex;
   gap: 25px;
   align-items: center;
-  font: 9px var(--mono);
+  font: 10px var(--mono);
   color: var(--muted);
 }
 .atlas-telemetry strong {
@@ -448,7 +410,7 @@ main {
 }
 .atlas-telemetry p {
   margin: 0;
-  font-size: 8px;
+  font-size: 14px;
 }
 .atlas-telemetry > div {
   display: flex;
@@ -461,7 +423,7 @@ main {
 }
 .atlas-open {
   padding: 8px;
-  font: 9px var(--mono);
+  font: 10px var(--mono);
   color: var(--cyan);
   white-space: nowrap;
 }
@@ -476,7 +438,7 @@ main {
   padding: 19px 0;
 }
 .project-index-number {
-  font: 8px var(--mono);
+  font: 10px var(--mono);
   color: var(--dim);
 }
 .project-index-symbol {
@@ -495,11 +457,11 @@ main {
   font-weight: 500;
 }
 .project-index-title small {
-  font-size: 8px;
+  font-size: 10px;
   color: var(--dim);
 }
 .project-index-category {
-  font: 8px var(--mono);
+  font: 10px var(--mono);
   color: var(--dim);
   margin-left: auto;
 }
@@ -509,12 +471,8 @@ main {
 }
 .atlas-empty button {
   color: var(--cyan);
-  font: 11px var(--mono);
+  font: 12px var(--mono);
   text-decoration: underline;
-}
-.security-section .section-heading .eyebrow {
-  display: block;
-  margin-bottom: 15px;
 }
 .security-lab {
   border: 1px solid var(--line);
@@ -525,7 +483,7 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font: 9px var(--mono);
+  font: 10px var(--mono);
   color: var(--muted);
   border-bottom: 1px solid var(--line);
 }
@@ -591,7 +549,7 @@ main {
   transform: rotate(-45deg);
 }
 .node-label {
-  font: 8px var(--mono);
+  font: 12px var(--mono);
   color: var(--muted);
 }
 .network-node.anomaly .node-mark {
@@ -611,7 +569,7 @@ main {
   position: absolute;
   bottom: 18px;
   left: 22px;
-  font: 8px var(--mono);
+  font: 10px var(--mono);
   color: var(--dim);
 }
 .node-inspector {
@@ -631,7 +589,7 @@ main {
   margin-top: 4px;
 }
 .node-metrics {
-  font: 9px var(--mono);
+  font: 10px var(--mono);
   margin: 10px 0 16px;
 }
 .node-metrics > div {
@@ -649,7 +607,7 @@ main {
   margin: 0;
 }
 .node-concept {
-  font: 8px/1.8 var(--mono);
+  font: 10px/1.8 var(--mono);
   color: var(--cyan);
 }
 .isolate-button {
@@ -658,14 +616,14 @@ main {
   margin-top: auto;
   padding: 12px;
   gap: 10px;
-  font-size: 8px;
+  font-size: 12px;
 }
 .contained .isolate-button {
   border-color: #698b72;
   color: var(--green);
 }
 .security-message {
-  font: 9px/1.8 var(--mono);
+  font: 10px/1.8 var(--mono);
   margin: 0;
   padding: 18px 23px;
   border-top: 1px solid var(--line);
@@ -678,38 +636,12 @@ main {
   align-items: center;
   border-top: 1px solid var(--line);
   padding: 12px 23px;
-  font: 8px var(--mono);
+  font: 10px var(--mono);
   color: var(--dim);
 }
 .security-footer button {
-  font: 8px var(--mono);
+  font: 12px var(--mono);
   color: var(--muted);
-}
-.engine-readout > .eyebrow:nth-last-of-type(1) {
-  margin-top: auto;
-  margin-bottom: 15px;
-}
-.research-list summary .eyebrow {
-  font-size: 8px;
-  color: var(--dim);
-}
-.vault-layout .eyebrow {
-  display: block;
-  margin-bottom: 17px;
-}
-.vault-records .eyebrow {
-  color: var(--red);
-  font-size: 8px;
-}
-.anomaly-message .text-button {
-  color: var(--cyan);
-}
-.transmission-form > .eyebrow {
-  color: var(--cyan);
-  padding-bottom: 10px;
-}
-.transmission-form .button {
-  margin-top: 15px;
 }
 .orbital-cursor {
   position: fixed;
@@ -717,7 +649,7 @@ main {
   left: 0;
   z-index: 90;
   pointer-events: none;
-  font: 7px var(--mono);
+  font: 10px var(--mono);
   color: var(--cyan);
   display: flex;
   align-items: center;
@@ -779,7 +711,7 @@ dialog::backdrop {
   justify-content: space-between;
   padding: 17px 20px;
   border-bottom: 1px solid var(--line);
-  font: 9px var(--mono);
+  font: 10px var(--mono);
   color: var(--muted);
 }
 .terminal-lights {
@@ -798,7 +730,7 @@ dialog::backdrop {
   padding: 5px 8px;
 }
 .terminal-local {
-  font: 8px var(--mono);
+  font: 10px var(--mono);
   color: var(--dim);
   padding: 15px 22px;
 }
@@ -843,11 +775,11 @@ dialog::backdrop {
   outline-offset: 1px;
 }
 .terminal-form button {
-  font: 9px var(--mono);
+  font: 12px var(--mono);
   color: var(--cyan);
 }
 .terminal-hint {
-  font: 8px var(--mono);
+  font: 10px var(--mono);
   padding: 0 22px 20px;
   margin: 0;
 }
@@ -869,12 +801,12 @@ dialog::backdrop {
   justify-content: space-between;
   align-items: center;
   padding: 18px 22px;
-  font: 9px var(--mono);
+  font: 10px var(--mono);
   color: var(--muted);
   border-bottom: 1px solid var(--line);
 }
 kbd {
-  font: 8px var(--mono);
+  font: 10px var(--mono);
   border: 1px solid #40535e;
   padding: 3px 5px;
   border-radius: 3px;
@@ -924,7 +856,7 @@ kbd {
   font-weight: 400;
 }
 .command-option small {
-  font: 8px var(--mono);
+  font: 10px var(--mono);
   color: var(--dim);
   margin-top: 3px;
 }
@@ -941,7 +873,7 @@ kbd {
 .command-footer {
   padding: 15px 22px;
   border-top: 1px solid var(--line);
-  font: 8px var(--mono);
+  font: 10px var(--mono);
   color: var(--dim);
   display: flex;
   gap: 17px;
@@ -965,27 +897,6 @@ kbd {
 .lost-signal h1 {
   font-size: clamp(70px, 10vw, 140px);
 }
-.loading-state {
-  height: 100svh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  font: 11px var(--mono);
-  color: var(--cyan);
-}
-.signal-emblem {
-  font-size: 38px;
-}
-.loading-line {
-  width: 70px;
-  height: 1px;
-  background: var(--cyan);
-}
-.dev-mode .atlas-grid {
-  opacity: 0.9;
-  filter: hue-rotate(80deg);
-}
 @keyframes blink {
   50% {
     opacity: 0;
@@ -1003,11 +914,6 @@ kbd {
   main {
     margin-left: 0;
   }
-  .hero-actions .button {
-    font-size: 8px;
-    gap: 18px;
-    padding: 13px 15px;
-  }
   .security-workspace {
     grid-template-columns: 1.4fr 1fr;
   }
@@ -1018,10 +924,10 @@ kbd {
     padding: 22px 15px;
   }
   .node-metrics {
-    font-size: 7px;
+    font-size: 10px;
   }
   .isolate-button {
-    font-size: 7px;
+    font-size: 12px;
   }
   .atlas-telemetry {
     flex-wrap: wrap;
@@ -1038,44 +944,24 @@ kbd {
     gap: 5px 12px;
   }
   .atlas-filters button {
-    font-size: 7px;
+    font-size: 12px;
   }
   .atlas-search input {
-    font-size: 9px;
+    font-size: 12px;
   }
   .atlas-view-toggle button {
-    font-size: 8px;
+    font-size: 12px;
   }
 }
 @media (max-width: 600px) {
   html {
     scroll-padding-top: 85px;
   }
-  .command-toggle {
-    display: none;
-  }
   main {
     margin-left: 0;
   }
-  .signal-topline .live-dot {
-    width: 4px;
-    height: 4px;
-  }
-  .hero-actions .button {
-    min-height: 46px;
-    font-size: 8px;
-    gap: 25px;
-    padding: 12px 16px;
-  }
-  .hero-actions .text-button {
-    font-size: 8px;
-  }
   h2 {
     font-size: 53px;
-  }
-  .origin-layout .eyebrow {
-    font-size: 8px;
-    margin-bottom: 17px;
   }
   .atlas-controls {
     gap: 8px;
@@ -1086,7 +972,7 @@ kbd {
     min-width: 0;
   }
   .atlas-search input {
-    font-size: 8px;
+    font-size: 12px;
     padding: 7px 4px;
   }
   .atlas-view-toggle {
@@ -1095,47 +981,47 @@ kbd {
   }
   .atlas-view-toggle button {
     padding: 7px;
-    font-size: 6px;
+    font-size: 12px;
   }
   .atlas-filters {
     padding: 10px 13px;
     gap: 3px 13px;
   }
   .atlas-filters button {
-    font-size: 6px;
+    font-size: 12px;
     padding: 5px 0;
   }
   .atlas-map-topline {
     padding: 13px;
-    font-size: 6px;
+    font-size: 10px;
   }
   .atlas-stage {
     min-width: 810px;
     height: 570px;
   }
   .project-node-name {
-    font-size: 9px;
+    font-size: 10px;
   }
   .project-node-code {
-    font-size: 5px;
+    font-size: 10px;
   }
   .atlas-telemetry {
     padding: 15px 13px;
     gap: 11px;
-    font-size: 7px;
+    font-size: 10px;
   }
   .atlas-telemetry p {
-    font-size: 7px;
+    font-size: 14px;
   }
   .atlas-telemetry > div {
     gap: 4px;
   }
   .atlas-open {
-    font-size: 7px;
+    font-size: 10px;
     padding: 5px;
   }
   .atlas-object-status {
-    font-size: 6px;
+    font-size: 10px;
   }
   .project-index {
     padding: 0 13px;
@@ -1145,7 +1031,7 @@ kbd {
     padding: 16px 0;
   }
   .project-index-number {
-    font-size: 6px;
+    font-size: 10px;
   }
   .project-index-symbol {
     font-size: 20px;
@@ -1155,15 +1041,9 @@ kbd {
     font-size: 12px;
   }
   .project-index-title small {
-    font-size: 6px;
+    font-size: 10px;
   }
   .project-index-category {
-    display: none;
-  }
-  .security-section .section-heading .eyebrow {
-    font-size: 7px;
-  }
-  .security-section .section-index {
     display: none;
   }
   .security-workspace {
@@ -1171,7 +1051,7 @@ kbd {
   }
   .security-topline {
     padding: 15px;
-    font-size: 7px;
+    font-size: 10px;
     gap: 10px;
   }
   .network-map {
@@ -1188,10 +1068,10 @@ kbd {
     font-size: 14px;
   }
   .node-label {
-    font-size: 6px;
+    font-size: 12px;
   }
   .network-coordinate {
-    font-size: 6px;
+    font-size: 10px;
     left: 15px;
     bottom: 14px;
   }
@@ -1201,7 +1081,7 @@ kbd {
     padding: 20px;
   }
   .node-inspector > .eyebrow {
-    font-size: 8px;
+    font-size: 10px;
   }
   .node-inspector h3 {
     font-size: 31px;
@@ -1211,64 +1091,41 @@ kbd {
     font-size: 11px;
   }
   .node-metrics {
-    font-size: 8px;
+    font-size: 10px;
     margin-top: 0;
   }
   .node-concept {
-    font-size: 7px;
+    font-size: 10px;
   }
   .isolate-button {
-    font-size: 8px;
+    font-size: 12px;
   }
   .security-message {
     padding: 15px;
-    font-size: 8px;
+    font-size: 10px;
   }
   .security-footer {
     padding: 12px 15px;
-    font-size: 6px;
+    font-size: 10px;
     align-items: flex-start;
     gap: 10px;
   }
   .security-footer button {
-    font-size: 6px;
+    font-size: 12px;
     white-space: nowrap;
   }
-  .engine-readout > .eyebrow {
-    font-size: 8px;
-  }
-  .research-list summary .eyebrow {
-    font-size: 6px;
-    line-height: 1.8;
-    display: block;
-  }
   .flight-path .eyebrow {
-    font-size: 7px;
-  }
-  .vault-layout .eyebrow {
-    font-size: 8px;
-  }
-  .vault-records .eyebrow {
-    font-size: 7px;
+    font-size: 10px;
   }
   .now-layout .eyebrow {
-    font-size: 8px;
-  }
-  .anomaly-message .eyebrow {
-    font-size: 7px;
-  }
-  .anomaly-message .text-button {
-    font-size: 8px;
+    font-size: 10px;
   }
   .contact-layout > .eyebrow,
   .contact-layout > div > .eyebrow {
-    font-size: 7px;
-  }
-  .transmission-form > .eyebrow {
-    font-size: 8px;
+    font-size: 10px;
   }
   .status-toast {
-    font-size: 8px;
+    font-size: 10px;
     bottom: 83px;
     padding: 12px 15px;
     width: max-content;
@@ -1277,39 +1134,34 @@ kbd {
   .orbital-cursor {
     display: none;
   }
-  .briefing-actions .button {
-    font-size: 8px;
-    padding: 13px 16px;
-    gap: 15px;
-  }
   .terminal-output {
-    font-size: 9px;
+    font-size: 10px;
     padding: 12px 17px;
     height: 300px;
   }
   .terminal-chrome {
     padding: 14px;
-    font-size: 7px;
+    font-size: 10px;
     gap: 10px;
   }
   .terminal-local {
-    font-size: 6px;
+    font-size: 10px;
     padding: 12px 17px;
   }
   .terminal-form {
-    font-size: 9px;
+    font-size: 10px;
     padding: 14px 17px;
   }
   .terminal-form button {
-    font-size: 8px;
+    font-size: 12px;
   }
   .terminal-hint {
-    font-size: 7px;
+    font-size: 10px;
     padding: 0 17px 16px;
   }
   .command-heading {
     padding: 15px;
-    font-size: 8px;
+    font-size: 10px;
   }
   .command-search {
     padding: 18px 15px;
@@ -1328,11 +1180,11 @@ kbd {
     font-size: 12px;
   }
   .command-option small {
-    font-size: 7px;
+    font-size: 10px;
   }
   .command-footer {
     padding: 13px;
-    font-size: 7px;
+    font-size: 10px;
     gap: 10px;
   }
   .lost-signal {
@@ -1342,7 +1194,7 @@ kbd {
     font-size: 80px;
   }
   .lost-signal p {
-    font-size: 13px;
+    font-size: 14px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1407,11 +1259,11 @@ html[data-motion='reduced'] .orbital-cursor {
   gap: 25px;
 }
 .file-back {
-  font: 9px var(--mono);
+  font: 12px var(--mono);
   color: var(--cyan);
 }
 .file-hud .eyebrow {
-  font-size: 8px;
+  font-size: 10px;
 }
 .file-main {
   margin: 0 auto;
@@ -1422,7 +1274,7 @@ html[data-motion='reduced'] .orbital-cursor {
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  font: 8px var(--mono);
+  font: 10px var(--mono);
   color: var(--dim);
   letter-spacing: 0.07em;
 }
@@ -1440,7 +1292,7 @@ html[data-motion='reduced'] .orbital-cursor {
 }
 .file-hero .eyebrow {
   color: var(--mission-color);
-  font-size: 9px;
+  font-size: 10px;
 }
 .file-hero h1 {
   font-size: clamp(75px, 9vw, 130px);
@@ -1458,7 +1310,7 @@ html[data-motion='reduced'] .orbital-cursor {
 .file-meta {
   display: flex;
   gap: 25px;
-  font: 7px var(--mono);
+  font: 10px var(--mono);
   letter-spacing: 0.04em;
   margin-top: 30px;
   color: var(--dim);
@@ -1497,7 +1349,7 @@ html[data-motion='reduced'] .orbital-cursor {
   border: 1px solid var(--line);
   border-left: 2px solid var(--mission-color);
   padding: 19px 23px;
-  font: 9px/1.9 var(--mono);
+  font: 10px/1.9 var(--mono);
   color: var(--muted);
   background: #0c171e;
 }
@@ -1505,12 +1357,12 @@ html[data-motion='reduced'] .orbital-cursor {
   display: block;
   color: var(--mission-color);
   margin-bottom: 7px;
-  font-size: 8px;
+  font-size: 10px;
 }
 .file-contents {
   display: flex;
   gap: 30px;
-  font: 8px var(--mono);
+  font: 10px var(--mono);
   padding: 25px 0;
   border-bottom: 1px solid var(--line);
   flex-wrap: wrap;
@@ -1540,9 +1392,6 @@ html[data-motion='reduced'] .orbital-cursor {
   line-height: 2;
   margin-top: 22px;
 }
-.file-intro {
-  max-width: 600px;
-}
 .architecture-flow {
   list-style: none;
   margin: 35px 0;
@@ -1562,7 +1411,7 @@ html[data-motion='reduced'] .orbital-cursor {
   background: #0d1a22;
 }
 .architecture-index {
-  font: 8px var(--mono);
+  font: 10px var(--mono);
   color: var(--mission-color);
 }
 .architecture-name {
@@ -1585,7 +1434,7 @@ html[data-motion='reduced'] .orbital-cursor {
   padding-top: 25px;
 }
 .file-stack .eyebrow {
-  font-size: 8px;
+  font-size: 10px;
 }
 .file-stack > div {
   display: flex;
@@ -1593,7 +1442,7 @@ html[data-motion='reduced'] .orbital-cursor {
   flex-wrap: wrap;
 }
 .file-stack > div > span {
-  font: 9px var(--mono);
+  font: 10px var(--mono);
   border: 1px solid var(--line);
   padding: 7px 11px;
   color: var(--muted);
@@ -1613,17 +1462,10 @@ html[data-motion='reduced'] .orbital-cursor {
   gap: 20px;
 }
 .file-decisions li > span {
-  font: 8px var(--mono);
+  font: 10px var(--mono);
   color: var(--mission-color);
   margin-top: 4px;
   flex-shrink: 0;
-}
-.file-links {
-  display: flex;
-  gap: 25px;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-top: 30px;
 }
 .next-file {
   display: flex;
@@ -1649,7 +1491,7 @@ html[data-motion='reduced'] .orbital-cursor {
   display: flex;
   gap: 20px;
   justify-content: space-between;
-  font: 8px var(--mono);
+  font: 10px var(--mono);
   color: var(--dim);
 }
 .file-footer > a {
@@ -1664,16 +1506,16 @@ html[data-motion='reduced'] .orbital-cursor {
     display: none;
   }
   .file-back {
-    font-size: 7px;
+    font-size: 12px;
   }
   .file-hud > a:last-child {
-    font-size: 7px;
+    font-size: 10px;
   }
   .file-main {
     padding: 25px 24px 0;
   }
   .file-classification {
-    font-size: 6px;
+    font-size: 10px;
     gap: 14px;
   }
   .file-hero {
@@ -1688,7 +1530,7 @@ html[data-motion='reduced'] .orbital-cursor {
     font-size: 14px;
   }
   .file-meta {
-    font-size: 6px;
+    font-size: 10px;
     gap: 17px;
   }
   .file-symbol {
@@ -1708,11 +1550,11 @@ html[data-motion='reduced'] .orbital-cursor {
   }
   .file-evidence {
     padding: 17px;
-    font-size: 8px;
+    font-size: 10px;
   }
   .file-contents {
     gap: 12px 18px;
-    font-size: 6px;
+    font-size: 10px;
     padding: 20px 0;
   }
   .file-section {
@@ -1723,14 +1565,14 @@ html[data-motion='reduced'] .orbital-cursor {
     gap: 28px;
   }
   .file-section > .eyebrow {
-    font-size: 7px;
+    font-size: 10px;
     margin-bottom: 23px;
   }
   .file-section h2 {
     font-size: 38px;
   }
   .file-section p {
-    font-size: 12px;
+    font-size: 14px;
     margin-top: 15px;
   }
   .architecture-flow {
@@ -1759,19 +1601,10 @@ html[data-motion='reduced'] .orbital-cursor {
     align-items: flex-start;
   }
   .file-stack > div > span {
-    font-size: 8px;
+    font-size: 10px;
   }
   .file-decisions li {
     font-size: 12px;
-  }
-  .file-links {
-    gap: 15px;
-  }
-  .file-links .button {
-    font-size: 8px;
-  }
-  .file-links .text-button {
-    font-size: 7px;
   }
   .next-file {
     padding: 35px 0;
@@ -1780,13 +1613,13 @@ html[data-motion='reduced'] .orbital-cursor {
     font-size: 45px;
   }
   .next-file .eyebrow {
-    font-size: 7px;
+    font-size: 10px;
   }
   .next-file > span {
     font-size: 40px;
   }
   .file-footer {
-    font-size: 6px;
+    font-size: 10px;
     flex-wrap: wrap;
   }
 }
@@ -1806,7 +1639,7 @@ html[data-motion='reduced'] .orbital-cursor {
   stroke-width: 0.1;
 }
 .atlas-axis {
-  font: 6px var(--mono);
+  font: 10px var(--mono);
   color: var(--dim);
   display: flex;
   justify-content: space-between;
@@ -1845,7 +1678,7 @@ html[data-motion='reduced'] .orbital-cursor {
 }
 .atlas-object-status {
   margin-left: 0;
-  font-size: 7px;
+  font-size: 10px;
 }
 .atlas-object-status .status-dot {
   width: 3px;
@@ -1862,16 +1695,16 @@ html[data-motion='reduced'] .orbital-cursor {
     gap: 0 13px;
   }
   .atlas-filters button {
-    font-size: 8px;
+    font-size: 12px;
     min-height: 32px;
     padding: 7px 0;
   }
   .atlas-view-toggle button {
-    font-size: 8px;
+    font-size: 12px;
     min-height: 32px;
   }
   .atlas-map-topline {
-    font-size: 7px;
+    font-size: 10px;
     line-height: 1.8;
     gap: 18px;
   }
@@ -1879,51 +1712,31 @@ html[data-motion='reduced'] .orbital-cursor {
     max-width: 130px;
     text-align: right;
   }
-  .hero-actions .text-button {
-    font-size: 9px;
-    min-height: 35px;
-  }
   .atlas-open {
-    font-size: 8px;
+    font-size: 10px;
     min-height: 32px;
   }
   .security-footer button {
-    font-size: 8px;
+    font-size: 12px;
     min-height: 28px;
   }
   .security-footer {
-    font-size: 7px;
+    font-size: 10px;
     line-height: 1.8;
   }
   .file-contents > a {
-    font-size: 8px;
+    font-size: 10px;
     min-height: 32px;
   }
   .file-footer a {
     min-height: 32px;
     display: flex;
     align-items: center;
-    font-size: 8px;
+    font-size: 10px;
   }
 }
 .atlas-connections line {
   vector-effect: non-scaling-stroke;
   stroke-width: 1;
   opacity: 0.45;
-}
-
-.vault-records .eyebrow {
-  color: var(--muted);
-}
-
-.file-sources {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin: 18px 0;
-  color: var(--cyan);
-  font: 9px/1.8 var(--mono);
-}
-.file-sources a {
-  padding: 6px 0;
 }

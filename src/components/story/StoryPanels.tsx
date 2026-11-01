@@ -4,7 +4,15 @@ import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import ProjectAtlas from '@/components/ProjectAtlas';
-import { achievements, milestones, profile, projects, research, skills } from '@/data/portfolio';
+import {
+  achievements,
+  milestones,
+  profile,
+  projects,
+  research,
+  skills,
+  flagshipIds,
+} from '@/data/portfolio';
 
 const SecurityLab = dynamic(() => import('@/components/SecurityLab'), {
   loading: () => <p className="eyebrow">Tracing the network…</p>,
@@ -21,16 +29,7 @@ type Props = {
   onStatus: (message: string) => void;
 };
 
-const machines = [
-  'eventmesh',
-  'prepai',
-  'boundarylens',
-  'chronoheritage',
-  'rescuers',
-  'algoforge',
-  'careeros',
-  'prooftrail',
-];
+const machines = flagshipIds;
 const machineNames: Record<string, string> = {
   eventmesh: 'SIGNAL MACHINE',
   prepai: 'INTELLIGENCE CORE',
@@ -143,7 +142,7 @@ export default function StoryPanels(props: Props) {
                 {p.visualIdentity.symbol}
               </span>
               <strong>{p.title}</strong>
-              <span>{machineNames[id]}</span>
+              <span>{machineNames[id] || p.codename}</span>
               <small>INSPECT ↗</small>
             </Link>
           ) : null;
@@ -486,9 +485,9 @@ export default function StoryPanels(props: Props) {
         <p>
           {profile.title} · {profile.institution}
         </p>
-        <p>{profile.introduction}</p>
+        <p>{profile.positioning}</p>
         <div className="present-links">
-          <button onClick={() => onAction('resume')}>RÉSUMÉ ↓</button>
+          <button onClick={() => onAction('resume')}>ENGINEERING PROFILE ↗</button>
           <a href={profile.github!} target="_blank" rel="noopener noreferrer">
             GITHUB ↗
           </a>
@@ -522,7 +521,7 @@ export default function StoryPanels(props: Props) {
             <a href={profile.linkedin!} target="_blank" rel="noopener noreferrer">
               LINKEDIN ↗
             </a>
-            <button onClick={() => onAction('resume')}>RÉSUMÉ ↓</button>
+            <button onClick={() => onAction('resume')}>ENGINEERING PROFILE ↗</button>
           </div>
         </div>
         <form
@@ -554,7 +553,7 @@ export default function StoryPanels(props: Props) {
             rows={3}
           />
           <button className="story-action">PREPARE EMAIL DRAFT ↗</button>
-          <small>Opens your email app; this website does not send mail.</small>
+          <small>Opens your email app. This website does not send or store your message.</small>
         </form>
       </div>
     );

@@ -1,22 +1,26 @@
-import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { profile, projects } from '@/data/portfolio';
+import { pageMetadata, person, siteUrl } from '@/lib/seo';
+import { PageSeo } from '@/components/content/PageSeo';
+import EvidenceLinks from '@/components/content/EvidenceLinks';
+
 type Props = { params: Promise<{ id: string }> };
 export function generateStaticParams() {
   return projects.map((p) => ({ id: p.id }));
 }
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props) {
   const { id } = await params;
-  const p = projects.find((x) => x.id === id);
-  return {
-    title: p ? `${p.title} — Mission File / System 369` : 'Signal lost',
-    description: p?.description,
-  };
+  const project = projects.find((p) => p.id === id);
+  return pageMetadata(
+    project ? `${project.title} — ${project.codename} | Anwesha Kar` : 'Signal lost | SYSTEM 369',
+    project?.description ?? 'Uncharted coordinates.',
+    `/missions/${id}/`,
+  );
 }
 export default async function MissionPage({ params }: Props) {
   const { id } = await params;
-  const index = projects.findIndex((x) => x.id === id);
+  const index = projects.findIndex((p) => p.id === id);
   const p = projects[index];
   if (!p) notFound();
   const next = projects[(index + 1) % projects.length];
@@ -25,19 +29,33 @@ export default async function MissionPage({ params }: Props) {
       className="mission-file"
       style={{ '--mission-color': p.visualIdentity.color } as React.CSSProperties}
     >
+      <PageSeo
+        path={`/missions/${p.id}/`}
+        data={{
+          '@type': p.status === 'RESEARCH' ? 'CreativeWork' : 'SoftwareSourceCode',
+          name: p.title,
+          description: p.description,
+          creativeWorkStatus: p.status,
+          publisher: person,
+          ...(p.github ? { codeRepository: p.github } : {}),
+          url: siteUrl(`/missions/${p.id}/`),
+          keywords: p.technologies.join(', '),
+        }}
+      />
       <header className="file-hud">
         <Link href="/#universe" className="file-back">
           ↖ RETURN TO THE UNIVERSE
         </Link>
         <span className="eyebrow">ANWESHA // SYSTEM 369</span>
-        <a href={profile.resume} download="Anwesha-Kar-Profile.html" className="eyebrow">
-          RÉSUMÉ ↓
-        </a>
+        <Link href={profile.resume} className="eyebrow">
+          ENGINEERING PROFILE ↗
+        </Link>
       </header>
       <main className="file-main">
         <div className="file-classification">
           <span>
-            <i className="live-dot" /> MISSION ARCHIVE / {String(index + 1).padStart(3, '0')}
+            {p.featured ? 'FLAGSHIP SYSTEM' : 'MISSION ARCHIVE'} /{' '}
+            {String(index + 1).padStart(3, '0')}
           </span>
           <span>{p.category.toUpperCase()}</span>
         </div>
@@ -50,10 +68,8 @@ export default async function MissionPage({ params }: Props) {
             </h1>
             <p>{p.description}</p>
             <div className="file-meta">
-              <span>STATUS / {p.status.toUpperCase()}</span>
-              <span>
-                TYPE / {p.status === 'Concept record' ? 'DESIGN EXPLORATION' : 'PROJECT RECORD'}
-              </span>
+              <span>STATUS / {p.status}</span>
+              <span>{p.technologies.join(' · ') || 'SIGNAL & SYSTEM DESIGN'}</span>
             </div>
           </div>
           <div className="file-symbol" aria-hidden="true">
@@ -62,48 +78,48 @@ export default async function MissionPage({ params }: Props) {
             <b />
           </div>
         </div>
-        <p className="file-evidence">
-          <span className="eyebrow">EVIDENCE STATE</span>
-          {p.evidence}
-        </p>
-        <div className="file-sources">
-          {p.sources?.map((source) => (
-            <a key={source.url} href={source.url} target="_blank" rel="noopener noreferrer">
-              {source.title} ↗
+        <div className="file-evidence">
+          <span className="eyebrow">MISSION RECORD</span>
+          <p>{p.evidence}</p>
+          <EvidenceLinks project={p} />
+        </div>
+        <nav className="file-contents" aria-label="Mission file contents">
+          {[
+            ['question', '01 QUESTION'],
+            ['system', '02 SYSTEM'],
+            ['architecture', '03 ARCHITECTURE'],
+            ['decisions', '04 DECISIONS'],
+            ['constraints', '05 CONSTRAINTS'],
+            ['evidence', '06 EVIDENCE'],
+            ['next-question', '07 NEXT QUESTION'],
+          ].map(([anchor, label]) => (
+            <a key={anchor} href={`#${anchor}`}>
+              {label}
             </a>
           ))}
+        </nav>
+        <div className="file-two-column">
+          <section id="question" className="file-section">
+            <span className="eyebrow">01 / QUESTION</span>
+            <h2>The question.</h2>
+            <p>{p.problem}</p>
+          </section>
+          <section id="system" className="file-section">
+            <span className="eyebrow">02 / SYSTEM</span>
+            <h2>The approach.</h2>
+            <p>{p.solution}</p>
+            <p>{p.longDescription}</p>
+          </section>
         </div>
-        <div className="file-contents">
-          <a href="#mission">01 MISSION</a>
-          <a href="#architecture">02 ARCHITECTURE</a>
-          <a href="#decisions">03 DECISIONS</a>
-          <a href="#outcomes">04 OUTCOMES</a>
-        </div>
-        <section id="mission" className="file-section">
-          <span className="eyebrow">01 / MISSION BRIEF</span>
-          <div className="file-two-column">
-            <div>
-              <h2>The question.</h2>
-              <p>{p.problem}</p>
-            </div>
-            <div>
-              <h2>The approach.</h2>
-              <p>{p.solution}</p>
-            </div>
-          </div>
-        </section>
         <section id="architecture" className="file-section">
           <span className="eyebrow">
-            02 / {p.status === 'Source available' ? 'SYSTEM ARCHITECTURE' : 'PROPOSED ARCHITECTURE'}
+            03 / {p.status === 'CONCEPT' ? 'CONCEPT ARCHITECTURE' : 'SYSTEM ARCHITECTURE'}
           </span>
           <h2>Follow the signal.</h2>
-          <p className="file-intro">
-            A system is easier to reason about when its boundaries are visible.
-          </p>
-          <ol className="architecture-flow" aria-label={`${p.title} proposed architecture`}>
+          <ol className="architecture-flow" aria-label={`${p.title} architecture`}>
             {p.architecture.map((step, i) => (
               <li key={step}>
-                <span className="architecture-index">0{i + 1}</span>
+                <span className="architecture-index">{String(i + 1).padStart(2, '0')}</span>
                 <span className="architecture-name">{step}</span>
                 {i < p.architecture.length - 1 && (
                   <span className="architecture-arrow" aria-hidden="true">
@@ -113,87 +129,61 @@ export default async function MissionPage({ params }: Props) {
               </li>
             ))}
           </ol>
-          <div className="file-stack">
-            <span className="eyebrow">CANDIDATE TECHNOLOGY SIGNATURE</span>
-            <div>
-              {p.technologies.length ? (
-                p.technologies.map((t) => <span key={t}>{t}</span>)
-              ) : (
-                <span>Stack follows the problem definition.</span>
-              )}
-            </div>
-          </div>
-        </section>
-        <section id="decisions" className="file-section">
-          <span className="eyebrow">03 / ENGINEERING NOTEBOOK</span>
-          <div className="file-two-column">
-            <div>
-              <h2>Decisions that matter.</h2>
-              <ul className="file-decisions">
-                {p.decisions.map((d, i) => (
-                  <li key={d}>
-                    <span>0{i + 1}</span>
-                    {d}
-                  </li>
+          {p.technologies.length > 0 && (
+            <div className="file-stack">
+              <span className="eyebrow">
+                {p.status === 'CONCEPT' ? 'DESIGN TECHNOLOGIES' : 'TECHNOLOGY SIGNATURE'}
+              </span>
+              <div>
+                {p.technologies.map((t) => (
+                  <span key={t}>{t}</span>
                 ))}
-              </ul>
+              </div>
             </div>
-            <div>
-              <h2>Where it gets difficult.</h2>
-              <ul className="file-decisions">
-                {p.challenges.map((d, i) => (
-                  <li key={d}>
-                    <span>0{i + 1}</span>
-                    {d}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          )}
         </section>
-        <section id="outcomes" className="file-section">
-          <span className="eyebrow">04 / IMPACT & LEARNING</span>
-          <div className="file-two-column">
-            <div>
-              <h2>Evidence before claims.</h2>
-              <p>{p.impact}</p>
-            </div>
-            <div>
-              <h2>The next question.</h2>
-              <p>{p.lessons}</p>
-            </div>
-          </div>
-          <div className="file-links">
-            {p.github && (
-              <a
-                className="button primary"
-                href={p.github}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                VIEW SOURCE ↗
-              </a>
-            )}
-            {p.demo && (
-              <a className="button outline" href={p.demo} target="_blank" rel="noopener noreferrer">
-                LAUNCH DEMO ↗
-              </a>
-            )}
-            <a
-              className="button outline"
-              href={profile.github!}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              ANWESHA’S GITHUB ↗
-            </a>
-            <a
-              className="text-button"
-              href={`mailto:${profile.email}?subject=${encodeURIComponent(`A question about ${p.title}`)}`}
-            >
-              ASK ABOUT THIS MISSION ↗
-            </a>
-          </div>
+        <div className="file-two-column">
+          <section id="decisions" className="file-section">
+            <span className="eyebrow">04 / ENGINEERING DECISIONS</span>
+            <h2>Decisions that matter.</h2>
+            <ul className="file-decisions">
+              {p.decisions.map((d, i) => (
+                <li key={d}>
+                  <span>{String(i + 1).padStart(2, '0')}</span>
+                  {d}
+                </li>
+              ))}
+            </ul>
+          </section>
+          <section id="constraints" className="file-section">
+            <span className="eyebrow">05 / CONSTRAINTS</span>
+            <h2>Where it gets difficult.</h2>
+            <ul className="file-decisions">
+              {p.challenges.map((d, i) => (
+                <li key={d}>
+                  <span>{String(i + 1).padStart(2, '0')}</span>
+                  {d}
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
+        <section id="evidence" className="file-section">
+          <span className="eyebrow">06 / EVIDENCE</span>
+          <h2>Inspect the work.</h2>
+          <p>{p.impact}</p>
+          <EvidenceLinks project={p} architecture={false} />
+        </section>
+        <section id="next-question" className="file-section">
+          <span className="eyebrow">07 / NEXT QUESTION</span>
+          <h2>The next question.</h2>
+          <p>{p.lessons}</p>
+          <a
+            className="text-button"
+            href={`mailto:${profile.email}?subject=${encodeURIComponent(`A question about ${p.title}`)}`}
+          >
+            ASK ABOUT THIS MISSION ↗
+          </a>
         </section>
         <Link href={`/missions/${next.id}/`} className="next-file">
           <div>

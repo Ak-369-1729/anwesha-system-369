@@ -39,7 +39,7 @@ src/
     useSky.ts                   System-aware, persistent day/night preference
     useExperience.ts            Existing discoveries, sound, motion, and mode store
   types/portfolio.ts            Editorial interfaces
-public/                         Original SVG assets and printable résumé
+public/                         Original SVG assets and generated social image
 scripts/                        Asset preparation and local static-export server
 tests/                          Browser, responsive, accessibility, and server checks
 ```
@@ -68,7 +68,7 @@ The celestial control changes both interface tokens and the illustrated world. O
 
 ## Modes, progress, and artifacts
 
-The UI calls the modes Story and Quick. The existing `system369.experience.v1` record intentionally keeps its `explorer` and `recruiter` values as internal aliases, preserving preferences from the first version. Story is the default; Quick immediately renders profile, selected projects, the full project index, technology connections, experience, research, milestones, résumé, and contact actions. It unmounts the world rather than hiding an active animation loop.
+The UI calls the modes Story and Quick. The existing `system369.experience.v1` record intentionally keeps its `explorer` and `recruiter` values as internal aliases, preserving preferences from the first version. Story is the default; Quick immediately renders profile, selected projects, the full project index, technology connections, experience, research, milestones, Engineering Profile, and contact actions. It unmounts the world rather than hiding an active animation loop.
 
 `useExperience` retains a stable `useSyncExternalStore` server snapshot, deduplicated award IDs, sound, boot state, and a nullable motion override. With no motion override, the system’s reduced-motion preference controls behavior. Storage failure falls back to an in-memory visit. The sky has a separate store, and `useStoryProgress` stores the current journey position in session storage under `system369.story.position.v2`.
 
@@ -84,22 +84,28 @@ Security remains a local educational model: node telemetry exposes anomalous egr
 
 The terminal evaluates an explicit command allowlist. It cannot execute JavaScript, shell commands, or remote scans. Its timeline, why, orbit, and launch responses navigate the story through the same controls as the interface. The palette uses native `<dialog>` semantics, keyboard search, Escape, focus restoration, and destination focus after closing.
 
-The transmission form validates its fields and prepares a URL-encoded email draft. It reports draft preparation rather than a sent state. Email, GitHub, LinkedIn, and résumé links continue to come from the central profile data.
+The transmission form validates its fields and prepares a URL-encoded email draft. It reports draft preparation rather than a sent state. Email, GitHub, LinkedIn, and Engineering Profile links continue to come from the central profile data.
 
 ## Editorial records
 
-The second pass does not invent new credentials or replace existing portfolio facts. `portfolio.ts` retains three source-available projects, six owner-documented portfolio records, and eight explicitly proposed concepts. Its five career phases, owner-documented internship, awards, leadership, research, and contact details retain their sources. A repository documents features and limitations; it does not establish independently measured adoption or contribution scope.
+`portfolio.ts` is the central editorial source. The six flagship systems share a curated order in Quick Mode and the workshop, while all 17 missions retain their durable routes. Engineering statuses distinguish active builds, prototypes, research and concepts. Evidence links point to available source or technical records; architecture links are local. Project structured data identifies the portfolio publisher without asserting sole authorship.
 
-The generated HTML résumé remains a printable profile compiled from owner-maintained records. An approved PDF can replace it through `profile.resume` without changing interface components.
+The Engineering Profile is a static Next route backed by the same data. It offers printing and never presents itself as a supplied PDF résumé.
 
 Project IDs are durable routes and discovery keys. Keep technology-to-project references valid. Narrative edits belong in `chapters.ts`; factual edits belong in `portfolio.ts`. Rebuild after editing either because the deployment is static.
 
 ## Lifecycle, accessibility, and delivery
 
-The renderer caps resolution, reduces mobile star counts, updates quiet scenes at 30 fps and active transitions at up to 60 fps, pauses when the document is hidden, and removes its frames and listeners on unmount. Reduced motion draws static states when progress or preferences change. Terminal, palette, security, and Quick Mode interfaces are separately loaded.
+Canvas2D caps resolution, reduces mobile star counts, and renders quiet scenes at 30 fps or active transitions at up to 60 fps. WebGL uses a separate wake/sleep scheduler: quiet late scenes, reduced motion and hidden tabs stop its continuous frame loop; navigation, resize and manual rotation invalidate the image. Both renderers release frames and listeners on unmount. Reduced motion draws static states when progress or preferences change. Terminal, palette, security, and Quick Mode interfaces are separately loaded.
 
-A semantic journey outline describes all scenes to assistive technology. Chapter controls, Continue, Skip Story/Quick Mode, visible focus, and HTML records provide alternatives to cinematic motion. The no-script fallback renders the profile, project descriptions, mission links, email, and résumé; mission routes themselves are prerendered. Essential information is never available only in canvas.
+A semantic journey outline describes all scenes to assistive technology. Chapter controls, Continue, Skip Story/Quick Mode, visible focus, and HTML records provide alternatives to cinematic motion. The no-script fallback renders the profile, project descriptions, mission links, email, and Engineering Profile; mission routes themselves are prerendered. Essential information is never available only in canvas.
 
 `scripts/serve.mjs` serves the static export for local review. It supports GET/HEAD, directory indexes, useful MIME types, immutable hashed assets, and real 404 status. Decoding, resolved-path, and realpath checks prevent traversal outside `out/`. A static host can serve the same files without this server. Set `NEXT_PUBLIC_SITE_URL` before the final build, publish `out/`, enable directory indexes, and preserve `404.html` as a true not-found response.
 
-Release checks include lint, strict type checking, formatting, production export, browser regression, four viewport classes, both skies and modes, project navigation, keyboard behavior, local storage failure, reduced motion, accessibility scanning, and performance measurement. The validation document records measured results; a result from the first version is not automatically a result for version 2.
+Release checks include lint, strict type checking, formatting, production export, browser regression, 18 viewport sizes, both skies and modes, project navigation, keyboard behavior, local storage failure, reduced motion, accessibility scanning, and performance measurement. The validation document records measured results; a result from the first version is not automatically a result for version 2.
+
+## Static metadata and export
+
+`src/lib/seo.ts` validates the optional deployment origin and centralizes per-route metadata. Person and project/research schemas use the central records. Without a production origin, `PageSeo` emits relative canonical/social paths; sitemap entries are withheld until an absolute origin is configured.
+
+The postbuild export normalizer adds dot-separated aliases for nested Windows RSC segment files. This makes prefetched Next route payloads work on a plain static host, without a server rewrite.

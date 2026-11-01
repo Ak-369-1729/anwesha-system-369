@@ -1,25 +1,18 @@
 import type {
   Achievement,
   Milestone,
-  ObjectShape,
   Project,
   ProjectCategory,
   ResearchLog,
   Skill,
 } from '@/types/portfolio';
 
-/**
- * The single editorial source for System 369.
- * Combines the creative brief, user-supplied contact links, and owner-maintained
- * GitHub portfolio records. Source-backed records name their source. Remaining
- * concept records describe proposed systems, not implemented work. Repository
- * documentation is not an independent audit or a verified runtime measurement.
- */
+// One editorial source for routes, spatial navigation, the technical briefing and profile.
 export const profile = {
   name: 'Anwesha Kar',
   shortName: 'Anwesha',
-  title: 'Computer Science Engineer',
-  specialization: 'AI/ML & Full-Stack Developer',
+  title: 'Software engineer',
+  specialization: 'AI · infrastructure · security · human-centered interfaces',
   institution: 'Chandigarh University',
   roles: ['Engineer', 'Researcher', 'Builder', 'Explorer', 'Problem solver'],
   system: 'ANWESHA // SYSTEM 369',
@@ -31,19 +24,21 @@ export const profile = {
     'I’m Anwesha. I’m interested in what happens underneath the surface: how software behaves, where trust breaks, and what we can learn by building.',
     'Some ideas start with a problem. Others start with a small, persistent “what if?”',
   ],
-  email: 'anwesha.hogwarts@gmail.com' as string | null,
-  github: 'https://github.com/Ak-369-1729' as string | null,
-  linkedin: 'https://www.linkedin.com/in/anwesha-kar-53a065230/' as string | null,
-  resume: '/resume.html',
-  contactNote: 'Personal contact links supplied by Anwesha.',
-  evidenceNote:
-    'Source-backed mission files and career milestones reference Anwesha’s existing GitHub portfolio and project documentation. These are owner-maintained records, not independently audited results. Other mission files remain explicitly labeled concepts. No runtime performance or adoption metrics are claimed.',
+  email: 'anwesha.hogwarts@gmail.com',
+  github: 'https://github.com/Ak-369-1729',
+  linkedin: 'https://www.linkedin.com/in/anwesha-kar-53a065230/',
+  resume: '/engineering-profile/',
+  contactNote: 'Email, GitHub and LinkedIn.',
+  evidenceNote: 'Explore the architecture, source and technical records behind each mission.',
   sources: {
     profile: 'https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/site.ts',
     timeline: 'https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/timeline.ts',
     projects: 'https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/projects.ts',
     education: 'https://github.com/Ak-369-1729/BoundaryLens/blob/main/README.md',
   },
+  positioning:
+    'Software engineer building systems across AI, infrastructure, security, and human-centered interfaces.',
+  documentLabel: 'Engineering profile',
 };
 
 export const categories: ProjectCategory[] = [
@@ -55,97 +50,88 @@ export const categories: ProjectCategory[] = [
   'Human impact',
 ];
 
-const evidence =
-  'Brief-supplied project title. This is a proposed system record; implementation, authorship, dates, stack and outcomes have not been independently verified.';
-
-type ProjectSeed = Pick<
-  Project,
-  | 'id'
-  | 'title'
-  | 'codename'
-  | 'description'
-  | 'category'
-  | 'technologies'
-  | 'problem'
-  | 'solution'
-  | 'architecture'
-  | 'decisions'
-  | 'challenges'
-  | 'coordinates'
-  | 'featured'
-> & { symbol: string; color: string; shape: ObjectShape };
-
-function concept(seed: ProjectSeed): Project {
-  const { symbol, color, shape, ...record } = seed;
-  return {
-    ...record,
-    longDescription: `${record.description} The following mission file describes a proposed architecture to investigate this idea. It does not assert that this system has been implemented.`,
-    role: 'Role not supplied',
-    impact:
-      'No measured results were supplied. Evaluation would require a reproducible baseline, explicit test conditions, and published measurements.',
-    lessons:
-      'Learning question: which assumptions survive a working prototype and controlled failure testing?',
-    github: null,
-    demo: null,
-    status: 'Concept record',
-    year: null,
-    constellation: record.category,
-    visualIdentity: { symbol, color, shape },
-    evidence,
-  };
-}
-
-const conceptProjects: Project[] = [
-  concept({
+export const projects: Project[] = [
+  {
     id: 'nexus',
     title: 'NEXUS',
     codename: 'THE DIGITAL TWIN',
     description:
-      'A cybersecurity digital twin for exploring how failures travel through connected systems.',
+      'A network digital twin that couples anomaly scoring with reversible node isolation.',
     category: 'Cybersecurity',
-    technologies: ['Python', 'FastAPI', 'NetworkX', 'React'],
+    technologies: ['Python', 'NetworkX', 'Streamlit', 'Isolation Forest', 'UNSW-NB15'],
     problem:
-      'Design question: how can a security team test the consequences of an attack without risking the live network?',
+      'An anomaly score needs topology and response context: where is the suspicious host, and what changes when it is isolated?',
     solution:
-      'Proposed: model services and trust boundaries as a graph, inject controlled incidents, and trace possible propagation paths.',
+      'Clean flow records, score anomalous traffic, locate the affected node in the topology, and rehearse reversible containment through an explicit isolate / restore state.',
     architecture: [
-      'Network inventory',
-      'Topology graph',
-      'Scenario engine',
-      'Risk trace',
-      'Operator view',
+      'UNSW-NB15 flows',
+      'Python feature pipeline',
+      'Isolation Forest',
+      'NetworkX isolate / restore',
+      'Streamlit + logs',
     ],
     decisions: [
-      'Keep simulated state isolated from production.',
-      'Represent dependencies explicitly so the operator can inspect a risk trace.',
+      'Use unsupervised outlier scoring rather than requiring every attack signature.',
+      'Make isolation reversible and record each state transition.',
+      'Keep benchmark-dataset results separate from real-network performance claims.',
     ],
     challenges: [
-      'Stale inventories can invalidate simulation results.',
-      'A graph path indicates possibility, not a probability of compromise.',
+      'Feature scaling and class imbalance in UNSW-NB15.',
+      'Choosing useful anomaly thresholds.',
+      'Keeping scoring and graph response state consistent.',
     ],
-    coordinates: { x: 47, y: 44 },
+    coordinates: {
+      x: 47,
+      y: 44,
+    },
     featured: true,
-    symbol: '◈',
-    color: '#a6f3d0',
-    shape: 'ring',
-  }),
-  concept({
+    longDescription:
+      'A cybersecurity digital twin connecting UNSW-NB15 flow analysis, Isolation Forest anomaly scores, and NetworkX topology. A Streamlit operator view makes suspicious-node isolation, restoration and state changes inspectable. The response runs in a simulated twin.',
+    role: 'Engineering project',
+    impact:
+      'An inspectable detect → locate → isolate → restore workflow with topology context and response logs.',
+    lessons:
+      'How should thresholds adapt to network context without hiding the cost of false positives?',
+    github: 'https://github.com/Ak-369-1729/NEXUS',
+    demo: null,
+    status: 'PROTOTYPE',
+    year: null,
+    constellation: 'Cybersecurity',
+    visualIdentity: {
+      symbol: '◈',
+      color: '#a6f3d0',
+      shape: 'ring',
+    },
+    evidence: 'Prototype source and technical documentation available.',
+    sources: [
+      {
+        title: 'Technical record',
+        url: 'https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/projects.ts',
+      },
+      {
+        title: 'NEXUS README',
+        url: 'https://github.com/Ak-369-1729/NEXUS/blob/main/README.md',
+      },
+    ],
+  },
+  {
     id: 'careeros',
     title: 'CareerOS',
     codename: 'THE NAVIGATOR',
-    description: 'An operating layer for organizing the moving parts of a career search.',
+    description:
+      'AI-assisted opportunity discovery and a career constellation linking skills to roles.',
     category: 'Engineering systems',
-    technologies: ['React', 'FastAPI', 'PostgreSQL'],
+    technologies: ['LLMs', 'Docker'],
     problem:
-      'Design question: how do applications, preparation and follow-ups remain connected as a search grows?',
+      'Opportunities are scattered, while a posting list gives little context about fit or skill gaps.',
     solution:
-      'Proposed: a structured workspace with application states, preparation notes, and a clear next-action queue.',
+      'Connect opportunities, skills and roles in a graph, with AI-assisted summaries and reviewable suggestions.',
     architecture: [
-      'Workspace',
-      'Application API',
-      'State transitions',
-      'PostgreSQL',
-      'Activity view',
+      'Opportunity discovery',
+      'Career profile',
+      'Skills / roles graph',
+      'AI-assisted suggestion',
+      'User-reviewed plan',
     ],
     decisions: [
       'Use explicit application states instead of ambiguous status text.',
@@ -155,36 +141,91 @@ const conceptProjects: Project[] = [
       'Avoid duplicate applications and stale reminders.',
       'Protect sensitive candidate information.',
     ],
-    coordinates: { x: 20, y: 28 },
+    coordinates: {
+      x: 20,
+      y: 28,
+    },
     featured: true,
-    symbol: '⌘',
-    color: '#e2cb96',
-    shape: 'planet',
-  }),
-  concept({
+    longDescription:
+      'A career operating system connecting daily opportunity discovery, internship and job intelligence, personalized tracking and a skill-to-role graph. AI-assisted summaries support decisions; the student stays in control.',
+    role: 'Engineering project',
+    impact:
+      'Opportunity discovery, profile context and career planning are connected in one product workflow.',
+    lessons:
+      'Learning question: which assumptions survive a working prototype and controlled failure testing?',
+    github: null,
+    demo: null,
+    status: 'ACTIVE BUILD',
+    year: null,
+    constellation: 'Engineering systems',
+    visualIdentity: {
+      symbol: '⌘',
+      color: '#e2cb96',
+      shape: 'planet',
+    },
+    evidence:
+      'Active product build; feature flow and engineering decisions available in the technical record.',
+    sources: [
+      {
+        title: 'CareerOS technical record',
+        url: 'https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/projects.ts',
+      },
+    ],
+  },
+  {
     id: 'prepai',
     title: 'PrepAI',
     codename: 'THE REHEARSAL',
-    description: 'An AI-assisted space for practicing, receiving feedback, and trying again.',
+    description:
+      'Interview practice with multi-personality group discussions and an explicit review rubric.',
     category: 'AI + intelligence',
-    technologies: ['Python', 'FastAPI', 'React'],
+    technologies: ['LLMs'],
     problem:
-      'Design question: how can preparation feedback be useful without presenting model output as unquestionable judgment?',
+      'A single polite chatbot does not reproduce discussion dynamics, interruptions or follow-up pressure.',
     solution:
-      'Proposed: a practice session pipeline with transparent rubrics, contextual feedback, and user-controlled iteration.',
-    architecture: ['Practice prompt', 'Session API', 'Feedback pipeline', 'Rubric check', 'Review'],
+      'Use distinct participant personas and turn-taking behaviors, then make the review rubric visible.',
+    architecture: [
+      'Practice round',
+      'Participant personas',
+      'Conversation flow',
+      'Six-dimension rubric',
+      'Review',
+    ],
     decisions: ['Show the rubric alongside feedback.', 'Allow deletion of practice responses.'],
     challenges: [
       'Evaluate inconsistent model feedback.',
       'Prevent private responses from leaking into logs.',
     ],
-    coordinates: { x: 72, y: 24 },
-    featured: true,
-    symbol: '✧',
-    color: '#a8bfff',
-    shape: 'star',
-  }),
-  concept({
+    coordinates: {
+      x: 72,
+      y: 24,
+    },
+    featured: false,
+    longDescription:
+      'PrepAI / Mockexa is an interview-practice prototype covering technical, HR and group discussion rounds. Contrasting AI personas create discussion dynamics, and an explicit six-part rubric supports review.',
+    role: 'Engineering project',
+    impact: 'A practice workflow combining distinct participant personas with structured feedback.',
+    lessons:
+      'Learning question: which assumptions survive a working prototype and controlled failure testing?',
+    github: null,
+    demo: null,
+    status: 'PROTOTYPE',
+    year: null,
+    constellation: 'AI + intelligence',
+    visualIdentity: {
+      symbol: '✧',
+      color: '#a8bfff',
+      shape: 'star',
+    },
+    evidence: 'Prototype feature flow and review rubric documented in the technical record.',
+    sources: [
+      {
+        title: 'PrepAI technical record',
+        url: 'https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/projects.ts',
+      },
+    ],
+  },
+  {
     id: 'prooftrail',
     title: 'ProofTrail',
     codename: 'THE WITNESS',
@@ -210,93 +251,184 @@ const conceptProjects: Project[] = [
       'Define what integrity guarantees the system actually provides.',
       'Account for retention and privacy obligations.',
     ],
-    coordinates: { x: 61, y: 61 },
+    coordinates: {
+      x: 61,
+      y: 61,
+    },
     featured: false,
-    symbol: '⊡',
-    color: '#a6f3d0',
-    shape: 'satellite',
-  }),
-  concept({
+    longDescription:
+      'A design investigation into evidence, provenance and inspectable audit trails. This design explores the architecture and trade-offs below.',
+    role: 'System design',
+    impact: 'The design defines the system boundaries and a path to a testable prototype.',
+    lessons: 'Which assumptions survive the first working prototype and controlled failure tests?',
+    github: null,
+    demo: null,
+    status: 'CONCEPT',
+    year: null,
+    constellation: 'Cybersecurity',
+    visualIdentity: {
+      symbol: '⊡',
+      color: '#a6f3d0',
+      shape: 'satellite',
+    },
+    evidence: 'Concept architecture and evaluation plan.',
+  },
+  {
     id: 'boundarylens',
     title: 'BoundaryLens',
     codename: 'THE TRUST LINE',
-    description: 'A way to make authorization boundaries visible before they become incidents.',
+    description:
+      'Authorization security and regression testing, with evidence behind every boundary.',
     category: 'Cybersecurity',
-    technologies: ['Python', 'NetworkX', 'React'],
+    technologies: [
+      'Python',
+      'FastAPI',
+      'Pydantic',
+      'React',
+      'TypeScript',
+      'SQLite',
+      'Docker',
+      'Pytest',
+    ],
     problem:
-      'Design question: where does an authorization assumption become a path to unintended access?',
+      'A valid login does not establish ownership of a resource. Authorization testing needs identity, operation and resource context rather than an HTTP status alone.',
     solution:
-      'Proposed: map principals, resources, permissions and trust boundaries into an inspectable access graph.',
+      'Establish legitimate response baselines, extract resource relationships, plan bounded cross-identity requests, and compare response evidence with explicit explanations.',
     architecture: [
-      'Policy input',
-      'Permission graph',
-      'Boundary analysis',
-      'Access trace',
-      'Review surface',
+      'OpenAPI / Postman / HAR',
+      'Identity + resource model',
+      'Bounded test planner',
+      'Differential evidence engine',
+      'Matrix / graph / SARIF',
     ],
     decisions: [
-      'Explain every access path.',
-      'Treat unknown policy states as unresolved rather than permitted.',
+      'Focus on authorization instead of claiming broad vulnerability coverage.',
+      'Compare observable response evidence instead of equating HTTP 200 with a vulnerability.',
+      'Default to safe reads, scope checks, request budgets and secret redaction.',
+      'Carry expectations into CI through regression baselines.',
     ],
     challenges: [
-      'Model inherited and contextual permissions.',
-      'Avoid claiming complete coverage from a partial inventory.',
+      'Application-specific rules and ownership remain partly heuristic.',
+      'Coverage depends on discovered endpoints and resources.',
+      'Evidence scores are deterministic strength indicators, not probabilities or CVSS.',
     ],
-    coordinates: { x: 37, y: 71 },
-    featured: false,
-    symbol: '⋈',
-    color: '#bfe8dc',
-    shape: 'beacon',
-  }),
-  concept({
+    coordinates: {
+      x: 37,
+      y: 71,
+    },
+    featured: true,
+    longDescription:
+      'BoundaryLens discovers API endpoints from OpenAPI, Postman and HAR, models authenticated identities and resource ownership, and generates bounded cross-identity tests for BOLA / IDOR and function-level authorization failures. Its repository documents a FastAPI scanner, React / TypeScript dashboard, regression baselines and SARIF reporting.',
+    role: 'Repository author: Anwesha Kar',
+    impact:
+      'A local vulnerable / fixed comparison, reproducible access-control findings, and regression baselines for CI.',
+    lessons:
+      'How can policy provenance make each authorization finding easier to reproduce and review?',
+    github: 'https://github.com/Ak-369-1729/BoundaryLens',
+    demo: null,
+    status: 'PROTOTYPE',
+    year: null,
+    constellation: 'Cybersecurity',
+    visualIdentity: {
+      symbol: '⋈',
+      color: '#bfe8dc',
+      shape: 'beacon',
+    },
+    evidence: 'Public source, architecture documentation and a local demonstration fixture.',
+    sources: [
+      {
+        title: 'BoundaryLens README',
+        url: 'https://github.com/Ak-369-1729/BoundaryLens/blob/main/README.md',
+      },
+    ],
+  },
+  {
     id: 'chronoheritage',
     title: 'ChronoHeritage',
     codename: 'THE MEMORY FIELD',
-    description: 'A concept for making cultural history explorable across time and place.',
+    description:
+      'A provenance-first research platform connecting historical sites, chronology and the observable sky.',
     category: 'Human impact',
-    technologies: ['React', 'PostgreSQL', 'Python'],
+    technologies: [
+      'Next.js',
+      'React',
+      'FastAPI',
+      'Python',
+      'PostgreSQL',
+      'PostGIS',
+      'Docker',
+      'Skyfield',
+    ],
     problem:
-      'Design question: how can a digital history experience preserve provenance while inviting exploration?',
+      'Investigating historical orientations requires more than a matching angle: source provenance, chronology, horizon, conventions and uncertainty must remain attached to the result.',
     solution:
-      'Proposed: connect curated historical records to a temporal and geographic browsing interface.',
+      'Keep survey records, provenance, scientific calculations, uncertainty analysis and review gates in one inspectable research workflow.',
     architecture: [
-      'Source record',
-      'Provenance metadata',
-      'Temporal index',
-      'Place index',
-      'Exploration view',
+      'Next.js research workspace',
+      'FastAPI science services',
+      'PostgreSQL + PostGIS',
+      'Queued analysis worker',
+      'PDF / CSV / JSON reports',
     ],
     decisions: [
-      'Show source provenance with every record.',
-      'Represent uncertain dates explicitly.',
+      'Preserve input provenance and hashed run snapshots.',
+      'Separate scientific calculations into independently testable modules.',
+      'Keep evidence gates explicit and never show blocked benchmarks as passed.',
+      'Use revocable server-side sessions and API-enforced permissions.',
     ],
     challenges: [
-      'Avoid erasing conflicting historical accounts.',
-      'Provide a usable non-map reading experience.',
+      'Representing uncertainty in survey and chronology inputs.',
+      'Validating astronomy calculations against independent reference cases.',
+      'Separating candidate alignments from claims about historical intent.',
     ],
-    coordinates: { x: 14, y: 61 },
-    featured: false,
-    symbol: '⌛',
-    color: '#e2cb96',
-    shape: 'ring',
-  }),
-  concept({
+    coordinates: {
+      x: 14,
+      y: 61,
+    },
+    featured: true,
+    longDescription:
+      'ChronoHeritage V3 combines a Next.js interface, FastAPI science services, PostgreSQL / PostGIS, queued analysis and reports. Inputs preserve sources, conventions and uncertainty. A small angular residual is reported as a candidate alignment under assumptions, never as proof of historical intent.',
+    role: 'Multi-service research platform',
+    impact:
+      'A provenance-preserving workflow from site records through calculation, queued analysis and reports.',
+    lessons:
+      'A reproducible calculation and a supported historical conclusion are different claims.',
+    github: 'https://github.com/Ak-369-1729/Chrono_Heritage',
+    demo: null,
+    status: 'PROTOTYPE',
+    year: null,
+    constellation: 'Human impact',
+    visualIdentity: {
+      symbol: '⌛',
+      color: '#e2cb96',
+      shape: 'ring',
+    },
+    evidence:
+      'Public source and architecture documentation. Demonstration sites are fictional; scientific benchmarking remains ongoing.',
+    sources: [
+      {
+        title: 'ChronoHeritage V3 README',
+        url: 'https://github.com/Ak-369-1729/Chrono_Heritage/blob/main/README.md',
+      },
+    ],
+  },
+  {
     id: 'rescuers',
     title: 'RESCUERS',
     codename: 'THE LAST SIGNAL',
-    description: 'Disaster-tolerant communication when normal infrastructure cannot be assumed.',
+    description: 'RESQMesh / RESCUERS: preserve critical reports when bandwidth collapses.',
     category: 'Human impact',
-    technologies: ['Python', 'Flutter', 'NetworkX'],
+    technologies: ['Mesh networking'],
     problem:
-      'Design question: how does a critical message find its way through intermittent connectivity?',
+      'Disaster traffic rises while capacity falls, putting critical SOS messages behind lower-priority traffic.',
     solution:
-      'Proposed: a store-and-forward message flow with acknowledgements, local persistence and explicit delivery state.',
+      'An offline-first, information-pressure-adaptive design that protects critical reports and summarizes lower-priority updates.',
     architecture: [
-      'Message origin',
-      'Local queue',
-      'Available relay',
-      'Recipient',
-      'Acknowledgement',
+      'Local report',
+      'Urgency classification',
+      'Pressure / payload shaping',
+      'Store-and-forward mesh',
+      'Critical report / bounded summary',
     ],
     decisions: [
       'Make undelivered state visible.',
@@ -306,13 +438,38 @@ const conceptProjects: Project[] = [
       'Test network partitions and exhausted batteries.',
       'Handle duplicated or expired emergency messages.',
     ],
-    coordinates: { x: 82, y: 52 },
-    featured: true,
-    symbol: '⌁',
-    color: '#e2cb96',
-    shape: 'beacon',
-  }),
-  concept({
+    coordinates: {
+      x: 82,
+      y: 52,
+    },
+    featured: false,
+    longDescription:
+      'RESCUERS / RESQMesh investigates utility-aware disaster networking under information pressure. Critical reports stay intact, while lower-priority updates become bounded, mergeable summaries. The work includes a communication model and simulation.',
+    role: 'Resilient networking research',
+    impact:
+      'A prioritization model and simulation for preserving useful emergency information as capacity degrades.',
+    lessons:
+      'How do severity classification, link uncertainty and abuse resistance affect critical-report delivery?',
+    github: null,
+    demo: null,
+    status: 'RESEARCH',
+    year: null,
+    constellation: 'Human impact',
+    visualIdentity: {
+      symbol: '⌁',
+      color: '#e2cb96',
+      shape: 'beacon',
+    },
+    evidence:
+      'Research model, payload policy and illustrative simulation described in the technical record.',
+    sources: [
+      {
+        title: 'RESQMesh technical record',
+        url: 'https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/projects.ts',
+      },
+    ],
+  },
+  {
     id: 'algoforge',
     title: 'AlgoForge',
     codename: 'THE TEST BENCH',
@@ -335,13 +492,29 @@ const conceptProjects: Project[] = [
       'Run untrusted code only inside an appropriate sandbox.',
     ],
     challenges: ['Control noisy benchmarks.', 'Keep visual traces usable for large inputs.'],
-    coordinates: { x: 32, y: 16 },
+    coordinates: {
+      x: 32,
+      y: 16,
+    },
     featured: false,
-    symbol: '⌬',
-    color: '#c3c5ef',
-    shape: 'satellite',
-  }),
-  concept({
+    longDescription:
+      'An algorithm workbench focused on understanding behavior rather than collecting answers. This design explores the architecture and trade-offs below.',
+    role: 'System design',
+    impact: 'The design defines the system boundaries and a path to a testable prototype.',
+    lessons: 'Which assumptions survive the first working prototype and controlled failure tests?',
+    github: null,
+    demo: null,
+    status: 'CONCEPT',
+    year: null,
+    constellation: 'Engineering systems',
+    visualIdentity: {
+      symbol: '⌬',
+      color: '#c3c5ef',
+      shape: 'satellite',
+    },
+    evidence: 'Concept architecture and evaluation plan.',
+  },
+  {
     id: 'placementiq',
     title: 'PlacementIQ',
     codename: 'THE NEXT MOVE',
@@ -367,13 +540,29 @@ const conceptProjects: Project[] = [
       'Avoid reducing readiness to an unsupported score.',
       'Evaluate recommendations against actual learning needs.',
     ],
-    coordinates: { x: 89, y: 30 },
+    coordinates: {
+      x: 89,
+      y: 30,
+    },
     featured: false,
-    symbol: '⊹',
-    color: '#a8bfff',
-    shape: 'star',
-  }),
-  concept({
+    longDescription:
+      'A concept for organizing placement preparation and making the next step clear. This design explores the architecture and trade-offs below.',
+    role: 'System design',
+    impact: 'The design defines the system boundaries and a path to a testable prototype.',
+    lessons: 'Which assumptions survive the first working prototype and controlled failure tests?',
+    github: null,
+    demo: null,
+    status: 'CONCEPT',
+    year: null,
+    constellation: 'AI + intelligence',
+    visualIdentity: {
+      symbol: '⊹',
+      color: '#a8bfff',
+      shape: 'star',
+    },
+    evidence: 'Concept architecture and evaluation plan.',
+  },
+  {
     id: 'janmitra',
     title: 'JanMitra',
     codename: 'THE PUBLIC INTERFACE',
@@ -399,78 +588,141 @@ const conceptProjects: Project[] = [
       'Keep changing service requirements current.',
       'Test comprehension across languages and literacy levels.',
     ],
-    coordinates: { x: 9, y: 43 },
+    coordinates: {
+      x: 9,
+      y: 43,
+    },
     featured: false,
-    symbol: '⊙',
-    color: '#e2cb96',
-    shape: 'planet',
-  }),
-  concept({
+    longDescription:
+      'A human-centered concept for navigating civic information and services. This design explores the architecture and trade-offs below.',
+    role: 'System design',
+    impact: 'The design defines the system boundaries and a path to a testable prototype.',
+    lessons: 'Which assumptions survive the first working prototype and controlled failure tests?',
+    github: null,
+    demo: null,
+    status: 'CONCEPT',
+    year: null,
+    constellation: 'Human impact',
+    visualIdentity: {
+      symbol: '⊙',
+      color: '#e2cb96',
+      shape: 'planet',
+    },
+    evidence: 'Concept architecture and evaluation plan.',
+  },
+  {
     id: 'path-guard',
     title: 'Path Guard',
-    codename: 'THE SAFE ROUTE',
-    description: 'A security exploration into the assumptions hidden inside a path.',
-    category: 'Cybersecurity',
-    technologies: ['Python', 'FastAPI'],
+    codename: 'THE SAFETY SIGNAL',
+    description:
+      'A personal-safety MVP connecting emergency signals, trusted contacts and escalation.',
+    category: 'Human impact',
+    technologies: [],
     problem:
-      'Design question: how can path validation fail across encoding, normalization and filesystem boundaries?',
+      'During an emergency, someone may not be able to unlock a phone, explain their location and contact help in sequence.',
     solution:
-      'Proposed: normalize and resolve inputs, apply a strict allowed root, and exercise boundary cases with a regression corpus.',
+      'Turn an explicit voice trigger or supported emergency signal into a reviewable escalation flow: collect the necessary context, contact trusted people, and share location or media with consent.',
     architecture: [
-      'Untrusted input',
-      'Canonical resolution',
-      'Boundary policy',
-      'Allowed operation',
-      'Audit event',
+      'Voice / emergency signal',
+      'Device-signal review',
+      'Escalation rules',
+      'Trusted contacts',
+      'Location / media sharing',
     ],
     decisions: [
-      'Validate the resolved path before use.',
-      'Avoid string-prefix checks for filesystem containment.',
+      'Keep manual activation and cancellation available.',
+      'Treat sensitive location and media as explicit sharing choices.',
+      'Use only sensors and signals available on the device.',
     ],
     challenges: [
-      'Account for symbolic links and race conditions.',
-      'Test platform-specific path semantics.',
+      'False alarms and missed activations.',
+      'Permission, battery and connectivity limits.',
+      'Making emergency actions simple under stress.',
     ],
-    coordinates: { x: 52, y: 83 },
+    coordinates: {
+      x: 52,
+      y: 83,
+    },
     featured: false,
-    symbol: '⌖',
-    color: '#a6f3d0',
-    shape: 'beacon',
-  }),
-  concept({
+    longDescription:
+      'Path Guard focuses on the person using the system: a voice-triggered emergency flow, trusted contacts and location sharing. The MVP direction also considers fall, heart-rate and route-deviation signals where device capabilities permit, with consent-aware media capture or sharing.',
+    role: 'Engineering project',
+    impact: 'A human-centered safety escalation workflow with trusted contacts at its core.',
+    lessons:
+      'How can an emergency flow stay fast while allowing a person to recover from a false alarm?',
+    github: null,
+    demo: null,
+    status: 'PROTOTYPE',
+    year: null,
+    constellation: 'Human impact',
+    visualIdentity: {
+      symbol: '⌖',
+      color: '#a6f3d0',
+      shape: 'beacon',
+    },
+    evidence:
+      'Safety MVP direction and escalation architecture. Sensor availability depends on the device.',
+    sources: [],
+  },
+  {
     id: 'eventmesh',
     title: 'EventMesh',
     codename: 'THE EVENT HORIZON',
     description:
-      'Distributed work, retries, and the question of what happens after a message fails.',
+      'A delivery layer for asynchronous workflows, from authenticated publishing to dead-letter recovery.',
     category: 'Infrastructure',
-    technologies: ['Redis', 'Python', 'Docker', 'PostgreSQL'],
+    technologies: ['Redis', 'Docker', 'REST APIs'],
     problem:
-      'Design question: how should an event-driven service handle retries without repeating a side effect?',
+      'Services repeatedly reimplement retries, deduplication and failure handling around background work.',
     solution:
-      'Proposed: a durable event flow with an idempotent consumer, bounded retry policy, and a dead-letter queue for investigation.',
+      'Make delivery behavior explicit through an authenticated publish API, bounded retries, idempotency windows and inspectable dead-letter events.',
     architecture: [
-      'Producer',
-      'Redis event bus',
-      'Idempotent worker',
-      'Retry policy',
-      'Dead-letter queue',
+      'Authenticated producer',
+      'Rate limit + idempotency',
+      'Redis state / event queue',
+      'Dispatcher + retry backoff',
+      'Consumer / dead-letter recovery',
     ],
     decisions: [
-      'Treat duplicate delivery as a normal case.',
-      'Keep the idempotency record and side effect consistent.',
+      'At-least-once delivery with idempotency keys.',
+      'Bound retries to protect struggling consumers.',
+      'Retain failed payload context for explicit operator replay.',
     ],
     challenges: [
-      'Recover after a crash between processing and acknowledgement.',
-      'Provide safe replay and observable failure states.',
+      'Ordering expectations during retries.',
+      'Bounded idempotency windows.',
+      'Visible failures without overwhelming logs.',
     ],
-    coordinates: { x: 64, y: 38 },
+    coordinates: {
+      x: 64,
+      y: 38,
+    },
     featured: true,
-    symbol: '⌘',
-    color: '#a8bfff',
-    shape: 'satellite',
-  }),
-  concept({
+    longDescription:
+      'A Redis-backed delivery layer with authenticated publishing, rate limits, idempotency keys, retry backoff and dead-letter recovery. Metrics and health checks make each stage observable.',
+    role: 'Engineering project',
+    impact: 'Explicit delivery policies and an operator recovery path for asynchronous failures.',
+    lessons: 'Reliability work lives in the unhappy path and in the API contract around retries.',
+    github: null,
+    demo: null,
+    status: 'ACTIVE BUILD',
+    year: null,
+    constellation: 'Infrastructure',
+    visualIdentity: {
+      symbol: '⌘',
+      color: '#a8bfff',
+      shape: 'satellite',
+    },
+    evidence:
+      'Active build with a detailed technical record covering delivery semantics and failure recovery.',
+    sources: [
+      {
+        title: 'EventMesh technical record',
+        url: 'https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/projects.ts',
+      },
+    ],
+  },
+  {
     id: 'screenshot-monitor',
     title: 'Screenshot Monitor',
     codename: 'THE OBSERVER',
@@ -496,13 +748,29 @@ const conceptProjects: Project[] = [
       'Control font, viewport and animation noise.',
       'Avoid storing private information accidentally.',
     ],
-    coordinates: { x: 76, y: 76 },
+    coordinates: {
+      x: 76,
+      y: 76,
+    },
     featured: false,
-    symbol: '⊞',
-    color: '#bbc7e3',
-    shape: 'satellite',
-  }),
-  concept({
+    longDescription:
+      'A design record for detecting visual change with clear consent and traceability. This design explores the architecture and trade-offs below.',
+    role: 'System design',
+    impact: 'The design defines the system boundaries and a path to a testable prototype.',
+    lessons: 'Which assumptions survive the first working prototype and controlled failure tests?',
+    github: null,
+    demo: null,
+    status: 'CONCEPT',
+    year: null,
+    constellation: 'Infrastructure',
+    visualIdentity: {
+      symbol: '⊞',
+      color: '#bbc7e3',
+      shape: 'satellite',
+    },
+    evidence: 'Concept architecture and evaluation plan.',
+  },
+  {
     id: 'java-algorithm-analyzer',
     title: 'Java Algorithm Analyzer',
     codename: 'THE COMPLEXITY LENS',
@@ -528,13 +796,29 @@ const conceptProjects: Project[] = [
       'Handle recursion and input-dependent loops.',
       'Distinguish library operations from primitive operations.',
     ],
-    coordinates: { x: 28, y: 47 },
+    coordinates: {
+      x: 28,
+      y: 47,
+    },
     featured: false,
-    symbol: 'λ',
-    color: '#c3c5ef',
-    shape: 'star',
-  }),
-  concept({
+    longDescription:
+      'An investigation into explaining algorithm structure and its limits. This design explores the architecture and trade-offs below.',
+    role: 'System design',
+    impact: 'The design defines the system boundaries and a path to a testable prototype.',
+    lessons: 'Which assumptions survive the first working prototype and controlled failure tests?',
+    github: null,
+    demo: null,
+    status: 'CONCEPT',
+    year: null,
+    constellation: 'Engineering systems',
+    visualIdentity: {
+      symbol: 'λ',
+      color: '#c3c5ef',
+      shape: 'star',
+    },
+    evidence: 'Concept architecture and evaluation plan.',
+  },
+  {
     id: 'wheat-disease-detection',
     title: 'Wheat Disease Detection',
     codename: 'THE FIELD SIGNAL',
@@ -560,404 +844,180 @@ const conceptProjects: Project[] = [
       'Measure domain shift between curated and real field images.',
       'Assess class imbalance and ambiguous symptoms.',
     ],
-    coordinates: { x: 88, y: 65 },
+    coordinates: {
+      x: 88,
+      y: 65,
+    },
     featured: false,
-    symbol: '❋',
-    color: '#bce2a8',
-    shape: 'planet',
-  }),
-  concept({
+    longDescription:
+      'A machine-learning concept for recognizing crop disease patterns in images. This design explores the architecture and trade-offs below.',
+    role: 'System design',
+    impact: 'The design defines the system boundaries and a path to a testable prototype.',
+    lessons: 'Which assumptions survive the first working prototype and controlled failure tests?',
+    github: null,
+    demo: null,
+    status: 'CONCEPT',
+    year: null,
+    constellation: 'AI + intelligence',
+    visualIdentity: {
+      symbol: '❋',
+      color: '#bce2a8',
+      shape: 'planet',
+    },
+    evidence: 'Concept architecture and evaluation plan.',
+  },
+  {
     id: 'agnipariksha',
     title: 'AGNIPARIKSHA',
-    codename: 'THE UNKNOWN TEST',
+    codename: 'THE EARLY WARNING',
     description:
-      'A named project from the brief, held as an open mission until its scope is documented.',
-    category: 'Research',
+      'Burn-in drift and anomaly analysis for early warning during electronic-system testing.',
+    category: 'Engineering systems',
     technologies: [],
-    problem: 'The brief supplies the project name but does not describe the problem domain.',
+    problem:
+      'A component can drift before it crosses a hard failure threshold. Burn-in measurements need context across time and across electrical and thermal signals.',
     solution:
-      'No architecture is asserted. The next useful step is to establish the problem, intended users, constraints and evidence.',
-    architecture: ['Problem definition', 'Constraints', 'Hypothesis', 'Prototype', 'Evaluation'],
-    decisions: [
-      'Document scope before choosing a stack.',
-      'Prefer an explicit unknown to an invented case study.',
+      'Align current, voltage and temperature traces, establish expected operating ranges, and surface sustained drift or correlated anomalies for early investigation.',
+    architecture: [
+      'Burn-in measurements',
+      'Time-series alignment',
+      'Baseline / thresholds',
+      'Drift + anomaly analysis',
+      'Early-warning review',
     ],
-    challenges: ['Establish a testable mission and appropriate evaluation criteria.'],
-    coordinates: { x: 17, y: 82 },
+    decisions: [
+      'Keep thresholds and operating conditions visible to the reviewer.',
+      'Distinguish transient excursions from sustained drift.',
+      'Use warnings to support inspection rather than claiming certain failure prediction.',
+    ],
+    challenges: [
+      'Different components have different operating envelopes.',
+      'Thermal settling can resemble degradation.',
+      'Predictive thresholds need labeled test runs and controlled evaluation.',
+    ],
+    coordinates: {
+      x: 17,
+      y: 82,
+    },
     featured: false,
-    symbol: '△',
-    color: '#dfa087',
-    shape: 'anomaly',
-  }),
-  concept({
+    longDescription:
+      'AGNIPARIKSHA examines time-series current, voltage and temperature during burn-in testing. Its prototype direction combines threshold monitoring and predictive drift analysis to identify anomalous behavior and help prioritize components for inspection.',
+    role: 'Electronic-system monitoring prototype',
+    impact:
+      'An early-warning workflow for reviewing electrical and thermal behavior during burn-in.',
+    lessons:
+      'How early can a warning become useful without overwhelming the reviewer with false alarms?',
+    github: null,
+    demo: null,
+    status: 'PROTOTYPE',
+    year: null,
+    constellation: 'Engineering systems',
+    visualIdentity: {
+      symbol: '△',
+      color: '#dfa087',
+      shape: 'anomaly',
+    },
+    evidence:
+      'Prototype direction and monitoring architecture; current, voltage and temperature are the primary signals.',
+    sources: [],
+  },
+  {
     id: 'swift-macrotrust',
     title: 'Swift MacroTrust',
     codename: 'THE TRUST EXPERIMENT',
-    description: 'Research questions around the trust boundary of Swift macro execution.',
+    description:
+      'Systems-security research on the execution trust boundary of compile-time Swift macros.',
     category: 'Research',
-    technologies: ['Swift', 'Python', 'Docker'],
+    technologies: ['Swift'],
     problem:
-      'Research question: which resources should a compiler extension be able to access, and how can that boundary be tested?',
+      'Compile-time extensions execute code as part of the build. Their access to resources and their relationship to source-code trust need an explicit security model.',
     solution:
-      'Proposed: a permission-oriented threat model and controlled macro execution harness with resource and behavior observations.',
+      'Define the relevant threats and security requirements, map macro execution capabilities, and develop restriction and verification approaches for the compiler/plugin boundary.',
     architecture: [
-      'Macro fixture',
-      'Permission policy',
-      'Isolated test harness',
-      'Behavior trace',
-      'Threat-model review',
+      'Macro / plugin execution',
+      'Threat taxonomy',
+      'Security requirements',
+      'Capability boundary',
+      'Verification model',
     ],
     decisions: [
-      'Distinguish documented guarantees from observed behavior.',
-      'Make test conditions and compiler versions reproducible.',
+      'Separate execution trust from source-level correctness.',
+      'Prefer narrow, explicit capabilities to ambient access.',
+      'Tie each verification idea to a concrete threat and requirement.',
     ],
     challenges: [
-      'Avoid overstating a sandbox guarantee.',
-      'Keep experiments aligned with the toolchain being tested.',
+      'Toolchain behavior evolves across versions.',
+      'Useful restrictions must preserve legitimate macro workflows.',
+      'Security requirements need executable evaluation fixtures.',
     ],
-    coordinates: { x: 45, y: 15 },
+    coordinates: {
+      x: 45,
+      y: 15,
+    },
     featured: true,
-    symbol: '⟡',
-    color: '#c3c5ef',
-    shape: 'anomaly',
-  }),
+    longDescription:
+      'MacroTrust examines the trust introduced when Swift macros or compiler plugins execute during a build. The work develops a threat taxonomy, security requirements, capability restrictions and verification ideas for macro execution and plugin security models.',
+    role: 'Systems and security research',
+    impact:
+      'A threat taxonomy and capability-oriented security framework for compile-time macro execution.',
+    lessons:
+      'Which capability restrictions can be enforced without breaking legitimate Swift macro workflows?',
+    github: null,
+    demo: null,
+    status: 'RESEARCH',
+    year: null,
+    constellation: 'Research',
+    visualIdentity: {
+      symbol: '⟡',
+      color: '#c3c5ef',
+      shape: 'anomaly',
+    },
+    evidence:
+      'Research record: threat model, requirements, capability boundary and verification approach.',
+    sources: [],
+  },
 ];
 
-const portfolioSource =
-  'https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/projects.ts';
-const sourceRecords: Record<string, Partial<Project>> = {
-  nexus: {
-    description:
-      'A network digital twin that couples anomaly scoring with reversible node isolation.',
-    longDescription:
-      'Anwesha’s existing portfolio describes a Python prototype over UNSW-NB15 flow records: Dynamic Isolation Forest scores traffic, NetworkX locates flagged nodes, and a Streamlit dashboard exposes the isolate / restore loop. This is a research twin, not a live production sensor.',
-    technologies: ['Python', 'NetworkX', 'Streamlit', 'Isolation Forest', 'UNSW-NB15'],
-    role: 'Contribution scope not documented',
-    problem:
-      'An anomaly score needs topology and response context: where is the suspicious host, and what changes when it is isolated?',
-    solution:
-      'The portfolio record describes mapping anomalous flows onto a NetworkX topology, removing a suspicious node’s connections, then restoring them through an explicit response state.',
-    architecture: [
-      'UNSW-NB15 flows',
-      'Python feature pipeline',
-      'Isolation Forest',
-      'NetworkX isolate / restore',
-      'Streamlit + logs',
-    ],
-    decisions: [
-      'Use unsupervised outlier scoring rather than requiring every attack signature.',
-      'Make isolation reversible and record each state transition.',
-      'Keep benchmark-dataset results separate from real-network performance claims.',
-    ],
-    challenges: [
-      'Feature scaling and class imbalance in UNSW-NB15.',
-      'Choosing useful anomaly thresholds.',
-      'Keeping scoring and graph response state consistent.',
-    ],
-    impact:
-      'The documented prototype connects detection to an inspectable containment workflow. No independently verified detection accuracy or live deployment result is asserted.',
-    lessons:
-      'A benchmark score needs response context and explicit limits before it becomes an operational claim.',
-    github: 'https://github.com/Ak-369-1729/NEXUS',
-    status: 'Source available',
-    evidence:
-      'System description follows Anwesha’s existing portfolio project data. Repository linked; individual contribution details require confirmation. No exclusive authorship or real-network performance is asserted.',
-    sources: [
-      { title: 'Portfolio project record', url: portfolioSource },
-      {
-        title: 'NEXUS README / attribution',
-        url: 'https://github.com/Ak-369-1729/NEXUS/blob/main/README.md',
-      },
-    ],
-  },
-  boundarylens: {
-    description:
-      'Authorization security and regression testing, with evidence behind every boundary.',
-    longDescription:
-      'BoundaryLens discovers API endpoints from OpenAPI, Postman and HAR, models authenticated identities and resource ownership, and generates bounded cross-identity tests for BOLA / IDOR and function-level authorization failures. Its repository documents a FastAPI scanner, React / TypeScript dashboard, regression baselines and SARIF reporting.',
-    technologies: [
-      'Python',
-      'FastAPI',
-      'Pydantic',
-      'React',
-      'TypeScript',
-      'SQLite',
-      'Docker',
-      'Pytest',
-    ],
-    role: 'Repository author: Anwesha Kar',
-    problem:
-      'A valid login does not establish ownership of a resource. Authorization testing needs identity, operation and resource context rather than an HTTP status alone.',
-    solution:
-      'Establish legitimate response baselines, extract resource relationships, plan bounded cross-identity requests, and compare response evidence with explicit explanations.',
-    architecture: [
-      'OpenAPI / Postman / HAR',
-      'Identity + resource model',
-      'Bounded test planner',
-      'Differential evidence engine',
-      'Matrix / graph / SARIF',
-    ],
-    decisions: [
-      'Focus on authorization instead of claiming broad vulnerability coverage.',
-      'Compare observable response evidence instead of equating HTTP 200 with a vulnerability.',
-      'Default to safe reads, scope checks, request budgets and secret redaction.',
-      'Carry expectations into CI through regression baselines.',
-    ],
-    challenges: [
-      'Application-specific rules and ownership remain partly heuristic.',
-      'Coverage depends on discovered endpoints and resources.',
-      'Evidence scores are deterministic strength indicators, not probabilities or CVSS.',
-    ],
-    impact:
-      'The repository provides a local vulnerable / fixed Ledgerly comparison and documents CI regression gating. No independent production adoption or security effectiveness metric is claimed.',
-    lessons:
-      'Security findings become useful when a reviewer can follow the evidence and reproduce the boundary check.',
-    github: 'https://github.com/Ak-369-1729/BoundaryLens',
-    status: 'Source available',
-    evidence:
-      'Architecture, author attribution and limitations summarized from the BoundaryLens README. The current environment has not rerun its scanner or tests.',
-    sources: [
-      {
-        title: 'BoundaryLens README',
-        url: 'https://github.com/Ak-369-1729/BoundaryLens/blob/main/README.md',
-      },
-    ],
-  },
-  chronoheritage: {
-    description:
-      'A provenance-first research platform connecting historical sites, chronology and the observable sky.',
-    longDescription:
-      'ChronoHeritage V3 combines a Next.js interface, FastAPI science services, PostgreSQL / PostGIS, queued analysis and reports. Inputs preserve sources, conventions and uncertainty. A small angular residual is reported as a candidate alignment under assumptions, never as proof of historical intent.',
-    technologies: [
-      'Next.js',
-      'React',
-      'FastAPI',
-      'Python',
-      'PostgreSQL',
-      'PostGIS',
-      'Docker',
-      'Skyfield',
-    ],
-    role: 'Portfolio project; individual role not specified',
-    problem:
-      'Investigating historical orientations requires more than a matching angle: source provenance, chronology, horizon, conventions and uncertainty must remain attached to the result.',
-    solution:
-      'Keep survey records, provenance, scientific calculations, uncertainty analysis and review gates in one inspectable research workflow.',
-    architecture: [
-      'Next.js research workspace',
-      'FastAPI science services',
-      'PostgreSQL + PostGIS',
-      'Queued analysis worker',
-      'PDF / CSV / JSON reports',
-    ],
-    decisions: [
-      'Preserve input provenance and hashed run snapshots.',
-      'Separate scientific calculations into independently testable modules.',
-      'Keep evidence gates explicit and never show blocked benchmarks as passed.',
-      'Use revocable server-side sessions and API-enforced permissions.',
-    ],
-    challenges: [
-      'The registry contains five explicitly fictional demonstration sites.',
-      'JPL Horizons benchmark cases are documented as blocked pending network execution.',
-      'No published-case recalculation, researcher pilot or workflow timing is documented.',
-    ],
-    impact:
-      'A documented software platform for an evidence-led workflow. Scientific validation and adoption gates remain open; candidate alignment is not evidence of intent.',
-    lessons:
-      'A reproducible calculation and a supported historical conclusion are different claims.',
-    github: 'https://github.com/Ak-369-1729/Chrono_Heritage',
-    status: 'Source available',
-    evidence:
-      'Summarized from ChronoHeritage V3 README, including its unpassed scientific and adoption evidence gates. Software and benchmark claims were not rerun in this environment.',
-    sources: [
-      {
-        title: 'ChronoHeritage V3 README',
-        url: 'https://github.com/Ak-369-1729/Chrono_Heritage/blob/main/README.md',
-      },
-    ],
-  },
-  eventmesh: {
-    description:
-      'A delivery layer for asynchronous workflows, from authenticated publishing to dead-letter recovery.',
-    longDescription:
-      'The existing portfolio documents EventMesh as an active build with Redis-backed idempotency, rate limits, retries with backoff, dead-letter handling, metrics and health checks. No throughput benchmark is supplied.',
-    technologies: ['Redis', 'Docker', 'REST APIs'],
-    role: 'Portfolio project; individual role not specified',
-    problem:
-      'Services repeatedly reimplement retries, deduplication and failure handling around background work.',
-    solution:
-      'Make delivery behavior explicit through an authenticated publish API, bounded retries, idempotency windows and inspectable dead-letter events.',
-    architecture: [
-      'Authenticated producer',
-      'Rate limit + idempotency',
-      'Redis state / event queue',
-      'Dispatcher + retry backoff',
-      'Consumer / dead-letter recovery',
-    ],
-    decisions: [
-      'At-least-once delivery with idempotency keys.',
-      'Bound retries to protect struggling consumers.',
-      'Retain failed payload context for explicit operator replay.',
-    ],
-    challenges: [
-      'Ordering expectations during retries.',
-      'Bounded idempotency windows.',
-      'Visible failures without overwhelming logs.',
-    ],
-    impact:
-      'An owner-documented engineering build; no measured throughput, latency, adoption or production reliability is claimed.',
-    lessons: 'Reliability work lives in the unhappy path and in the API contract around retries.',
-    status: 'Portfolio record',
-    evidence:
-      'The existing portfolio labels EventMesh an active build. Details are owner-maintained project documentation, not a fresh runtime validation.',
-    sources: [{ title: 'EventMesh portfolio record', url: portfolioSource }],
-  },
-  careeros: {
-    description:
-      'AI-assisted opportunity discovery and a career constellation linking skills to roles.',
-    longDescription:
-      'Anwesha’s existing portfolio describes CareerOS as an active build for daily opportunity discovery, internship / job intelligence, personalized career tracking and a skill-to-role graph. These are documented project features, not verified placement outcomes.',
-    technologies: ['LLMs', 'Docker'],
-    role: 'Portfolio project; individual role not specified',
-    problem:
-      'Opportunities are scattered, while a posting list gives little context about fit or skill gaps.',
-    solution:
-      'Connect opportunities, skills and roles in a graph, with AI-assisted summaries and reviewable suggestions.',
-    architecture: [
-      'Opportunity discovery',
-      'Career profile',
-      'Skills / roles graph',
-      'AI-assisted suggestion',
-      'User-reviewed plan',
-    ],
-    impact:
-      'Owner-documented active build; no placement improvement or recommendation-quality result is asserted.',
-    status: 'Portfolio record',
-    evidence:
-      'Summary and stack follow the existing CareerOS portfolio record. Architecture is a simplified representation of its documented feature flow.',
-    sources: [{ title: 'CareerOS portfolio record', url: portfolioSource }],
-  },
-  prepai: {
-    description:
-      'Interview practice with multi-personality group discussions and an explicit review rubric.',
-    longDescription:
-      'The portfolio lists PrepAI / Mockexa as a prototype covering technical, HR and group discussion practice. It describes contrasting AI personas and review across communication, content, leadership, teamwork, creativity and confidence.',
-    technologies: ['LLMs'],
-    role: 'Portfolio project; individual role not specified',
-    problem:
-      'A single polite chatbot does not reproduce discussion dynamics, interruptions or follow-up pressure.',
-    solution:
-      'Use distinct participant personas and turn-taking behaviors, then make the review rubric visible.',
-    architecture: [
-      'Practice round',
-      'Participant personas',
-      'Conversation flow',
-      'Six-dimension rubric',
-      'Review',
-    ],
-    impact: 'Owner-documented prototype; no evidence of improved interview outcomes is supplied.',
-    status: 'Portfolio record',
-    evidence:
-      'Features and prototype description follow the existing PrepAI / Mockexa portfolio record. Suggested evaluation questions remain exploratory.',
-    sources: [{ title: 'PrepAI portfolio record', url: portfolioSource }],
-  },
-  rescuers: {
-    description: 'RESQMesh / RESCUERS: preserve critical reports when bandwidth collapses.',
-    longDescription:
-      'The existing portfolio names RESCUERS as an alias of RESQMesh and labels it a concept plus simulation. Critical individual reports remain intact while lower-priority reports become bounded, mergeable summaries under information pressure.',
-    technologies: ['Mesh networking'],
-    role: 'Portfolio concept + simulation',
-    problem:
-      'Disaster traffic rises while capacity falls, putting critical SOS messages behind lower-priority traffic.',
-    solution:
-      'An offline-first, information-pressure-adaptive design that protects critical reports and summarizes lower-priority updates.',
-    architecture: [
-      'Local report',
-      'Urgency classification',
-      'Pressure / payload shaping',
-      'Store-and-forward mesh',
-      'Critical report / bounded summary',
-    ],
-    impact:
-      'A documented concept and illustrative simulation; no field deployment, emergency-service adoption or measured delivery gain is claimed.',
-    status: 'Portfolio record',
-    evidence:
-      'RESCUERS / RESQMesh naming, scope and concept-plus-simulation status follow the existing portfolio record.',
-    sources: [{ title: 'RESQMesh portfolio record', url: portfolioSource }],
-  },
-  'path-guard': {
-    description: 'A safety-focused guarding and alerting system.',
-    longDescription:
-      'The existing portfolio describes Path Guard as a safety-focused guarding system that monitors a path and raises alerts. Its operating environment and implementation details are not documented in that record.',
-    technologies: [],
-    problem: 'Unsafe paths and unchecked access put people and systems at risk.',
-    solution:
-      'The portfolio describes monitoring and alerts; implementation detail is not specified.',
-    architecture: ['Observed path', 'Monitoring', 'Safety condition', 'Alert'],
-    decisions: ['Confirm the operating context before choosing a technical interpretation.'],
-    challenges: ['The source does not provide sensor, runtime or deployment details.'],
-    impact: 'A documented portfolio project; no measured safety outcome is supplied.',
-    lessons:
-      'Further technical detail should come from implementation evidence, not from interpreting the title.',
-    status: 'Portfolio record',
-    evidence:
-      'Scope follows the existing Path Guard portfolio entry; the four-step flow is illustrative, not a verified architecture.',
-    sources: [{ title: 'Path Guard portfolio record', url: portfolioSource }],
-  },
-  agnipariksha: {
-    description: 'An assessment platform exploring practice under realistic pressure.',
-    longDescription:
-      'The existing portfolio describes AGNIPARIKSHA as a trial-by-fire assessment platform. It supplies no implementation architecture or technology stack.',
-    problem: 'Practice tests often fail to reproduce the pressure of the real assessment.',
-    solution:
-      'The documented aim is an assessment experience under realistic pressure; detailed design remains unspecified.',
-    architecture: ['Assessment setup', 'Timed practice', 'Response', 'Review'],
-    decisions: ['Represent unspecified implementation detail honestly.'],
-    challenges: ['Evaluation and technical implementation details are not supplied.'],
-    impact:
-      'A portfolio-listed assessment project; no learning or assessment-validity result is asserted.',
-    lessons:
-      'An assessment interface needs evidence before it can make a claim about assessment quality.',
-    status: 'Portfolio record',
-    evidence:
-      'Purpose follows the existing AGNIPARIKSHA portfolio entry. The displayed flow is illustrative.',
-    sources: [{ title: 'AGNIPARIKSHA portfolio record', url: portfolioSource }],
-  },
-};
-
-export const projects: Project[] = conceptProjects.map((project) => ({
-  ...project,
-  ...sourceRecords[project.id],
-}));
-
-/** Connections are technical context, not proficiency percentages or employment claims. */
 export const skills: Skill[] = [
   {
     id: 'react',
     name: 'React',
     system: 'INTERFACE ENGINE',
     description: 'Interface state, accessible interaction, and inspectable system views.',
-    projects: ['careeros', 'nexus', 'janmitra'],
+    projects: [
+      'boundarylens',
+      'chronoheritage',
+      'algoforge',
+      'placementiq',
+      'janmitra',
+      'java-algorithm-analyzer',
+    ],
   },
   {
     id: 'fastapi',
     name: 'FastAPI',
     system: 'SERVICE CORE',
     description: 'Typed service boundaries and explicit request / response contracts.',
-    projects: ['nexus', 'prepai', 'prooftrail'],
+    projects: [
+      'prooftrail',
+      'boundarylens',
+      'chronoheritage',
+      'janmitra',
+      'wheat-disease-detection',
+    ],
   },
   {
     id: 'postgresql',
     name: 'PostgreSQL',
     system: 'MEMORY VAULT',
     description: 'Structured state, integrity constraints, and reproducible queries.',
-    projects: ['careeros', 'prooftrail', 'eventmesh'],
+    projects: ['prooftrail', 'chronoheritage', 'placementiq', 'janmitra'],
   },
   {
     id: 'redis',
     name: 'Redis',
     system: 'EVENT BUS',
-    description: 'A proposed delivery layer for the EventMesh retry investigation.',
+    description: 'Idempotency windows, rate limits and retry state for asynchronous delivery.',
     projects: ['eventmesh'],
   },
   {
@@ -965,14 +1025,23 @@ export const skills: Skill[] = [
     name: 'Docker',
     system: 'ISOLATION CHAMBER',
     description: 'Repeatable development environments and bounded experiment fixtures.',
-    projects: ['eventmesh', 'swift-macrotrust', 'screenshot-monitor'],
+    projects: ['careeros', 'boundarylens', 'chronoheritage', 'eventmesh', 'screenshot-monitor'],
   },
   {
     id: 'python',
     name: 'Python',
     system: 'INTELLIGENCE ENGINE',
     description: 'Graph modeling, service logic, analysis, and research tooling.',
-    projects: ['nexus', 'wheat-disease-detection', 'rescuers'],
+    projects: [
+      'nexus',
+      'prooftrail',
+      'boundarylens',
+      'chronoheritage',
+      'algoforge',
+      'placementiq',
+      'screenshot-monitor',
+      'wheat-disease-detection',
+    ],
   },
   {
     id: 'java',
@@ -989,18 +1058,11 @@ export const skills: Skill[] = [
     projects: ['swift-macrotrust'],
   },
   {
-    id: 'flutter',
-    name: 'Flutter',
-    system: 'CROSS-PLATFORM INTERFACE',
-    description: 'A proposed mobile interaction layer for intermittent communication.',
-    projects: ['rescuers'],
-  },
-  {
     id: 'networkx',
     name: 'NetworkX',
     system: 'TOPOLOGY ENGINE',
     description: 'Graphs for dependencies, authorization paths, and relay networks.',
-    projects: ['nexus', 'boundarylens', 'rescuers'],
+    projects: ['nexus'],
   },
 ];
 
@@ -1009,91 +1071,88 @@ export const research: ResearchLog[] = [
     id: 'macro-execution',
     title: 'Where should a macro stop?',
     area: 'SWIFT / EXECUTION TRUST',
-    status: 'Research interest',
+    status: 'RESEARCH',
     hypothesis:
       'A clearly specified capability boundary could make compiler-extension behavior easier to inspect.',
     problem: 'Build tooling executes code while handling source and developer resources.',
     proposedSystem: 'A controlled macro fixture set, permission model, and execution-trace review.',
     experiment:
-      'Proposed: vary permitted resources and compare observed behavior against documented toolchain guarantees.',
+      'vary permitted resources and compare observed behavior against documented toolchain guarantees.',
   },
   {
     id: 'authorization',
     title: 'Make trust boundaries visible.',
     area: 'AUTHORIZATION / SECURITY ARCHITECTURE',
-    status: 'Research interest',
+    status: 'RESEARCH',
     hypothesis:
       'An explainable access graph could reveal authorization assumptions that a flat policy table hides.',
     problem: 'Indirect permissions and inherited roles make access difficult to reason about.',
     proposedSystem: 'A principal-resource graph with policy provenance and path explanations.',
     experiment:
-      'Proposed: construct a small synthetic organization and test expected versus observed access paths.',
+      'construct a small synthetic organization and test expected versus observed access paths.',
   },
   {
     id: 'disaster-links',
     title: 'A message after the network.',
     area: 'DISASTER-TOLERANT COMMUNICATION',
-    status: 'Research interest',
+    status: 'RESEARCH',
     hypothesis:
       'Explicit store-and-forward semantics could preserve useful delivery behavior under intermittent links.',
     problem: 'A normal connected-client assumption fails during partitions.',
     proposedSystem:
       'Local persistence, opportunistic relays, expiry, acknowledgements and duplicate suppression.',
     experiment:
-      'Proposed: inject partitions into a relay simulation and measure delivery delay, duplication and loss.',
+      'inject partitions into a relay simulation and measure delivery delay, duplication and loss.',
   },
   {
     id: 'post-quantum',
     title: 'Security beyond the assumption.',
     area: 'POST-QUANTUM / OS SECURITY',
-    status: 'Portfolio research',
+    status: 'RESEARCH',
     hypothesis:
       'A controlled comparison could clarify migration costs and boundary assumptions before adoption.',
     problem: 'A cryptographic choice changes operational constraints as well as algorithms.',
     proposedSystem:
-      'The existing portfolio records Scyther / Tamarin protocol verification and ML-KEM experiments. Further proposed work: a documented test matrix for candidate primitives and isolation concepts.',
+      'Scyther / Tamarin protocol verification and ML-KEM experiments. Next: a documented test matrix for candidate primitives and isolation concepts.',
     experiment:
-      'Proposed: benchmark vetted implementations under fixed conditions; review threat models separately from speed. No publication or benchmark result is asserted.',
-    source: profile.sources.timeline,
+      'benchmark vetted implementations under fixed conditions; review threat models separately from speed.',
+    source: 'https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/timeline.ts',
   },
   {
     id: 'ai-systems',
     title: 'Useful answers need evidence.',
     area: 'AI SYSTEMS / EVALUATION',
-    status: 'Research interest',
+    status: 'RESEARCH',
     hypothesis:
       'Transparent evaluation and uncertainty could make an assistive model more useful than an unexplained score.',
     problem: 'Model outputs can look confident while changing across contexts.',
     proposedSystem: 'A versioned evaluation set, human review rubric and error taxonomy.',
     experiment:
-      'Proposed: compare feedback consistency, calibration and failure cases across controlled inputs.',
+      'compare feedback consistency, calibration and failure cases across controlled inputs.',
   },
   {
     id: 'orbital-telemetry',
     title: 'Listen beyond the horizon.',
     area: 'BALLOONSAT / TELEMETRY / GNSS / NAVIC',
-    status: 'Portfolio research',
+    status: 'RESEARCH',
     hypothesis:
       'A small, well-instrumented telemetry experiment could expose the tradeoffs between position, timing, link quality and power.',
     problem: 'A signal is useful only when its timing, reliability and uncertainty are understood.',
     proposedSystem:
-      'The existing portfolio records BalloonSat, CanSat / ground control, GNSS and telemetry exploration. Further proposed work: a simulated channel with timing, uncertainty and link-state metadata.',
-    experiment:
-      'Proposed: evaluate a controlled simulation before making flight or positioning claims. NaVIC remains an exploration interest, not a documented result.',
-    source: profile.sources.timeline,
+      'BalloonSat, CanSat / ground control, GNSS and telemetry exploration. Next: a simulated channel with timing, uncertainty and link-state metadata.',
+    experiment: 'evaluate a controlled simulation before making flight or positioning claims.',
+    source: 'https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/timeline.ts',
   },
 ];
 
-/** Owner-maintained timeline source; only the internship provides calendar dates. */
 export const milestones: Milestone[] = [
   {
     id: 'observe',
     phase: '01',
     title: 'The first research orbit.',
     category: 'SCHOOL / SCIENCE',
-    description:
-      'National Children’s Science Congress national-finalist experience and INSPIRE–MANAK recognition, as documented in Anwesha’s existing portfolio. Years are not specified.',
-    source: profile.sources.timeline,
+    description: 'NCSC national-finalist experience and INSPIRE–MANAK recognition.',
+    source: 'https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/timeline.ts',
   },
   {
     id: 'build',
@@ -1101,8 +1160,8 @@ export const milestones: Milestone[] = [
     title: 'Build, test, and learn in public.',
     category: 'UNIVERSITY / ENGINEERING',
     description:
-      'Hackathons, technical events, and systems projects spanning interfaces, security and infrastructure. The portfolio records this university phase without invented calendar dates.',
-    source: profile.sources.timeline,
+      'Hackathons, technical events and systems projects spanning interfaces, security and infrastructure.',
+    source: 'https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/timeline.ts',
   },
   {
     id: 'lead',
@@ -1110,8 +1169,8 @@ export const milestones: Milestone[] = [
     title: 'Engineering with a wider purpose.',
     category: 'UNIVERSITY / LEADERSHIP',
     description:
-      'Vice Chair, IEEE SIGHT at Chandigarh University; Google Cloud Arcade facilitation. Roles are owner-documented; dates are not specified.',
-    source: profile.sources.timeline,
+      'Vice Chair, IEEE SIGHT at Chandigarh University; Google Cloud Arcade facilitation.',
+    source: 'https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/timeline.ts',
   },
   {
     id: 'investigate',
@@ -1119,8 +1178,8 @@ export const milestones: Milestone[] = [
     title: 'Ask what survives the boundary.',
     category: 'UNIVERSITY / RESEARCH',
     description:
-      'Scyther and Tamarin protocol verification, ML-KEM experiments, BalloonSat / CanSat ground control, GNSS and telemetry exploration are listed in the existing portfolio.',
-    source: profile.sources.timeline,
+      'Scyther and Tamarin protocol verification, ML-KEM experiments, BalloonSat / CanSat ground control, GNSS and telemetry exploration.',
+    source: 'https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/timeline.ts',
   },
   {
     id: 'adxania',
@@ -1128,44 +1187,39 @@ export const milestones: Milestone[] = [
     title: 'Cybersecurity Intern',
     category: 'AUG 2025 — FEB 2026 / EXPERIENCE',
     description:
-      'Adxania Cyber Solutions Pvt. Ltd. — hands-on security work in an industry setting. Employer and dates are documented in Anwesha’s existing portfolio; no responsibilities or outcomes beyond that record are asserted.',
-    source: profile.sources.timeline,
+      'Adxania Cyber Solutions Pvt. Ltd. — hands-on cybersecurity work in an industry setting.',
+    source: 'https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/timeline.ts',
   },
 ];
 
-/** Owner-documented milestones; not independently certified award records. */
 export const achievements: Achievement[] = [
   {
     id: 'child-scientist',
     title: 'National Child Scientist recognition',
-    description:
-      'National-finalist experience at the National Children’s Science Congress. Documented in the existing portfolio; year not specified.',
-    status: 'Portfolio documented',
-    source: profile.sources.timeline,
+    description: 'National finalist at the National Children’s Science Congress.',
+    status: 'Science',
+    source: 'https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/timeline.ts',
   },
   {
     id: 'inspire',
     title: 'INSPIRE Award — MANAK',
-    description:
-      'Recognition under the INSPIRE–MANAK scheme for original student ideas, as recorded in the existing portfolio. Year not specified.',
-    status: 'Portfolio documented',
-    source: profile.sources.timeline,
+    description: 'Recognition for original student ideas under the INSPIRE–MANAK scheme.',
+    status: 'Science',
+    source: 'https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/timeline.ts',
   },
   {
     id: 'ieee',
     title: 'Vice Chair, IEEE SIGHT',
-    description:
-      'Leadership in IEEE’s Special Interest Group on Humanitarian Technology at Chandigarh University. Documented role; service dates not specified.',
-    status: 'Portfolio documented',
-    source: profile.sources.timeline,
+    description: 'Humanitarian technology leadership at Chandigarh University.',
+    status: 'Leadership',
+    source: 'https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/timeline.ts',
   },
   {
     id: 'engineering-milestones',
     title: 'Google Cloud Arcade facilitation',
-    description:
-      'The existing portfolio lists Arcade Facilitator — Top 30, 100+ Google Cloud badges, and Arcade Legend tier. These are owner-maintained records, with no invented dates.',
-    status: 'Portfolio documented',
-    source: profile.sources.timeline,
+    description: 'Arcade Facilitator — Top 30; 100+ Google Cloud badges and Arcade Legend tier.',
+    status: 'Cloud practice',
+    source: 'https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/timeline.ts',
   },
 ];
 
@@ -1176,6 +1230,18 @@ export const currentMission = {
   exploring: 'Security boundaries and resilient communication',
   research: 'Swift macro trust / explainable authorization',
   next: 'A better question.',
-  status: 'Editorial focus drawn from the brief and existing portfolio',
-  updated: null as string | null,
+  status: 'CURRENT ENGINEERING FOCUS',
+  updated: null,
 };
+
+export const flagshipIds = [
+  'nexus',
+  'eventmesh',
+  'careeros',
+  'chronoheritage',
+  'boundarylens',
+  'swift-macrotrust',
+] as const;
+export const flagshipProjects = flagshipIds.map((id) =>
+  projects.find((project) => project.id === id)!,
+);

@@ -1,7 +1,7 @@
 'use client';
 
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
-import { projects } from '@/data/portfolio';
+import { projects, profile } from '@/data/portfolio';
 
 type TerminalProps = {
   onNavigate: (id: string) => void;
@@ -54,8 +54,7 @@ export function Terminal({ onNavigate, onAward, onAction, onClose }: TerminalPro
           'NAVIGATE  projects · skills · research · timeline · contact\nIDENTITY  whoami · github · resume\nJOURNEY   why · scan · launch · orbit\nSYSTEM    clear · matrix · coffee\nTry reading a file. Curiosity is a useful permission.';
         break;
       case 'whoami':
-        response =
-          'ANWESHA KAR\nComputer Science Engineer / Builder / Researcher\nI follow a question until it becomes a system. Then I ask what happens when it fails.';
+        response = `ANWESHA KAR\n${profile.positioning}\nI follow a question until it becomes a system.`;
         break;
       case 'projects':
       case 'ls projects':
@@ -64,7 +63,7 @@ export function Terminal({ onNavigate, onAward, onAction, onClose }: TerminalPro
         break;
       case 'skills':
         response =
-          'INTERFACES  React · Flutter\nSERVICES    FastAPI · Java\nDATA        PostgreSQL · Redis\nSYSTEMS     Docker · Python · Swift · NetworkX\nSee the engine room for the project connections in the supplied brief.';
+          'INTERFACES  React · Flutter\nSERVICES    FastAPI · Java\nDATA        PostgreSQL · Redis\nSYSTEMS     Docker · Python · Swift · NetworkX\nSee the engine room for the project connections across the mission files.';
         onNavigate('engine');
         break;
       case 'research':
@@ -75,7 +74,7 @@ export function Terminal({ onNavigate, onAward, onAction, onClose }: TerminalPro
       case 'experience':
       case 'timeline':
         response =
-          'Opening the memory corridor: engineering, research, leadership, and the Adxania cybersecurity internship recorded in the existing portfolio.';
+          'Opening the memory corridor: engineering, research, leadership, and the Adxania cybersecurity internship and its technical context.';
         onNavigate('flight-path');
         break;
       case 'contact':
@@ -87,8 +86,9 @@ export function Terminal({ onNavigate, onAward, onAction, onClose }: TerminalPro
         onAction?.('github');
         break;
       case 'resume':
+      case 'profile':
         response =
-          'Opening the printable engineering profile: source-linked projects, documented experience, and the questions still open.';
+          'Opening the printable engineering profile: project architecture, experience, and the questions still open.';
         onAction?.('resume');
         break;
       case 'sudo hire anwesha':
@@ -102,8 +102,9 @@ export function Terminal({ onNavigate, onAward, onAction, onClose }: TerminalPro
         break;
       case 'cat 369.txt':
       case '369':
+      case 'why 369':
         response =
-          '3 questions. 6 experiments. 9 more questions.\nThe system was never designed to stop being curious.';
+          '369 is a personal system marker — part coordinate, part signature.\nThe next question is always open.';
         onAward('artifact-369', 50);
         tone = 'success';
         break;

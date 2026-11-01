@@ -2,6 +2,18 @@
 
 The second pass is a redesign of the existing System 369 repository, not a new project. Portfolio data, contact channels, mission routes, and useful interactions were retained while the primary presentation changed to the continuous story.
 
+## Production refinement — 1 November 2026
+
+All **68 production browser checks passed** against the final static export: 47 retained interaction/fallback checks and 21 production checks. ESLint, strict TypeScript, formatting and the production build pass. The export contains 23 generated routes, including all 17 mission files, the Engineering Profile, robots and sitemap.
+
+The responsive matrix covers **320×568, 360×640, 375×667, 390×844, 412×915, 430×932, 540×960, 768×1024, 820×1180, 1024×768, 1280×720, 1366×768, 1440×900, 1536×864, 1920×1080, 2560×1440, 844×390 and 568×320**. Every scene is checked in both skies with instruments closed/open where applicable. DOM rectangle checks cover the header, footer, navigation, narrative, inspection control, orbit controls, motion invitation and instruments. No unintended collisions or horizontal page overflow remain in this matrix. Quick, terminal, palette, contact, long mission titles, Engineering Profile and 404 surfaces also reflow. Phone instruments scroll independently with reachable close controls.
+
+All local links and 17 mission routes return successfully. The linked GitHub profile, repositories and technical-record URLs returned HTTP 200; LinkedIn returned its automated-client restriction (999), so its supplied URL is preserved without claiming a successful automated check. Per-route metadata, relative canonicals, structured data, robots and sitemap pass checks without localhost metadata. A Windows static-export segment-path mismatch was found through browser console inspection and fixed by generating static payload aliases after builds. Production console checks report no runtime/React/asset errors in the tested surfaces. Axe scans report no serious or critical WCAG violations in the selected surfaces in both skies.
+
+A saved Quick Mode creates **zero canvas elements and zero WebGL context requests**. WebGL loads only for Story Mode, caps DPR at 1.6 desktop / 1.25 mobile, stops its frame loop for hidden tabs, quiet inactive scenes and reduced motion, and redraws on explicit changes. Full-motion regression checks confirm autonomous animation, cursor/scroll camera movement and paused selectable orbits remain intact. No new Lighthouse score is asserted for this release.
+
+The 18-size matrix is browser emulation, not a claim of testing every physical device. No production hosting origin or supplied résumé PDF was available; the Engineering Profile is clearly HTML, and an absolute sitemap is generated only when the deployment origin is configured.
+
 ## Motion refinement — 1 November 2026
 
 All 47 production browser checks passed, including four added checks that exercise full motion: the WebGL image changes without user input; cursor and continuous scroll change the real camera; reduced motion remains still until explicit playback; and project orbits pause under keyboard selection and resume afterwards. The existing route, game, accessibility, layout, storage and fallback checks also pass. Build, TypeScript, lint and formatting pass.
@@ -49,17 +61,13 @@ The narrative now uses one `1700svh` native scroll track, one fixed stage, and 1
 
 Story is the primary mode; Quick retains immediate access to every technical record and recruiter action. The project atlas keeps its search, filtering, focus, drag/swipe, index, and mission links, with zoom and orbit controls added. The security sandbox, command palette, controlled terminal, contact draft, local discoveries, source-backed data, and 17 static mission routes are preserved.
 
-Canvas is decorative and has no exclusive essential content. The HTML story outline, Skip Story/Quick Mode, direct chapter navigation, Continue actions, semantic panels, and no-script project-route fallback must remain usable. No interaction may gate a project, résumé, or contact link.
+Canvas is decorative and has no exclusive essential content. The HTML story outline, Skip Story/Quick Mode, direct chapter navigation, Continue actions, semantic panels, and no-script project-route fallback must remain usable. No interaction may gate a project, profile, or contact link.
 
-## Content sources
+## Current content and evidence
 
-The redesign leaves the factual editorial model intact. Contact details come from the owner. The creative brief supplies the symbolic narrative and project catalogue. Source-backed details and career records also draw on the existing GitHub portfolio’s project catalogue and timeline, plus READMEs such as BoundaryLens and ChronoHeritage.
+The 17 mission routes use one flat editorial source with six curated flagships. Status labels are ACTIVE BUILD, PROTOTYPE, RESEARCH or CONCEPT; no production deployment or measured result was invented. AGNIPARIKSHA covers burn-in drift/anomaly early warning, Path Guard covers human safety escalation, and Swift MacroTrust covers compile-time macro trust research. Existing public portfolio records and repository READMEs support the remaining descriptions and stacks. The owner's final brief corrects older AGNIPARIKSHA and Path Guard records.
 
-The 17 mission files comprise three `Source available` projects, six `Portfolio record` entries, and eight `Concept record` designs. Five sourced career phases include the August 2025–February 2026 Adxania Cyber Solutions internship. Memory logs also include owner-documented IEEE SIGHT leadership, NCSC, INSPIRE–MANAK, and Google Cloud Arcade milestones. Research interests and proposed experiments remain labeled accurately.
-
-The girl represents curiosity and the younger engineer symbolically. Her visual journey does not add invented dated childhood events, credentials, scientific results, or project outcomes.
-
-The résumé remains a generated printable HTML profile compiled from owner records. The contact form opens an email draft and does not send mail. No login, cookies, analytics, backend database, API key, or external telemetry service is required. Preferences and discoveries stay local to the browser.
+Internship dates remain August 2025–February 2026. Undated milestones omit dates. The girl remains a symbolic narrative. No real résumé PDF exists in the repository: the printable route and every CTA are labeled Engineering Profile. Contact opens a mail-app draft without sending or storing messages.
 
 ## Production configuration
 

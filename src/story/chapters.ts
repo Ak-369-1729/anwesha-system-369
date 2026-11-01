@@ -301,7 +301,7 @@ export const worldChapters: readonly StoryChapter[] = [
     kicker: '13 / WHAT THE JOURNEY LEFT BEHIND',
     copy: ['Some moments became milestones.', 'Others became the reason to keep learning.'],
     description:
-      'The girl walks between memory logs containing the source-backed internship, science recognition, leadership, research and engineering milestones in Anwesha’s portfolio.',
+      'The girl walks between memory logs containing the internship, science recognition, leadership, research and engineering milestones in Anwesha’s portfolio.',
     environment: 'memory-corridor',
     camera: { x: 0, y: 0, zoom: 1 },
     character: { pose: 'walk', focus: 'signal', scale: 1 },
@@ -363,7 +363,7 @@ export const worldChapters: readonly StoryChapter[] = [
     kicker: 'EPILOGUE / TRANSMISSION OPEN',
     copy: ['There is always another question.', 'Let’s build what comes next.'],
     description:
-      'The girl and the engineer look toward the same sky. Collected artifacts form a small constellation. One star remains unexplored, and the girl points toward it. Contact, GitHub, LinkedIn and the résumé remain directly available.',
+      'The girl and the engineer look toward the same sky. Collected artifacts form a small constellation. One star remains unexplored, and the girl points toward it. Contact, GitHub, LinkedIn and the engineering profile remain directly available.',
     environment: 'returning-field',
     camera: { x: 0, y: 0, zoom: 1 },
     character: { pose: 'point', focus: 'sky', scale: 1 },
@@ -428,4 +428,15 @@ export function storyIndex(id: string) {
   const normalized = id.replace(/^#/, '').toLowerCase();
   const resolved = legacyAliases[normalized] || normalized;
   return storyChapters.findIndex((chapter) => chapter.id === resolved);
+}
+
+export const storyActs = [
+  { name: 'CURIOSITY', start: 0, end: 1 },
+  { name: 'BEYOND', start: 2, end: 4 },
+  { name: 'ENGINEERING', start: 5, end: 10 },
+  { name: 'RESEARCH', start: 11, end: 13 },
+  { name: 'ANWESHA', start: 14, end: 16 },
+] as const;
+export function storyAct(index: number) {
+  return storyActs.find((act) => index >= act.start && index <= act.end) ?? storyActs[0];
 }

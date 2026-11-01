@@ -21,14 +21,14 @@ const commands = [
   },
   {
     label: 'Go to achievements',
-    hint: 'Open the documented milestone archive',
+    hint: 'Open the milestone archive',
     target: 'vault',
     icon: '◇',
   },
   { label: 'Contact Anwesha', hint: 'Establish a connection', target: 'contact', icon: '↗' },
   {
-    label: 'Open résumé',
-    hint: 'Download the supplied profile overview',
+    label: 'Open engineering profile',
+    hint: 'Read the printable engineering profile',
     action: 'resume',
     icon: '↓',
   },

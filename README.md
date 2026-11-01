@@ -4,7 +4,7 @@
 
 The second pass transforms the existing portfolio into one illustrated journey. A small girl follows a question from a quiet field through code, machinery, cybersecurity, infrastructure, launch, orbit, research, and memory. Her reflection becomes the present-day engineer near the end. The same signal and the same world objects carry the story between scenes.
 
-**Story** is the primary experience. **Quick** immediately exposes Anwesha’s profile, projects, technical skills, experience, research, milestones, résumé, and contact channels. The original project data, 17 mission routes, contact links, security challenge, terminal, local discoveries, and static deployment model are retained.
+**Story** is the primary experience. **Quick** immediately exposes Anwesha’s profile, projects, technical skills, experience, research, milestones, Engineering Profile, and contact channels. The original project data, 17 mission routes, contact links, security challenge, terminal, local discoveries, and static deployment model are retained.
 
 Built with Next.js, React, strict TypeScript, original Canvas/SVG illustration, and a progressively loaded Three.js observatory. Archivo is bundled locally; IBM Plex Mono is reserved for technical readouts. There are no external character assets or autoplay videos. Every essential action also has a semantic HTML interface when WebGL is unavailable.
 
@@ -30,7 +30,7 @@ npm run format:check
 
 `build` creates the complete static export in `out/`. `start` serves that export with the included dependency-free Node server; build first. Browser tests start the production server or reuse one already running on port 3000. Tests use the installed Google Chrome channel. If Chrome is unavailable, install it or configure an installed Playwright browser in `playwright.config.ts`. Use `npx playwright show-report` to inspect a test report.
 
-No runtime secrets, database, or API keys are required. Set `NEXT_PUBLIC_SITE_URL` to the final HTTPS origin before the deployment build so metadata references the correct domain. `.env.example` documents this optional setting. Asset preparation generates `public/og.png` from the original SVG before development and production builds. The local static server also accepts `PORT` and `HOST`.
+No runtime secrets, database, or API keys are required. Set `NEXT_PUBLIC_SITE_URL` to the final HTTPS origin before deployment for absolute social URLs and the 19-entry sitemap. Without a configured origin, canonical/social paths remain relative and the sitemap intentionally contains no invented URLs. `.env.example` documents this optional setting. Asset preparation generates `public/og.png` from the original SVG before development and production builds. The local static server also accepts `PORT` and `HOST`.
 
 `next.config.ts` bounds experimental static generation to two workers and one page per worker, with a retry for transient export failures. These settings reduce Windows filesystem and memory contention without changing the normal npm commands.
 
@@ -62,7 +62,7 @@ The portfolio records remain in `src/data/portfolio.ts`, with strict interfaces 
 
 | Export           | Controls                                                                                                   |
 | ---------------- | ---------------------------------------------------------------------------------------------------------- |
-| `profile`        | Identity, introduction, institution, contact/social links, résumé path, and editorial sources              |
+| `profile`        | Identity, introduction, institution, contact/social links, Engineering Profile path, and editorial sources |
 | `projects`       | Mission records, technology, architecture, outcomes, evidence, links, map coordinates, and visual identity |
 | `categories`     | Constellation filters                                                                                      |
 | `skills`         | Technical systems and connected project IDs                                                                |
@@ -77,13 +77,13 @@ Project IDs are durable URLs: `/missions/<id>/`. Keep technology-to-project refe
 
 ## Content and evidence
 
-The redesign preserves the source distinctions from the first version. Three mission files are source-available projects, six cite owner-maintained portfolio records, and eight remain explicitly proposed concepts. A repository or portfolio entry supports documented features; it does not independently establish adoption, scientific validation, measured outcomes, or contribution scope.
+Project status uses SHIPPED, ACTIVE BUILD, PROTOTYPE, RESEARCH and CONCEPT. Six flagship systems lead the briefing; the full 17-mission archive stays searchable. Public repositories and technical records are linked where available, alongside the architecture, decisions and constraints for each mission.
 
-Career and memory records include the owner-documented Adxania Cyber Solutions internship from August 2025 to February 2026, IEEE SIGHT leadership, NCSC and INSPIRE–MANAK recognition, and Google Cloud Arcade milestones. Research logs distinguish documented research directions from interests and proposed experiments. The girl’s journey is a symbolic narrative, not an invented dated childhood biography.
+Career and memory records include the Adxania Cyber Solutions internship from August 2025 to February 2026, IEEE SIGHT leadership, NCSC and INSPIRE–MANAK recognition, and Google Cloud Arcade milestones. Research logs show the question, technical framework and next evaluation. The girl’s journey is a symbolic narrative, not an invented dated childhood biography.
 
 Editorial sources include the existing [project catalogue](https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/projects.ts), [timeline](https://github.com/Ak-369-1729/anwesha_portfolio/blob/main/src/data/timeline.ts), [BoundaryLens README](https://github.com/Ak-369-1729/BoundaryLens/blob/main/README.md), and [ChronoHeritage README](https://github.com/Ak-369-1729/Chrono_Heritage/blob/main/README.md).
 
-The résumé action downloads `public/resume.html`, a printable HTML profile compiled from owner-maintained records and supplied contact details. To use an approved PDF, add it to `public/` and update `profile.resume`.
+No résumé PDF is included. The Engineering Profile at `/engineering-profile/` is a printable HTML document, clearly labeled throughout the site. It uses the same profile, project and milestone data as the rest of the portfolio.
 
 The contact form prepares a URL-encoded `mailto:` draft. The visitor sends it through their email application; the website does not claim to send mail.
 
@@ -109,10 +109,16 @@ Reduced motion selects static world states, disables ambient movement and animat
 
 The illustrated backdrop renders bounded geometry using one Canvas2D context; the optional observatory uses one persistent WebGL context. It caps pixel ratio, uses fewer stars on mobile, updates quiet scenes at 30 fps and moving transitions at up to 60 fps, pauses when the document is hidden, and removes listeners and frames when unmounted. Quick Mode unmounts the world. Security, terminal, command-palette, and Quick Mode interfaces are split into separate loads.
 
-Version 2 is measured separately from the first version. See `docs/validation.md` for the current release-check record; the earlier version’s Lighthouse result is historical, not a performance claim for the redesigned renderer. Repeat performance and accessibility audits on the deployed site and representative devices.
+The production refinement is validated separately from earlier editions. See `docs/validation.md` for the current release-check record; the earlier version’s Lighthouse result is historical, not a performance claim for the redesigned renderer. Repeat performance and accessibility audits on the deployed site and representative devices.
 
 See `docs/architecture.md` for the audit decisions, state boundaries, continuous-scene model, and maintenance guidance.
 
 ## Release verification
 
 Version 2 measured 99 Performance, 100 Accessibility, 100 Best Practices, and 100 SEO in a local mobile Lighthouse 13.6.0 audit with 4× CPU slowdown. Production build, TypeScript, lint, formatting, and 35 browser checks pass. See `docs/validation.md` for scope and the distinction between local measurements and deployed-device testing.
+
+## Production metadata and export
+
+`src/lib/seo.ts` centralizes page titles, descriptions and deployment URLs. With `NEXT_PUBLIC_SITE_URL` configured to a real public origin, canonical/social links become absolute and the sitemap includes home, profile and all 17 missions. Without a known origin, canonical/social references stay relative and the sitemap stays empty; the build never guesses a domain or publishes localhost metadata. Person and mission structured data are included.
+
+`postbuild` prepares dot-joined aliases for nested Next segment files, so Windows-generated static exports support client navigation and prefetching on ordinary static servers. HTML, segment data and XML are served with revalidation rather than stale long-lived caching.

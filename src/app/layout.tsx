@@ -1,41 +1,37 @@
-import type { Metadata, Viewport } from 'next';
+import type { Viewport } from 'next';
 import '@fontsource-variable/archivo/standard.css';
 import '@fontsource/ibm-plex-mono/400.css';
 import './globals.css';
 import '@/components/story/story.css';
+import '@/components/story/refinement.css';
+import { pageMetadata, siteOrigin } from '@/lib/seo';
+import { profile } from '@/data/portfolio';
 import SkyBridge from '@/components/hud/SkyBridge';
 
-export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
-  title: 'Anwesha Kar — How a question became an engineer',
-  description:
-    'Follow a little girl’s curiosity from a quiet sky through code, systems, cybersecurity, and space. An interactive story and technical portfolio by Anwesha Kar.',
+export const metadata = {
+  ...pageMetadata('Anwesha Kar — SYSTEM 369', profile.positioning, '/'),
   applicationName: 'System 369',
-  keywords: ['Anwesha Kar', 'software engineer', 'cybersecurity', 'research', 'System 369'],
-  openGraph: {
-    title: 'How a question became an engineer — Anwesha Kar',
-    description: 'A story of curiosity. A world built from code.',
-    type: 'website',
-    images: [
-      {
-        url: '/og.png',
-        width: 1200,
-        height: 630,
-        alt: 'Anwesha Kar — System 369 engineering universe',
-      },
-    ],
-  },
-  twitter: { card: 'summary_large_image', title: 'Anwesha Kar — System 369', images: ['/og.png'] },
   icons: { icon: '/icon.svg' },
   robots: { index: true, follow: true },
 };
-export const viewport: Viewport = { themeColor: '#080d12', width: 'device-width', initialScale: 1 };
+export const viewport: Viewport = {
+  themeColor: '#131613',
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+};
 const initializeSky = `(function(){try{var p=localStorage.getItem('system369.sky.v2');var s=p==='light'||p==='dark'?p:(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');document.documentElement.dataset.sky=s;document.documentElement.style.colorScheme=s}catch(e){document.documentElement.dataset.sky=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'}})()`;
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {!siteOrigin && (
+          <>
+            <meta property="og:image" content="/og.png" />
+            <meta name="twitter:image" content="/og.png" />
+          </>
+        )}
         <script dangerouslySetInnerHTML={{ __html: initializeSky }} />
       </head>
       <body>

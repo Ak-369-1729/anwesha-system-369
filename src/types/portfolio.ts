@@ -26,7 +26,7 @@ export interface Project {
   lessons: string;
   github: string | null;
   demo: string | null;
-  status: 'Concept record' | 'Portfolio record' | 'Source available';
+  status: 'SHIPPED' | 'ACTIVE BUILD' | 'PROTOTYPE' | 'RESEARCH' | 'CONCEPT';
   year: string | null;
   featured: boolean;
   coordinates: { x: number; y: number };
@@ -48,7 +48,7 @@ export interface ResearchLog {
   id: string;
   title: string;
   area: string;
-  status: 'Research interest' | 'Portfolio research';
+  status: 'RESEARCH';
   hypothesis: string;
   problem: string;
   proposedSystem: string;
@@ -69,6 +69,6 @@ export interface Achievement {
   id: string;
   title: string;
   description: string;
-  status: 'Unverified brief reference' | 'Portfolio documented';
+  status: 'Science' | 'Leadership' | 'Cloud practice';
   source?: string;
 }

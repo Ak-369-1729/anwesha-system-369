@@ -13,6 +13,7 @@ const mime = {
   '.js': 'text/javascript; charset=utf-8',
   '.mjs': 'text/javascript; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
+  '.xml': 'application/xml; charset=utf-8',
   '.txt': 'text/plain; charset=utf-8',
   '.svg': 'image/svg+xml',
   '.png': 'image/png',
@@ -55,7 +56,7 @@ async function sendFile(request, response, file, status, pathname) {
     'Content-Type': mime[extname(file.path).toLowerCase()] || 'application/octet-stream',
     'Content-Length': file.size,
     'Cache-Control':
-      status !== 200 || extname(file.path) === '.html'
+      status !== 200 || ['.html', '.txt', '.xml'].includes(extname(file.path))
         ? 'no-cache'
         : immutable
           ? 'public, max-age=31536000, immutable'

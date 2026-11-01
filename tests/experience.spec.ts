@@ -43,7 +43,7 @@ async function openStory(page: Page, path = '/', inspect = true) {
 }
 async function openQuick(page: Page) {
   await openStory(page);
-  await page.getByRole('button', { name: 'QUICK', exact: true }).click();
+  await page.getByRole('button', { name: /^QUICK/ }).click();
   await expect(page.locator('html')).toHaveAttribute('data-experience', 'quick');
   await expect(page.locator('.quick-portfolio')).toBeVisible();
 }
@@ -206,7 +206,7 @@ test('Quick Mode preserves searchable mission records, categories and routes', a
   await atlas.locator('.project-index-row').filter({ hasText: 'NEXUS' }).click();
   await expect(page).toHaveURL(/\/missions\/nexus\/?$/);
   await expect(page.locator('h1')).toContainText('NEXUS');
-  await expect(page.locator('.file-meta')).toContainText('SOURCE AVAILABLE');
+  await expect(page.locator('.file-meta')).toContainText('PROTOTYPE');
   await expect(page.locator('.file-evidence')).toBeVisible();
 });
 
@@ -258,7 +258,7 @@ test('Quick mission files return to the project anchor without reopening Story M
   await expect(page.locator('.project-index-row')).toHaveCount(17);
 });
 
-test('Quick Mode gives immediate profile, contacts, résumé and persistent preference', async ({
+test('Quick Mode gives immediate profile, contacts, engineering profile and persistent preference', async ({
   page,
 }) => {
   await openQuick(page);
@@ -277,15 +277,21 @@ test('Quick Mode gives immediate profile, contacts, résumé and persistent pref
     'href',
     'mailto:anwesha.hogwarts@gmail.com',
   );
-  const download = page.waitForEvent('download');
-  await page.getByRole('button', { name: /Download résumé/i }).click();
-  expect((await download).suggestedFilename()).toMatch(/Anwesha.*\.html$/i);
+  const popup = page.waitForEvent('popup');
+  await page
+    .getByRole('button', { name: /Engineering profile/i })
+    .first()
+    .click();
+  const document = await popup;
+  await expect(document).toHaveURL(/engineering-profile/);
+  await expect(document.getByRole('heading', { level: 1 })).toHaveText('Anwesha Kar');
+  await document.close();
   await expect(page.locator('#flight-path')).toContainText('Adxania');
   await expect(page.locator('#vault')).toContainText('INSPIRE');
   await page.reload();
   await expect(page.locator('.quick-portfolio')).toBeVisible();
   await expect(page.locator('canvas.story-world')).toHaveCount(0);
-  await page.getByRole('button', { name: 'STORY', exact: true }).click();
+  await page.getByRole('button', { name: /^STORY/ }).click();
   await expect(page.locator('canvas.story-world')).toHaveCount(1);
 });
 
@@ -384,7 +390,7 @@ test('story, Quick Mode and sky controls survive unavailable storage', async ({ 
   await expect(page.locator('.signal-artifact')).toContainText('QUESTION COLLECTED');
   await page.getByRole('button', { name: /Change sky/i }).click();
   await expect(page.locator('html')).toHaveAttribute('data-sky', 'light');
-  await page.getByRole('button', { name: 'QUICK', exact: true }).click();
+  await page.getByRole('button', { name: /^QUICK/ }).click();
   await expect(page.locator('.quick-portfolio')).toBeVisible();
   expect(errors).toEqual([]);
 });
@@ -410,7 +416,7 @@ for (const [width, height] of [
       await page.setViewportSize({ width, height });
       await openStory(page);
       for (const mode of ['STORY', 'QUICK']) {
-        await page.getByRole('button', { name: mode, exact: true }).click();
+        await page.getByRole('button', { name: mode === 'STORY' ? /^STORY/ : /^QUICK/ }).click();
         if (mode === 'QUICK') await expect(page.locator('.quick-portfolio')).toBeVisible();
         for (const sky of ['dark', 'light']) {
           if ((await page.locator('html').getAttribute('data-sky')) !== sky)
@@ -585,7 +591,7 @@ test('the complete journey works when WebGL is unavailable', async ({ page }) =>
   await openStory(page);
   await jumpTo(page, 'cyberspace');
   await expect(page.locator('.security-lab')).toBeVisible();
-  await page.getByRole('button', { name: 'QUICK', exact: true }).click();
+  await page.getByRole('button', { name: /^QUICK/ }).click();
   await expect(page.locator('.quick-portfolio')).toBeVisible();
 });
 
@@ -661,7 +667,7 @@ test('project orbits pause for keyboard selection and resume afterwards', async 
   const paused = Number(await stage.getAttribute('data-orbit-time'));
   await page.waitForTimeout(350);
   expect(Number(await stage.getAttribute('data-orbit-time')) - paused).toBeLessThan(0.1);
-  await page.getByRole('button', { name: 'STORY', exact: true }).focus();
+  await page.getByRole('button', { name: /^STORY/ }).focus();
   await expect
     .poll(async () => Number(await stage.getAttribute('data-orbit-time')) - paused)
     .toBeGreaterThan(0.2);

@@ -20,6 +20,7 @@ export default function OrbitalStage(props: Props) {
   const router = useRouter();
   const host = useRef<HTMLDivElement>(null);
   const live = useRef(props);
+  const invalidate = useRef<(() => void) | null>(null);
   const skillButtons = useRef<(HTMLButtonElement | null)[]>([]);
   const projectLinks = useRef<(HTMLAnchorElement | null)[]>([]);
   const rotate = useRef<(delta: number) => void>(() => {});
@@ -28,6 +29,7 @@ export default function OrbitalStage(props: Props) {
   const [ready, setReady] = useState(false);
   useEffect(() => {
     live.current = props;
+    invalidate.current?.();
   }, [props]);
 
   useEffect(() => {
@@ -39,7 +41,16 @@ export default function OrbitalStage(props: Props) {
         const element = host.current;
         let renderer: InstanceType<typeof T.WebGLRenderer>;
         try {
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('webgl2', {
+            alpha: true,
+            antialias: true,
+            powerPreference: 'low-power',
+          });
+          if (!context) return;
           renderer = new T.WebGLRenderer({
+            canvas,
+            context,
             alpha: true,
             antialias: true,
             powerPreference: 'low-power',
@@ -217,7 +228,30 @@ export default function OrbitalStage(props: Props) {
         let coreWeight = 1,
           graphWeight = 0;
         const satelliteWeights = projects.map(() => 0);
-        let force = true;
+        let force = true,
+          lostContext = false;
+        const quiet = () =>
+          ['door', 'flight-path', 'mirror', 'human', 'contact'].includes(live.current.sceneId);
+        function schedule() {
+          if (!frame && !disposed && !lostContext && !document.hidden && !quiet())
+            frame = requestAnimationFrame(draw);
+        }
+        const redraw = () => {
+          force = true;
+          schedule();
+        };
+        const visibility = () => {
+          if (document.hidden) {
+            cancelAnimationFrame(frame);
+            frame = 0;
+          } else {
+            last = performance.now();
+            redraw();
+          }
+        };
+        invalidate.current = redraw;
+        const projected = new T.Vector3();
+        const zeroPointer = new T.Vector2();
         const seen = new Set<number>();
         function resize() {
           const bounds = element.getBoundingClientRect();
@@ -227,6 +261,7 @@ export default function OrbitalStage(props: Props) {
           camera.aspect = width / Math.max(1, height);
           camera.updateProjectionMatrix();
           force = true;
+          schedule();
         }
         const observer = new ResizeObserver(resize);
         observer.observe(element);
@@ -261,6 +296,7 @@ export default function OrbitalStage(props: Props) {
             velocity = delta;
             lastX = event.clientX;
             force = true;
+            schedule();
             return;
           }
           const hit = cast(event);
@@ -282,6 +318,7 @@ export default function OrbitalStage(props: Props) {
           if (!hit) return;
           pulse = 1;
           force = true;
+          schedule();
           const project = hit.object.userData.project;
           if (project) {
             live.current.onProject(project.id);
@@ -305,6 +342,7 @@ export default function OrbitalStage(props: Props) {
             (event.clientY / innerHeight) * 2 - 1,
           );
           force = true;
+          schedule();
         };
         const hoverControl = (event: PointerEvent) => {
           const target = event.type === 'pointerout' ? event.relatedTarget : event.target;
@@ -318,6 +356,9 @@ export default function OrbitalStage(props: Props) {
         };
         const lost = (event: Event) => {
           event.preventDefault();
+          lostContext = true;
+          cancelAnimationFrame(frame);
+          frame = 0;
           renderer.domElement.style.opacity = '0';
           setReady(false);
         };
@@ -332,16 +373,22 @@ export default function OrbitalStage(props: Props) {
         rotate.current = (delta) => {
           targetRotation += delta;
           force = true;
+          schedule();
         };
         reset.current = () => {
           targetRotation = 0.3;
           velocity = 0;
           pulse = 0.5;
           force = true;
+          schedule();
         };
         function draw(now: number) {
-          frame = requestAnimationFrame(draw);
-          if (document.hidden || now - last < 33) return;
+          frame = 0;
+          if (disposed || lostContext || document.hidden || quiet()) return;
+          if (now - last < 33) {
+            schedule();
+            return;
+          }
           const dt = Math.min(0.06, (now - last) / 1000);
           last = now;
           const settings = live.current,
@@ -350,6 +397,7 @@ export default function OrbitalStage(props: Props) {
           if (changed) {
             previousId = id;
             force = true;
+            schedule();
             setLabel('');
           }
           const targetDay = settings.theme === 'light' ? 1 : 0;
@@ -408,7 +456,7 @@ export default function OrbitalStage(props: Props) {
             eased = phase * phase * (3 - 2 * phase);
           const depth = T.MathUtils.lerp(cameraPath[lower], cameraPath[upper], eased);
           pointerView.lerp(
-            settings.reducedMotion ? new T.Vector2() : pointerTarget,
+            settings.reducedMotion ? zeroPointer : pointerTarget,
             Math.min(1, dt * 5),
           );
           cameraTarget.set(
@@ -458,7 +506,7 @@ export default function OrbitalStage(props: Props) {
               Math.sin(angle * 2 + i) * 0.65,
             );
             satellite.scale.setScalar(
-              (['workshop', 'universe'].includes(id) ? 1.15 : 0.7) *
+              (['workshop', 'universe'].includes(id) ? (projects[i].featured ? 1.25 : 0.8) : 0.7) *
                 Math.max(0.001, satelliteWeights[i]),
             );
           });
@@ -481,23 +529,30 @@ export default function OrbitalStage(props: Props) {
           nodes.forEach((node, i) => {
             const button = skillButtons.current[i];
             if (!button) return;
-            const point = node.getWorldPosition(new T.Vector3()).project(camera);
+            const point = node.getWorldPosition(projected).project(camera);
             button.style.left = `${(point.x * 0.5 + 0.5) * width}px`;
             button.style.top = `${(-point.y * 0.5 + 0.5) * height}px`;
           });
           satellites.forEach((satellite, i) => {
             const link = projectLinks.current[i];
             if (!link) return;
-            const position = satellite.getWorldPosition(new T.Vector3()).project(camera);
+            const position = satellite.getWorldPosition(projected).project(camera);
             link.style.left = `${(position.x * 0.5 + 0.5) * width}px`;
             link.style.top = `${(-position.y * 0.5 + 0.5) * height}px`;
             link.style.visibility = position.z < 1 && position.z > -1 ? 'visible' : 'hidden';
+            link.dataset.side = position.x > 0.45 ? 'left' : 'right';
           });
+          if (!settings.reducedMotion || themeMoving) schedule();
         }
-        frame = requestAnimationFrame(draw);
+        window.addEventListener('scroll', redraw, { passive: true });
+        document.addEventListener('visibilitychange', visibility);
+        schedule();
         setReady(true);
         cleanup = () => {
           cancelAnimationFrame(frame);
+          invalidate.current = null;
+          window.removeEventListener('scroll', redraw);
+          document.removeEventListener('visibilitychange', visibility);
           observer.disconnect();
           element.removeEventListener('pointerdown', down);
           element.removeEventListener('pointermove', move);

@@ -5,11 +5,11 @@ import dynamic from 'next/dynamic';
 import { useExperience } from '@/hooks/useExperience';
 import { useSky } from '@/hooks/useSky';
 import { useStoryProgress } from '@/hooks/useStoryProgress';
-import { storyChapters, worldChapters, worldSceneIndex } from '@/story/chapters';
+import { storyChapters, worldChapters, worldSceneIndex, storyAct } from '@/story/chapters';
 import { profile, projects } from '@/data/portfolio';
 import SkyControl from '@/components/hud/SkyControl';
-import StoryWorld from '@/components/world/StoryWorld';
-import OrbitalStage from '@/components/world/OrbitalStage';
+const StoryWorld = dynamic(() => import('@/components/world/StoryWorld'), { ssr: false });
+const OrbitalStage = dynamic(() => import('@/components/world/OrbitalStage'), { ssr: false });
 const StoryPanels = dynamic(() => import('./StoryPanels'));
 
 const QuickPortfolio = dynamic(() => import('@/components/quick-mode/QuickPortfolio'));
@@ -146,11 +146,8 @@ export default function StoryExperience() {
           award('artifact-system', 20);
           travel(aliases.launch);
         } else setStatus('The launch lives in Story Mode. Follow the girl to the launchpad.');
-      } else if (key === 'resume') {
-        const link = document.createElement('a');
-        link.href = profile.resume;
-        link.download = 'Anwesha-Kar-Resume.html';
-        link.click();
+      } else if (key === 'resume' || key === 'profile') {
+        window.open(profile.resume, '_blank', 'noopener,noreferrer');
       } else if (key === 'github' || key === 'linkedin') {
         const url = profile[key];
         if (url) window.open(url, '_blank', 'noopener,noreferrer');
@@ -276,7 +273,7 @@ export default function StoryExperience() {
       >
         Skip story and open Quick Mode
       </a>
-      {storyMode && (
+      {storyMode && experience.ready && (
         <StoryWorld
           progressRef={progressRef}
           theme={theme}
@@ -305,12 +302,20 @@ export default function StoryExperience() {
         </span>
         <div className="field-controls">
           <div className="experience-switch" role="group" aria-label="Experience mode">
-            <button aria-pressed={storyMode} onClick={() => action('explorer')}>
-              STORY
+            <button
+              aria-label="STORY ~3 min · interactive"
+              aria-pressed={storyMode}
+              onClick={() => action('explorer')}
+            >
+              STORY <small aria-hidden="true">~3 min · interactive</small>
             </button>
             <span>/</span>
-            <button aria-pressed={!storyMode} onClick={() => action('recruiter')}>
-              QUICK
+            <button
+              aria-label="QUICK ~60 sec · recruiter view"
+              aria-pressed={!storyMode}
+              onClick={() => action('recruiter')}
+            >
+              QUICK <small aria-hidden="true">~60 sec · recruiter view</small>
             </button>
           </div>
           <SkyControl theme={theme} onToggle={toggleSky} />
@@ -331,7 +336,7 @@ export default function StoryExperience() {
           aria-label="How a question became an engineer"
         >
           <div className={`story-stage chapter-${current.id} ${inspecting ? 'is-inspecting' : ''}`}>
-            {storyMode && (
+            {storyMode && experience.ready && (
               <OrbitalStage
                 progressRef={progressRef}
                 sceneId={current.id}
@@ -350,6 +355,7 @@ export default function StoryExperience() {
                 }}
               />
             )}
+
             {chapter === 0 && experience.reducedMotion && (
               <button className="motion-invite" onClick={experience.toggleMotion}>
                 <span aria-hidden="true">▷</span>
@@ -363,8 +369,12 @@ export default function StoryExperience() {
             </div>
             <div className="scene-coordinates" aria-hidden="true">
               <span>
-                0{Math.floor(chapter / 6) + 1} /{' '}
-                {chapter < 7 ? 'EARTH' : chapter < 14 ? 'BEYOND' : 'WITHIN'}
+                {storyAct(chapter).name} / ACT{' '}
+                {
+                  ['I', 'II', 'III', 'IV', 'V'][
+                    [0, 2, 5, 11, 14].filter((start) => chapter >= start).length - 1
+                  ]
+                }
               </span>
               <span>36.9 / 17.29</span>
             </div>
@@ -524,17 +534,29 @@ export default function StoryExperience() {
                 </button>
                 <button
                   className="next-scene"
+                  aria-label={
+                    chapter === 0
+                      ? 'FOLLOW THE SIGNAL'
+                      : chapter === 16
+                        ? 'BACK TO THE FIRST QUESTION'
+                        : 'CONTINUE'
+                  }
                   onClick={() => {
                     if (chapter === 0) experience.boot();
                     travel(chapter === 16 ? 0 : chapter + 1);
                   }}
                 >
-                  {chapter === 0
-                    ? 'FOLLOW THE SIGNAL'
-                    : chapter === 16
-                      ? 'BACK TO THE FIRST QUESTION'
-                      : 'CONTINUE'}{' '}
-                  <span>↗</span>
+                  <span className="next-label-long">
+                    {chapter === 0
+                      ? 'FOLLOW THE SIGNAL'
+                      : chapter === 16
+                        ? 'BACK TO THE FIRST QUESTION'
+                        : 'CONTINUE'}
+                  </span>
+                  <span className="next-label-short">
+                    {chapter === 0 ? 'BEGIN' : chapter === 16 ? 'RESTART' : 'CONTINUE'}
+                  </span>
+                  <span aria-hidden="true">↗</span>
                 </button>
               </div>
             </footer>
@@ -552,7 +574,8 @@ export default function StoryExperience() {
           </ol>
           <p>
             Use Quick Mode for all projects, technical skills, experience, research, achievements,
-            résumé and contact information. Every interaction can be skipped with Continue.
+            engineering profile and contact information. Every interaction can be skipped with
+            Continue.
           </p>
         </div>
         <noscript>
@@ -572,7 +595,7 @@ export default function StoryExperience() {
               ))}
             </ul>
             <a href={`mailto:${profile.email}`}>{profile.email}</a>
-            <a href={profile.resume}>Download résumé</a>
+            <a href={profile.resume}>Engineering profile ↗</a>
           </div>
           <style>{'.story-track,.field-header,.field-footer{display:none!important}'}</style>
         </noscript>
@@ -669,6 +692,9 @@ export default function StoryExperience() {
           <ol>
             {storyChapters.map((c, i) => (
               <li key={c.id}>
+                {storyAct(i).start === i && (
+                  <span className="story-act-label">{storyAct(i).name}</span>
+                )}
                 <button
                   aria-current={i === chapter ? 'step' : undefined}
                   onClick={() => {

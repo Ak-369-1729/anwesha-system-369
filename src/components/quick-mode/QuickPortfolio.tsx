@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import EvidenceLinks from '@/components/content/EvidenceLinks';
 import ProjectAtlas from '../ProjectAtlas';
 import {
   achievements,
   currentMission,
+  flagshipProjects,
   milestones,
   profile,
   projects,
@@ -32,7 +34,7 @@ const links = [
 function SourceLink({ href }: { href?: string }) {
   return href ? (
     <a className="q-source" href={href} target="_blank" rel="noopener noreferrer">
-      Original record <span aria-hidden="true">↗</span>
+      Technical record <span aria-hidden="true">↗</span>
     </a>
   ) : null;
 }
@@ -59,7 +61,7 @@ export default function QuickPortfolio({ onAction, onAward, onNavigate }: QuickP
   const [selectedSkill, setSelectedSkill] = useState(skills[0].id);
   const [draftStatus, setDraftStatus] = useState('');
   const activeSkill = skills.find((skill) => skill.id === selectedSkill) || skills[0];
-  const selectedProjects = projects.filter((project) => project.featured);
+  const selectedProjects = flagshipProjects;
 
   return (
     <article className="quick-portfolio" aria-label="Technical portfolio briefing">
@@ -71,19 +73,18 @@ export default function QuickPortfolio({ onAction, onAward, onNavigate }: QuickP
         <div className="q-profile-layout">
           <div>
             <h1 id="q-name">{profile.name}</h1>
-            <p className="q-role">{profile.title} / Builder / Researcher</p>
-            <p className="q-affiliation">
-              {profile.specialization} · {profile.institution}
-            </p>
+            <p className="q-role">{profile.positioning}</p>
+            <p className="q-affiliation">{profile.institution}</p>
           </div>
           <div className="q-profile-note">
-            <p>{profile.introduction}</p>
-            <p className="q-profile-closer">The question comes first. The system follows.</p>
+            <p>
+              Start with six flagship systems. Inspect source, architecture and technical records.
+            </p>
           </div>
         </div>
         <div className="q-profile-actions">
           <button className="q-action q-primary" onClick={() => onAction('resume')}>
-            Download résumé <span aria-hidden="true">↓</span>
+            Engineering profile <span aria-hidden="true">↓</span>
           </button>
           {profile.github && (
             <a className="q-action" href={profile.github} target="_blank" rel="noopener noreferrer">
@@ -106,9 +107,6 @@ export default function QuickPortfolio({ onAction, onAward, onNavigate }: QuickP
             </a>
           )}
         </div>
-        <p className="q-note">
-          Résumé download: a printable engineering profile assembled from the supplied sources.
-        </p>
       </section>
 
       <nav className="q-jump-nav" aria-label="Quick portfolio contents">
@@ -130,54 +128,53 @@ export default function QuickPortfolio({ onAction, onAward, onNavigate }: QuickP
       <section id="universe" className="q-section" aria-labelledby="q-projects-title">
         <SectionHeading
           number="01"
-          title="Selected systems."
+          title="Flagship systems."
           detail="Different problems. Visible decisions. Inspect the work beneath the interface."
         />
         <div className="q-selected-projects" aria-labelledby="q-projects-title">
           <h3 id="q-projects-title" className="sr-only">
-            Selected project mission files
+            Flagship project mission files
           </h3>
           {selectedProjects.map((project, index) => (
-            <Link
-              href={`/missions/${project.id}/`}
-              className="q-project-row"
-              key={project.id}
-              onClick={() => onAward(`project:${project.id}`, 20)}
-            >
-              <span className="q-project-number">{String(index + 1).padStart(2, '0')}</span>
-              <span className="q-project-symbol" aria-hidden="true">
-                {project.visualIdentity.symbol}
-              </span>
-              <div className="q-project-body">
-                <h3>{project.title}</h3>
-                <p>{project.description}</p>
-                <span className="q-technology-signature">
-                  {project.technologies.join(' / ') || 'Problem definition first'}
+            <article className="q-flagship-entry" key={project.id}>
+              <Link
+                href={`/missions/${project.id}/`}
+                className="q-project-row"
+                key={project.id}
+                onClick={() => onAward(`project:${project.id}`, 20)}
+              >
+                <span className="q-project-number">{String(index + 1).padStart(2, '0')}</span>
+                <span className="q-project-symbol" aria-hidden="true">
+                  {project.visualIdentity.symbol}
                 </span>
-              </div>
-              <span className="q-project-status">{project.status}</span>
-              <span className="q-project-arrow" aria-hidden="true">
-                ↗
-              </span>
-            </Link>
+                <div className="q-project-body">
+                  <h3>{project.title}</h3>
+                  <p>{project.description}</p>
+                  <span className="q-technology-signature">
+                    {project.technologies.join(' / ') || 'Problem definition first'}
+                  </span>
+                </div>
+                <span className="q-project-status">{project.status}</span>
+                <span className="q-project-arrow" aria-hidden="true">
+                  ↗
+                </span>
+              </Link>
+              <EvidenceLinks project={project} />
+            </article>
           ))}
         </div>
         <div className="q-archive-heading">
-          <h3>All mission records</h3>
+          <h3>Mission archive</h3>
           <p>Search by project, technology, or constellation.</p>
         </div>
         <ProjectAtlas compact onDiscover={(id) => onAward(`project:${id}`, 20)} />
-        <p className="q-note">
-          Source-backed work, owner-maintained portfolio records, and proposed concepts carry
-          distinct evidence labels.
-        </p>
       </section>
 
       <section id="engine" className="q-section" aria-labelledby="q-skills-title">
         <SectionHeading
           number="02"
           title="Technology, in context."
-          detail="Follow a module to the problems it powers. No proficiency percentages."
+          detail="Follow a module to the problems it powers. See the decisions and projects behind each technology."
         />
         <h3 id="q-skills-title" className="sr-only">
           Technology systems and project connections
@@ -218,13 +215,13 @@ export default function QuickPortfolio({ onAction, onAward, onNavigate }: QuickP
         <SectionHeading
           number="03"
           title="A path through the work."
-          detail="Experience, engineering, and service from the existing portfolio records."
+          detail="Cybersecurity experience, technical leadership and systems work."
         />
         <h3 id="q-experience-title" className="sr-only">
           Experience and flight path
         </h3>
         <ol className="q-timeline">
-          {milestones.map((milestone) => (
+          {[...milestones].reverse().map((milestone) => (
             <li key={milestone.id}>
               <span className="q-timeline-index">{milestone.phase}</span>
               <div>
@@ -288,7 +285,7 @@ export default function QuickPortfolio({ onAction, onAward, onNavigate }: QuickP
       <section id="vault" className="q-section" aria-labelledby="q-achievements-title">
         <SectionHeading
           number="05"
-          title="Milestones, kept in perspective."
+          title="Selected milestones."
           detail="Recognition and leadership as waypoints in an ongoing journey."
         />
         <h3 id="q-achievements-title" className="sr-only">
@@ -356,7 +353,7 @@ export default function QuickPortfolio({ onAction, onAward, onNavigate }: QuickP
                   LinkedIn ↗
                 </a>
               )}
-              <button onClick={() => onAction('resume')}>Résumé ↓</button>
+              <button onClick={() => onAction('resume')}>Engineering profile ↗</button>
             </div>
           </div>
           <form

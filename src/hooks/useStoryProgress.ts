@@ -92,6 +92,7 @@ export function useStoryProgress(
       }
     };
     const schedule = () => {
+      if (!active.current) return;
       if (!frame) frame = requestAnimationFrame(update);
     };
     const resize = () => {

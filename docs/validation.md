@@ -1,8 +1,20 @@
-# Validation record — version 2
+# Validation record — observatory edition
 
 The second pass is a redesign of the existing System 369 repository, not a new project. Portfolio data, contact channels, mission routes, and useful interactions were retained while the primary presentation changed to the continuous story.
 
-## V2 release verification
+## Observatory edition — 1 November 2026
+
+- Production build, strict TypeScript, ESLint and formatting: passed.
+- All 43 browser checks passed against the optimized static export.
+- All 17 scenes were checked with field instruments closed and open at 1366 × 768, 768 × 1024, 390 × 844, 320 × 568 and 844 × 390. Titles clear the header and navigation; instruments clear navigation and replace the title on narrow screens.
+- Additional interaction checks cover actual WebGL rotation/reset, drag input, native project-satellite links, selecting a skill node, focus restoration, and the complete WebGL-unavailable path.
+- Both skies, Quick Mode, all 17 mission routes, containment, discoveries, storage failure, reduced motion, palette, terminal and no-JavaScript navigation remain covered. No serious or critical axe violations were found in the tested surfaces.
+- The loading-screen convention was removed for this static experience: semantic content now paints directly and remains visible without JavaScript. Story restoration waits for the persisted experience state before taking control of scroll.
+- Screenshots were visually reviewed for the night/day opening, mobile opening, skill constellation, project satellites, cyber world and mirror. Local browser checks do not replace physical-device or deployed-site review.
+
+The v2 Lighthouse score below is historical and must not be presented as the score of the new Three.js edition.
+
+## V2 release verification (historical)
 
 **Final integrated validation: passed, 31 October 2026.**
 

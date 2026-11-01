@@ -1,8 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import '@fontsource/barlow-condensed/600.css';
-import '@fontsource/barlow-condensed/700.css';
-import '@fontsource/space-grotesk/400.css';
-import '@fontsource/space-grotesk/500.css';
+import '@fontsource-variable/archivo/standard.css';
 import '@fontsource/ibm-plex-mono/400.css';
 import './globals.css';
 import '@/components/story/story.css';

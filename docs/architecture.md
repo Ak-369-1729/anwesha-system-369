@@ -54,7 +54,11 @@ The renderer interpolates the same structural anchors between these locations. G
 
 The protagonist is procedural vector drawing with articulated limbs and a persistent copper scarf, field jacket, satchel, and collected shield. Pose comes from chapter metadata, scroll movement, cursor attention, idle time, and explicit interaction reactions. The storybook figure is original and symbolic; it does not represent a photograph or a factual dated biography.
 
-Canvas2D is an intentional rendering choice. It supplies the authored depth, parallax, geometry, and body language without loading a mesh pipeline or requiring WebGL. The canvas carries atmosphere and motion; semantic HTML carries every essential fact and action. If drawing is unavailable, the chapter controls, Quick Mode, and dossier routes remain useful.
+The rendering layers have separate responsibilities. `StoryWorld` supplies the illustrated landscape and persistent character. `OrbitalStage` asynchronously loads Three.js, creates the shader sphere, rings, skill nodes and raycastable project satellites, and supports pointer rotation with bounded inertia. Matching HTML links and buttons give the spatial objects keyboard and touch targets. Neither renderer owns essential facts: field instruments, Quick Mode and mission routes remain semantic HTML.
+
+`worldChapters` retains the canonical illustration coordinates; `storyChapters` defines the visitor journey. `worldProgress` maps the new narrative order to the original camera/geometry score. This preserves the durable scene hashes while allowing the observatory-to-orbit sequence. Field instruments receive their canonical scene identity rather than assuming narrative indices.
+
+`StoryExperience` opens a field instrument only on an explicit inspection action. Desktop instruments share a grid with the title; on narrow screens they replace the title area. Closing restores focus to the scene beacon. Reduced motion stops automatic orbital rotation and inertia while preserving manual rotation and all navigation.
 
 ## Day and night
 

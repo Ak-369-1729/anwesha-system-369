@@ -28,7 +28,7 @@
 }
 .q-kicker {
   display: block;
-  font: 10px/1.8 var(--mono);
+  font: 10px/1.8 var(--sans);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--dim);
@@ -53,7 +53,7 @@
   margin: 22px 0 8px;
 }
 .q-affiliation {
-  font: 10px/1.8 var(--mono);
+  font: 10px/1.8 var(--sans);
   margin: 0;
 }
 .q-profile-note p {
@@ -81,7 +81,7 @@
   gap: 22px;
   min-height: 51px;
   padding: 14px 20px;
-  font: 11px/1.7 var(--mono);
+  font: 11px/1.7 var(--sans);
   border-right: 1px solid var(--line);
   background: transparent;
   cursor: pointer;
@@ -105,7 +105,7 @@
   border-right: 0;
 }
 .q-note {
-  font: 10px/1.9 var(--mono);
+  font: 10px/1.9 var(--sans);
   color: var(--dim);
   margin: 14px 0 0;
 }
@@ -120,7 +120,7 @@
   align-items: center;
   gap: 9px;
   min-height: 30px;
-  font: 11px/1.5 var(--mono);
+  font: 11px/1.5 var(--sans);
   color: var(--muted);
 }
 .q-jump-nav a:hover {
@@ -145,7 +145,7 @@
 }
 .q-index {
   color: var(--cyan);
-  font: 10px/1.8 var(--mono);
+  font: 10px/1.8 var(--sans);
   padding-top: 6px;
 }
 .q-section-heading h2 {
@@ -179,7 +179,7 @@
 }
 .q-project-number {
   display: block;
-  font: 9px/1.8 var(--mono);
+  font: 9px/1.8 var(--sans);
   color: var(--dim);
 }
 .q-project-symbol {
@@ -200,11 +200,11 @@
   max-width: 670px;
 }
 .q-technology-signature {
-  font: 9px/1.8 var(--mono);
+  font: 9px/1.8 var(--sans);
   color: var(--dim);
 }
 .q-project-status {
-  font: 9px/1.8 var(--mono);
+  font: 9px/1.8 var(--sans);
   color: var(--muted);
   text-align: right;
 }
@@ -224,7 +224,7 @@
   font-weight: 500;
 }
 .q-archive-heading p {
-  font: 10px/1.8 var(--mono);
+  font: 10px/1.8 var(--sans);
   margin: 0;
 }
 .quick-portfolio .project-atlas {
@@ -291,7 +291,7 @@
   font-weight: 500;
 }
 .q-skill-controls button span {
-  font: 9px/1.7 var(--mono);
+  font: 9px/1.7 var(--sans);
   color: var(--dim);
 }
 .q-skill-controls button b {
@@ -326,7 +326,7 @@
   min-height: 42px;
   align-items: center;
   border-bottom: 1px solid var(--line);
-  font: 11px/1.8 var(--mono);
+  font: 11px/1.8 var(--sans);
 }
 .q-skill-detail a:hover {
   color: var(--cyan);
@@ -344,7 +344,7 @@
   border-bottom: 1px solid var(--line);
 }
 .q-timeline-index {
-  font: 10px/1.8 var(--mono);
+  font: 10px/1.8 var(--sans);
   color: var(--cyan);
   padding-top: 3px;
 }
@@ -368,7 +368,7 @@
   gap: 12px;
   min-height: 32px;
   margin-top: 10px;
-  font: 10px/1.8 var(--mono);
+  font: 10px/1.8 var(--sans);
   color: var(--cyan) !important;
 }
 .q-source:hover {
@@ -400,7 +400,7 @@
 }
 .q-research-status {
   margin-left: auto;
-  font: 9px/1.7 var(--mono);
+  font: 9px/1.7 var(--sans);
   color: var(--muted);
 }
 .q-detail-plus {
@@ -419,7 +419,7 @@
   padding: 0 35px 28px 48px;
 }
 .q-research-body h4 {
-  font: 10px/1.8 var(--mono);
+  font: 10px/1.8 var(--sans);
   text-transform: uppercase;
   color: var(--cyan);
   margin: 0 0 7px;
@@ -466,7 +466,7 @@
   border-bottom: 1px solid var(--line);
 }
 .q-now-layout dt {
-  font: 10px/1.8 var(--mono);
+  font: 10px/1.8 var(--sans);
   color: var(--dim);
 }
 .q-now-layout dd {
@@ -516,7 +516,7 @@
 }
 .q-contact-socials a,
 .q-contact-socials button {
-  font: 11px/1.8 var(--mono);
+  font: 11px/1.8 var(--sans);
   padding: 6px 0;
   min-height: 40px;
 }
@@ -532,7 +532,7 @@
   padding-left: 30px;
 }
 .q-contact-form label {
-  font: 10px/1.8 var(--mono);
+  font: 10px/1.8 var(--sans);
   color: var(--muted);
   margin-top: 8px;
 }
@@ -562,7 +562,7 @@
   margin-top: 2px;
 }
 .q-draft-status {
-  font: 10px/1.8 var(--mono);
+  font: 10px/1.8 var(--sans);
   color: var(--cyan) !important;
   margin: 0;
 }
@@ -948,4 +948,17 @@
   .q-draft-status {
     font-size: 9px;
   }
+}
+
+.q-profile h1 {
+  font-weight: 850;
+  font-stretch: 78%;
+  letter-spacing: -0.055em;
+}
+.q-section-heading h2 {
+  font-weight: 800;
+  letter-spacing: -0.045em;
+}
+.quick-portfolio .project-celestial {
+  text-shadow: none;
 }

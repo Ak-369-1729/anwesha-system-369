@@ -5,6 +5,7 @@ export type StoryChapter = {
   id: string;
   name: string;
   kicker: string;
+  headline: readonly string[];
   copy: readonly string[];
   description: string;
   environment: string;
@@ -31,9 +32,10 @@ const day = { sky: '#dcebf0', atmosphere: '#f2e9d4', signal: '#a56e21' };
  * normalized viewport offsets; zoom is relative to the illustrated stage.
  * The original signal and the girl's curiosity survive every transition.
  */
-export const storyChapters: readonly StoryChapter[] = [
+export const worldChapters: readonly StoryChapter[] = [
   {
     id: 'night',
+    headline: ['She saw', 'questions.'],
     name: 'The night',
     kicker: 'PROLOGUE / A QUESTION TAKES SHAPE',
     copy: ['Some people looked at the stars and saw light.', 'She saw questions.'],
@@ -52,9 +54,10 @@ export const storyChapters: readonly StoryChapter[] = [
   },
   {
     id: 'signal',
-    name: 'The signal',
+    headline: ['Follow', 'the signal.'],
+    name: 'The observatory',
     kicker: '01 / SOMETHING ANSWERED',
-    copy: ['One question fell a little closer.', 'She reached for it.'],
+    copy: ['A lens, a dark sky, and one signal that refused to stay still.', 'She followed it.'],
     description:
       'The girl follows the fallen signal. As she reaches out, braces, brackets and binary digits circle the same point of light.',
     environment: 'signal-field',
@@ -70,6 +73,7 @@ export const storyChapters: readonly StoryChapter[] = [
   },
   {
     id: 'forest',
+    headline: ['Connect', 'the ideas.'],
     name: 'The code forest',
     kicker: '02 / MAGIC FINDS A GRAMMAR',
     copy: [
@@ -92,9 +96,10 @@ export const storyChapters: readonly StoryChapter[] = [
   },
   {
     id: 'workshop',
+    headline: ['Make it', 'real.'],
     name: 'The workshop',
     kicker: '03 / A QUESTION BECOMES A MACHINE',
-    copy: ['An idea is a beginning.', 'A system is an idea you can inspect.'],
+    copy: ['The ideas became projects.', 'Each one asked a different engineering question.'],
     description:
       'The code forest becomes an engineering workshop. Real portfolio projects appear as inspectable machinery: a relay, an intelligence core, a map table and a verification ledger.',
     environment: 'workshop',
@@ -110,6 +115,7 @@ export const storyChapters: readonly StoryChapter[] = [
   },
   {
     id: 'failure',
+    headline: ['What could', 'go wrong?'],
     name: 'The failure',
     kicker: '04 / THE QUESTION CHANGES',
     copy: [
@@ -131,6 +137,7 @@ export const storyChapters: readonly StoryChapter[] = [
   },
   {
     id: 'cyberspace',
+    headline: ['Trust has', 'boundaries.'],
     name: 'The trust boundary',
     kicker: '05 / NOTICE. REASON. CONTAIN.',
     copy: [
@@ -153,9 +160,10 @@ export const storyChapters: readonly StoryChapter[] = [
   },
   {
     id: 'engine',
+    headline: ['Think in', 'systems.'],
     name: 'Bigger systems',
     kicker: '06 / THE VIEW GETS WIDER',
-    copy: ['One machine became many.', 'The difficult part was how they worked together.'],
+    copy: ['Interfaces. Services. Data.', 'She learned to make the parts work together.'],
     description:
       'The network grows into an infrastructure city. Interface layers, gateways, queues, memory cores and isolated containers power the same interconnected world.',
     environment: 'infrastructure',
@@ -171,9 +179,10 @@ export const storyChapters: readonly StoryChapter[] = [
   },
   {
     id: 'rocket',
+    headline: ['Ready for', 'something', 'bigger?'],
     name: 'The possibility',
     kicker: '07 / SOMETHING LARGER WAS TAKING SHAPE',
-    copy: ['Curiosity became code.', 'Code became systems.', 'Systems became possibilities.'],
+    copy: ['Looking up was a beginning.', 'She wanted to see what was beyond the frame.'],
     description:
       'The city’s modules assemble into a rocket. Its engine, security, navigation, telemetry and communications are ready. The girl looks toward the same sky where the story began.',
     environment: 'launch-pad',
@@ -189,9 +198,10 @@ export const storyChapters: readonly StoryChapter[] = [
   },
   {
     id: 'launch',
+    headline: ['Go', 'beyond.'],
     name: 'The launch',
     kicker: '08 / THE GROUND BECOMES A MEMORY',
-    copy: ['The question was no longer just “why?”', 'It was “how far?”'],
+    copy: ['The field became a point of light.', 'The next question was how far she could go.'],
     description:
       'The rocket lifts through clouds and atmosphere without a cut. The girl and the original signal travel with the camera as the field falls away.',
     environment: 'atmosphere',
@@ -207,6 +217,7 @@ export const storyChapters: readonly StoryChapter[] = [
   },
   {
     id: 'space',
+    headline: ['Stay', 'connected.'],
     name: 'The link',
     kicker: '09 / EVERY SIGNAL HAS A JOURNEY',
     copy: ['Distance changes the problem.', 'Curiosity keeps the link open.'],
@@ -225,6 +236,7 @@ export const storyChapters: readonly StoryChapter[] = [
   },
   {
     id: 'universe',
+    headline: ['Not stars.', 'Possibilities.'],
     name: 'The constellation',
     kicker: '10 / DIFFERENT WORLDS. CONNECTED QUESTIONS.',
     copy: [
@@ -246,6 +258,7 @@ export const storyChapters: readonly StoryChapter[] = [
   },
   {
     id: 'lab',
+    headline: ['Prove it.', 'Ask again.'],
     name: 'The research station',
     kicker: '11 / LEAVE ROOM FOR THE UNKNOWN',
     copy: ['An answer matters.', 'So does knowing how you would test it.'],
@@ -264,6 +277,7 @@ export const storyChapters: readonly StoryChapter[] = [
   },
   {
     id: 'door',
+    headline: ['The key', 'was why.'],
     name: 'The door',
     kicker: '12 / THE OLDEST KEY',
     copy: ['Code. Systems. A shield. A signal.', 'None opened this door.', 'One question did.'],
@@ -282,6 +296,7 @@ export const storyChapters: readonly StoryChapter[] = [
   },
   {
     id: 'flight-path',
+    headline: ['The work', 'leaves a trace.'],
     name: 'The memory corridor',
     kicker: '13 / WHAT THE JOURNEY LEFT BEHIND',
     copy: ['Some moments became milestones.', 'Others became the reason to keep learning.'],
@@ -300,6 +315,7 @@ export const storyChapters: readonly StoryChapter[] = [
   },
   {
     id: 'mirror',
+    headline: ['Same curiosity.', 'New reflection.'],
     name: 'The mirror',
     kicker: '14 / THE QUESTION WAS ALWAYS HERS',
     copy: ['She never stopped asking questions.', 'She just learned how to build the answers.'],
@@ -318,6 +334,7 @@ export const storyChapters: readonly StoryChapter[] = [
   },
   {
     id: 'human',
+    headline: ['Anwesha', 'Kar.'],
     name: 'The engineer',
     kicker: '15 / PRESENT DAY',
     copy: [
@@ -341,6 +358,7 @@ export const storyChapters: readonly StoryChapter[] = [
   },
   {
     id: 'contact',
+    headline: ['Your question.', 'Our next build.'],
     name: 'The next question',
     kicker: 'EPILOGUE / TRANSMISSION OPEN',
     copy: ['There is always another question.', 'Let’s build what comes next.'],
@@ -359,6 +377,39 @@ export const storyChapters: readonly StoryChapter[] = [
   },
 ];
 
+// The visitor follows the observatory into orbit, then discovers the work behind the world.
+const journeyOrder = [
+  'night',
+  'signal',
+  'rocket',
+  'launch',
+  'space',
+  'forest',
+  'engine',
+  'workshop',
+  'universe',
+  'failure',
+  'cyberspace',
+  'lab',
+  'door',
+  'flight-path',
+  'mirror',
+  'human',
+  'contact',
+];
+export const storyChapters = journeyOrder.map((id) =>
+  worldChapters.find((chapter) => chapter.id === id)!,
+);
+export const worldSceneIndex = (id: string) =>
+  worldChapters.findIndex((chapter) => chapter.id === id);
+export function worldProgress(progress: number) {
+  const lower = Math.max(0, Math.min(16, Math.floor(progress)));
+  const upper = Math.min(16, lower + 1);
+  const t = progress - lower;
+  const eased = t * t * (3 - 2 * t);
+  const start = worldSceneIndex(storyChapters[lower].id);
+  return start + (worldSceneIndex(storyChapters[upper].id) - start) * eased;
+}
 export const chapters = storyChapters;
 export const LAST_STORY_CHAPTER = storyChapters.length - 1;
 

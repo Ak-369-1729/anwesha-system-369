@@ -6,7 +6,7 @@ The second pass transforms the existing portfolio into one illustrated journey. 
 
 **Story** is the primary experience. **Quick** immediately exposes Anwesha’s profile, projects, technical skills, experience, research, milestones, résumé, and contact channels. The original project data, 17 mission routes, contact links, security challenge, terminal, local discoveries, and static deployment model are retained.
 
-Built with Next.js, React, strict TypeScript, and original procedural Canvas/SVG illustration. There are no external character assets, WebGL requirements, autoplay videos, or animation-framework dependencies. Fonts are bundled locally.
+Built with Next.js, React, strict TypeScript, original Canvas/SVG illustration, and a progressively loaded Three.js observatory. Archivo is bundled locally; IBM Plex Mono is reserved for technical readouts. There are no external character assets or autoplay videos. Every essential action also has a semantic HTML interface when WebGL is unavailable.
 
 ## Run locally
 
@@ -33,6 +33,16 @@ npm run format:check
 No runtime secrets, database, or API keys are required. Set `NEXT_PUBLIC_SITE_URL` to the final HTTPS origin before the deployment build so metadata references the correct domain. `.env.example` documents this optional setting. Asset preparation generates `public/og.png` from the original SVG before development and production builds. The local static server also accepts `PORT` and `HOST`.
 
 `next.config.ts` bounds experimental static generation to two workers and one page per worker, with a retry for transient export failures. These settings reduce Windows filesystem and memory contention without changing the normal npm commands.
+
+## Observatory edition
+
+The opening is a typographic poster, not a résumé hero. The journey now runs from the field and observatory into launch, orbit, skill constellations, project satellites, cybersecurity, research, memory, and the identity reveal. The girl remains in the illustrated world throughout.
+
+- Drag the orbital model horizontally, or use its keyboard-accessible rotation/reset controls. Vertical touch movement remains native scrolling.
+- Skill labels in the constellation open the corresponding technical system. Project satellites open the same real mission routes as Quick Mode and the project index.
+- The orbital sphere uses an original lighting, engraving, and scan shader. The network, orbit rings, satellites and solar panels are procedural geometry. These are portfolio visualizations, not live telemetry.
+- A scene starts with its world visible. **Explore** opens its field instrument; Close or Escape returns to the world and restores focus. No interaction gates Continue or Quick Mode.
+- Three.js is split into an optional client load. Its renderer caps resolution, pauses drawing when hidden, respects reduced motion, and disposes geometry/materials, observers, pointer handlers and the context on unmount. Canvas2D and semantic controls survive WebGL failure.
 
 ## The experience
 
@@ -97,7 +107,7 @@ Essential information and controls are semantic HTML. Canvas is decorative and `
 
 Reduced motion selects static world states, disables ambient movement and animated theme transitions, and retains scroll-based navigation. Native mouse, touch, keyboard, and visible focus remain available. Local storage failure does not block browsing. No login, cookies, analytics, or remote telemetry is required.
 
-The world renders bounded procedural geometry using a single Canvas context. It caps pixel ratio, uses fewer stars on mobile, updates quiet scenes at 30 fps and moving transitions at up to 60 fps, pauses when the document is hidden, and removes listeners and frames when unmounted. Quick Mode unmounts the world. Security, terminal, command-palette, and Quick Mode interfaces are split into separate loads.
+The illustrated backdrop renders bounded geometry using one Canvas2D context; the optional observatory uses one persistent WebGL context. It caps pixel ratio, uses fewer stars on mobile, updates quiet scenes at 30 fps and moving transitions at up to 60 fps, pauses when the document is hidden, and removes listeners and frames when unmounted. Quick Mode unmounts the world. Security, terminal, command-palette, and Quick Mode interfaces are split into separate loads.
 
 Version 2 is measured separately from the first version. See `docs/validation.md` for the current release-check record; the earlier version’s Lighthouse result is historical, not a performance claim for the redesigned renderer. Repeat performance and accessibility audits on the deployed site and representative devices.
 

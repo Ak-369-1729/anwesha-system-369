@@ -1,6 +1,6 @@
 /* A continuous illustrated stage. Narrative copy is an overlay, never a stack. */
 :root {
-  --story-serif: Georgia, 'Times New Roman', serif;
+  --story-serif: 'Archivo Variable', Arial, sans-serif;
 }
 html[data-sky='dark'] {
   --bg: #091923;
@@ -2675,55 +2675,107 @@ html[data-sky='light'] .mission-file {
 .chapter-night .story-copy {
   animation: none;
 }
-/* The scene has one layout owner. Narrative, instruments and navigation never share a cell. */
+/* Observatory edition: a typographic poster over one continuous illustrated world. */
 :root {
-  --story-accent: #f1c591;
+  --story-accent: #ff8a61;
+}
+html[data-sky='dark'] {
+  --bg: #131613;
+  --panel: #1b201c;
+  --white: #f4f2e9;
+  --muted: #c0c6ba;
+  --dim: #a4afa0;
+  --cyan: #efbda1;
+  --line: #a2b19c45;
+  --green: #c4d9ab;
 }
 html[data-sky='light'] {
-  --story-accent: #865218;
+  --bg: #eeede5;
+  --panel: #f4f2ea;
+  --white: #20271f;
+  --muted: #46523f;
+  --dim: #52624b;
+  --cyan: #a33c21;
+  --line: #52624b42;
+  --green: #385431;
+  --story-accent: #ab3e21;
 }
 .field-header {
   height: 96px;
+  padding: 0 4.3vw;
   background: linear-gradient(var(--bg), transparent);
 }
+.field-mark > span {
+  font: 700 11px/1.3 var(--sans);
+  letter-spacing: -0.01em;
+}
 .field-mark b {
-  letter-spacing: 0.26em;
+  font: 900 24px/1 var(--sans);
+  letter-spacing: -0.07em;
+}
+.field-mark svg {
+  width: 30px;
+  height: 30px;
+  stroke: var(--story-accent);
 }
 .field-edition {
-  font-size: 9px;
-  letter-spacing: 0.16em;
+  font: 600 11px/1.4 var(--sans);
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+.field-edition > span {
+  color: var(--dim);
+  margin-left: 30px;
+}
+.field-controls {
+  gap: 24px;
 }
 .experience-switch {
-  padding: 0 15px;
-  border: 1px solid var(--line);
-  border-radius: 30px;
-  background: color-mix(in srgb, var(--panel), transparent 20%);
+  gap: 15px;
+  font: 600 11px var(--sans);
+  letter-spacing: 0;
 }
 .experience-switch button {
-  font-size: 10px;
+  color: var(--muted);
+  padding: 10px 0;
+}
+.experience-switch button[aria-pressed='true']::after {
+  background: var(--story-accent);
+  bottom: 4px;
+}
+.sky-control-label {
+  font: 500 9px/1.4 var(--sans);
+  letter-spacing: 0;
+}
+.field-command {
+  font: 500 11px var(--sans);
+}
+.scene-coordinates {
+  top: 119px;
+  font: 500 10px var(--sans);
+  letter-spacing: 0.02em;
 }
 .scene-watermark {
   position: absolute;
   right: 4vw;
-  top: 12%;
-  font: 500 clamp(160px, 24vw, 360px)/1 var(--display);
-  letter-spacing: -0.06em;
-  color: var(--cyan);
-  opacity: 0.045;
-  pointer-events: none;
+  top: 118px;
+  font: 900 110px/0.8 var(--sans);
+  font-stretch: 75%;
+  letter-spacing: -0.08em;
+  opacity: 0.08;
 }
 .story-stage::before {
-  background: linear-gradient(90deg, #071722ed 0%, #071722a0 34%, #07172216 70%);
+  background: linear-gradient(90deg, #131613e8, #13161355 43%, transparent 70%);
 }
 html[data-sky='light'] .story-stage::before {
-  background: linear-gradient(90deg, #eef1e9ef 0%, #eef1e9ad 34%, #eef1e911 70%);
+  background: linear-gradient(90deg, #eeede5e8, #eeede555 43%, transparent 70%);
 }
 .story-stage .scene-composition {
   position: absolute;
-  inset: 155px 5vw 155px 7vw;
+  inset: 168px 5vw 158px 6vw;
   display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  gap: clamp(36px, 6vw, 110px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(40px, 6vw, 100px);
   align-items: center;
   min-height: 0;
   pointer-events: none;
@@ -2734,62 +2786,102 @@ html[data-sky='light'] .story-stage::before {
   width: 100%;
   min-width: 0;
   max-height: 100%;
+  padding: 0 2px 5px;
   overflow: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--line) transparent;
-  padding: 3px 0 12px;
+}
+.story-stage .story-kicker {
+  font: 600 10px/1.5 var(--sans);
+  letter-spacing: 0.04em;
+  margin-bottom: 24px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.story-stage .chapter-number {
+  font-weight: 800;
+  color: var(--story-accent);
+}
+.story-stage .kicker-line {
+  background: var(--story-accent);
+  width: 24px;
 }
 .story-stage .story-copy h1 {
-  font: 400 clamp(32px, 3.6vw, 62px)/1.1 var(--story-serif);
-  letter-spacing: -0.045em;
-  margin: 0;
+  font: 850 clamp(46px, 5.25vw, 90px)/0.93 var(--sans);
+  font-stretch: 78%;
+  text-transform: uppercase;
+  letter-spacing: -0.055em;
   text-wrap: balance;
 }
 .story-stage .story-copy h1 > span {
   display: block;
   margin-right: 0;
 }
-.story-stage .story-copy h1 .story-emphasis,
-.story-stage .story-copy h1 > em {
+.story-stage .story-copy h1 .story-emphasis {
+  font-style: normal;
   color: var(--story-accent);
-  margin-top: 0.2em;
+  margin-top: 0;
 }
-.story-stage .story-kicker {
-  font: 9px/1.65 var(--mono);
-  margin-bottom: 24px;
-  letter-spacing: 0.1em;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.story-stage .chapter-number {
-  color: var(--story-accent);
+.scene-narrative {
+  font: 400 14px/1.65 var(--sans);
+  margin: 27px 0 0;
+  max-width: 360px;
+  color: var(--muted);
+  text-wrap: pretty;
 }
 .story-stage .scene-composition.is-prologue {
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.5fr);
+  gap: 0;
 }
 .story-stage .is-prologue .story-copy {
-  max-width: 730px;
-}
-.story-stage .is-prologue h1 {
-  font-size: clamp(42px, 4.6vw, 82px);
-  line-height: 1.12;
+  overflow: visible;
 }
 .story-stage .is-prologue .story-kicker {
-  margin-bottom: 32px;
+  margin-bottom: 35px;
+}
+.story-stage .is-prologue h1 {
+  font-size: clamp(84px, 10vw, 170px);
+  font-weight: 900;
+  font-stretch: 70%;
+  line-height: 0.83;
+  letter-spacing: -0.065em;
+}
+.story-stage .is-prologue h1 .hero-prelude {
+  font: 400 14px/1.6 var(--sans);
+  text-transform: none;
+  letter-spacing: -0.01em;
+  max-width: 230px;
+  margin-bottom: 30px;
+  color: var(--muted);
+}
+.story-stage .hero-word {
+  white-space: nowrap;
+}
+.story-stage .hero-question {
+  color: var(--story-accent);
+}
+.hero-period {
+  color: var(--white);
 }
 .story-stage .opening-note {
-  font-size: 9px;
+  font: 600 10px/1.6 var(--sans);
   margin-top: 30px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+.opening-spark {
+  background: var(--story-accent);
+  box-shadow: none;
 }
 .scene-instrument {
-  pointer-events: auto;
   min-width: 0;
   min-height: 0;
   max-height: 100%;
   overflow: auto;
+  padding: 3px;
+  pointer-events: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--line) transparent;
-  padding: 3px;
   overscroll-behavior: contain;
 }
 .story-stage .scene-instrument > * {
@@ -2810,64 +2902,104 @@ html[data-sky='light'] .story-stage::before {
     .mirror-stages,
     .story-signal-action
   ) {
-  background: color-mix(in srgb, var(--panel), transparent 8%);
-  backdrop-filter: blur(18px);
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  padding: clamp(20px, 2.4vw, 36px);
-  box-shadow: 0 24px 90px #00000018;
+  padding: 28px;
+  border: 0;
+  border-top: 2px solid var(--story-accent);
+  border-radius: 0;
+  background: color-mix(in srgb, var(--bg), transparent 12%);
+  backdrop-filter: blur(8px);
+  box-shadow: none;
 }
 .story-stage .scene-instrument > .story-signal-action {
-  align-items: center;
-  padding: 36px;
+  background: transparent;
+  border: 0;
+  backdrop-filter: none;
   gap: 24px;
 }
-.story-stage .scene-instrument .story-action {
-  font-size: 11px;
-  line-height: 1.6;
-  gap: 16px;
+.story-stage .signal-artifact svg {
+  width: 110px;
+  height: 110px;
+  stroke: var(--story-accent);
+  filter: none;
+}
+.story-stage .signal-artifact > span {
+  font: 700 11px var(--sans);
+  letter-spacing: 0.04em;
+}
+.story-stage .story-action {
+  font: 700 12px/1.5 var(--sans);
+  border-color: var(--story-accent);
   padding: 16px 0;
+  gap: 18px;
 }
 .story-stage .scene-instrument :is(p, dd) {
-  font-size: 12px;
-  line-height: 1.8;
+  font: 400 13px/1.7 var(--sans);
 }
 .story-stage .scene-instrument .eyebrow {
-  font-size: 9px;
-  line-height: 1.8;
+  font: 600 10px/1.6 var(--sans);
+  letter-spacing: 0.04em;
 }
 .story-stage .scene-instrument > .machine-hotspots {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 22px;
+  display: block;
+  background: color-mix(in srgb, var(--bg), transparent 5%);
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 .story-stage .machine-link {
-  padding: 17px 4px;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) 18px;
+  gap: 15px;
+  align-items: center;
+  padding: 17px 0;
+  text-align: left;
   border-bottom: 1px solid var(--line);
+  transition:
+    padding 0.2s,
+    color 0.2s;
 }
-.story-stage .machine-link strong {
-  font-size: 13px;
-}
-.story-stage .machine-link > span:not(.machine-symbol) {
-  font-size: 8px;
-  line-height: 1.6;
+.story-stage .machine-link:last-child {
+  border-bottom: 0;
 }
 .story-stage .machine-symbol {
-  font-size: 25px;
-  margin-bottom: 10px;
+  grid-row: 1 / 3;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  font: 20px var(--sans);
+}
+.story-stage .machine-link strong {
+  font: 650 19px/1.1 var(--sans);
+  letter-spacing: -0.035em;
+}
+.story-stage .machine-link > span:not(.machine-symbol) {
+  grid-column: 2;
+  font: 500 9px/1.4 var(--sans);
+  letter-spacing: 0.025em;
+  margin: -8px 0 0;
 }
 .story-stage .machine-link > small {
   display: none;
 }
-.story-stage .scene-instrument > .security-console,
-.story-stage .scene-instrument > .constellation-console {
+.story-stage .machine-link::after {
+  content: '↗';
+  grid-column: 3;
+  grid-row: 1 / 3;
+  font-size: 20px;
+  color: var(--story-accent);
+}
+.story-stage .machine-link:hover {
+  padding-left: 8px;
+  color: var(--story-accent);
+}
+.story-stage .security-console,
+.story-stage .constellation-console {
   padding: 0;
 }
-.story-stage .security-workspace {
+.story-stage .security-console .security-workspace {
   grid-template-columns: 1fr;
 }
 .story-stage .security-console .network-map {
-  min-height: 275px;
+  min-height: 260px;
 }
 .story-stage .security-console .node-inspector {
   border-top: 1px solid var(--line);
@@ -2878,238 +3010,279 @@ html[data-sky='light'] .story-stage::before {
 .story-stage .experiment-index {
   display: flex;
   flex-wrap: wrap;
-  gap: 0 20px;
+  gap: 0 22px;
   padding: 0;
-  border-right: 0;
+  border: 0;
   border-bottom: 1px solid var(--line);
 }
 .story-stage .experiment-index > button {
   width: auto;
   min-height: 44px;
-  font-size: 10px;
+  font: 600 11px var(--sans);
   padding: 8px 0;
 }
 .story-stage .experiment-log {
   padding: 20px 0 0;
 }
-.story-stage .experiment-log h3 {
-  font-size: 29px;
-}
-.story-stage .infrastructure-select small {
-  font-size: 8px;
-  line-height: 1.6;
+.story-stage :is(.experiment-log, .memory-console, .infrastructure-readout) h3 {
+  font: 750 30px/1.05 var(--sans);
+  letter-spacing: -0.04em;
 }
 .story-stage .infrastructure-select strong {
-  font-size: 14px;
+  font: 600 14px var(--sans);
+}
+.story-stage .infrastructure-select small {
+  font: 500 9px/1.4 var(--sans);
 }
 .story-stage .syntax-puzzle small {
-  font-size: 9px;
+  font: 650 10px var(--sans);
+}
+.story-stage .syntax-puzzle button > span {
+  border-radius: 0;
+  background: transparent;
+  border-color: var(--line);
+}
+.story-stage .syntax-puzzle button.connected > span {
+  box-shadow: none;
+  background: var(--cyan);
+  color: var(--bg);
 }
 .story-stage .orbit-readout {
   font-size: 10px;
 }
+.story-stage .story-copy .identity-reveal {
+  font: 900 clamp(70px, 8.5vw, 150px)/0.83 var(--sans);
+  font-stretch: 75%;
+  letter-spacing: -0.07em;
+}
+.story-stage .story-copy .identity-point {
+  display: inline;
+  color: var(--story-accent);
+}
 .story-stage .present-links {
   flex-wrap: wrap;
-  gap: 8px 24px;
-}
-.story-stage .story-copy .identity-reveal {
-  font: 600 clamp(68px, 8vw, 145px)/0.85 var(--display);
-  letter-spacing: -0.025em;
-}
-.story-stage .story-copy .identity-reveal .identity-point {
-  display: inline;
+  gap: 10px 24px;
+  font: 600 12px var(--sans);
 }
 .story-stage .scene-instrument > .mirror-stages {
   display: flex;
   flex-wrap: wrap;
-  font-size: 10px;
   gap: 20px;
+  font: 650 11px var(--sans);
+  background: transparent;
+  backdrop-filter: none;
+}
+.story-stage .why-key {
+  font: 900 65px/0.9 var(--sans);
+  letter-spacing: -0.06em;
 }
 .story-stage .final-transmission {
   position: fixed;
-  inset: 18% 7% 20% 54%;
+  inset: 18% 6% 20% 53%;
   z-index: 10;
   background: var(--panel);
-  box-shadow: 0 0 0 100vmax #0008;
+  box-shadow: 0 0 0 100vmax #0009;
 }
 .story-stage .final-links > a {
   overflow-wrap: anywhere;
 }
 .chapter-progress {
   position: absolute;
-  bottom: 141px;
   left: 4.3vw;
   right: 4.3vw;
+  bottom: 141px;
   height: 1px;
   background: var(--line);
 }
 .chapter-progress > span {
   display: block;
-  height: 1px;
+  height: 2px;
   background: var(--story-accent);
-  box-shadow: 0 0 12px var(--story-accent);
-  transition: width 0.7s ease;
+  transition: width 0.6s ease;
 }
 .story-navigation {
-  bottom: 65px;
+  bottom: 62px;
   height: 60px;
 }
+.story-index-button svg {
+  width: 55px;
+}
 .story-index-button > span {
-  font-size: 9px;
+  font: 500 10px/1.6 var(--sans);
 }
 .story-index-button b {
-  font-size: 10px;
+  font: 700 12px/1.5 var(--sans);
+  text-transform: none;
+  letter-spacing: -0.02em;
 }
 .next-scene {
-  background: var(--cyan);
+  min-height: 49px;
+  border: 1px solid var(--story-accent);
+  border-radius: 0;
+  background: var(--story-accent);
   color: var(--bg);
   padding: 0 22px;
-  border-radius: 2px;
-  min-height: 48px;
-  font-size: 10px;
+  font: 700 11px var(--sans);
+  gap: 25px;
+  letter-spacing: 0;
   transition:
     background 0.2s,
-    transform 0.2s;
+    color 0.2s;
 }
 .next-scene > span {
   color: inherit;
 }
 .next-scene:hover {
-  transform: translateY(-3px);
-  background: var(--story-accent);
+  background: var(--white);
+  border-color: var(--white);
 }
 html[data-sky='light'] .story-navigation .next-scene {
   color: var(--bg);
 }
 .scroll-direction {
-  font-size: 8px;
+  font: 500 10px var(--sans);
+  letter-spacing: 0;
 }
 .field-footer {
-  font-size: 9px;
+  background: var(--bg);
+  backdrop-filter: none;
 }
 .field-footer button {
-  font-size: 9px;
+  font: 500 10px var(--sans);
 }
 .field-footer-note {
-  font-size: 8px;
+  font: 500 10px var(--sans);
+  letter-spacing: 0;
 }
 .collected-artifacts > span:last-child {
-  font-size: 8px;
+  font: 500 10px var(--sans);
+  letter-spacing: 0;
 }
-@media (min-width: 1101px) and (min-height: 850px) {
+@media (max-width: 1100px) {
   .story-stage .scene-composition {
-    top: 180px;
-    bottom: 190px;
-  }
-}
-@media (max-width: 1000px) {
-  .story-stage .scene-composition {
-    inset: 140px 5vw 155px;
-    gap: 30px;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    inset: 146px 5vw 155px;
+    gap: 35px;
   }
   .story-stage .story-copy h1 {
-    font-size: clamp(32px, 4vw, 45px);
-  }
-  .story-stage .is-prologue h1 {
-    font-size: clamp(42px, 5.2vw, 65px);
-  }
-  .story-stage .story-kicker {
-    font-size: 8px;
-    margin-bottom: 20px;
+    font-size: 58px;
   }
   .story-stage
     .scene-instrument
-    > :is(
-      .story-interaction,
-      .story-console,
-      .machine-hotspots,
-      .launch-telemetry,
-      .mirror-stages
-    ) {
-    padding: 20px;
+    > :is(.story-interaction, .story-console, .machine-hotspots, .launch-telemetry) {
+    padding: 22px;
   }
-  .story-stage .scene-instrument > .security-console,
-  .story-stage .scene-instrument > .constellation-console {
+  .story-stage .scene-instrument > :is(.security-console, .constellation-console) {
     padding: 0;
+  }
+  .story-stage .is-prologue h1 {
+    font-size: 12vw;
+  }
+  .scene-narrative {
+    font-size: 13px;
   }
 }
 @media (max-width: 700px) {
   .field-header {
     height: 78px;
     padding: 0 20px;
-  }
-  .field-controls {
     gap: 12px;
   }
+  .field-mark {
+    gap: 8px;
+  }
+  .field-mark svg {
+    width: 24px;
+    height: 24px;
+  }
+  .field-mark > span {
+    font-size: 9px;
+  }
+  .field-mark b {
+    font-size: 21px;
+  }
+  .field-controls {
+    gap: 10px;
+  }
   .experience-switch {
-    padding: 0 10px;
-    gap: 7px;
+    font-size: 10px;
+    gap: 10px;
   }
   .field-command {
-    display: none;
+    padding-left: 9px;
+    font-size: 10px;
   }
   .scene-coordinates {
-    top: 94px;
+    top: 96px;
     left: 24px;
     right: 24px;
-    font-size: 8px;
+    font-size: 9px;
   }
   .scene-watermark {
-    top: 90px;
-    font-size: 180px;
+    top: 126px;
+    right: 24px;
+    font-size: 85px;
   }
   .story-stage::before {
-    background: linear-gradient(180deg, #071722ed, #071722b3 45%, #07172226);
+    background: linear-gradient(180deg, #131613e8, #13161388 42%, transparent 75%);
   }
   html[data-sky='light'] .story-stage::before {
-    background: linear-gradient(180deg, #eef1e9ed, #eef1e9b3 45%, #eef1e926);
+    background: linear-gradient(180deg, #eeede5e8, #eeede588 42%, transparent 75%);
   }
   .story-stage .scene-composition {
-    inset: 130px 24px 158px;
+    inset: 133px 24px 155px;
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto minmax(0, 1fr);
     gap: 22px;
     align-items: start;
   }
   .story-stage .scene-composition .story-copy {
-    max-height: 34svh;
-    padding: 0 2px 4px;
+    max-height: 33svh;
   }
   .story-stage .story-copy h1 {
-    font-size: clamp(26px, 7.4vw, 40px);
-    line-height: 1.1;
-    text-wrap: pretty;
+    font-size: clamp(40px, 12vw, 66px);
+    line-height: 0.91;
+    font-stretch: 75%;
+    text-wrap: balance;
   }
   .story-stage .story-kicker {
-    font-size: 8px;
+    font-size: 9px;
     gap: 8px;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
   }
   .story-stage .kicker-line {
     width: 18px;
   }
+  .scene-narrative {
+    font-size: 12px;
+    line-height: 1.55;
+    margin-top: 16px;
+    max-width: 310px;
+  }
   .story-stage .scene-composition.is-prologue {
     display: flex;
-    align-items: flex-start;
     justify-content: center;
+    align-items: flex-start;
     flex-direction: column;
-    bottom: 190px;
+    bottom: 220px;
   }
   .story-stage .is-prologue .story-copy {
-    width: 100%;
     max-height: 100%;
   }
   .story-stage .is-prologue h1 {
-    font-size: clamp(36px, 9.5vw, 55px);
-    line-height: 1.14;
+    font-size: clamp(66px, 18vw, 115px);
+    line-height: 0.87;
+  }
+  .story-stage .is-prologue h1 .hero-prelude {
+    font-size: 12px;
+    max-width: 220px;
+    margin-bottom: 22px;
   }
   .story-stage .is-prologue .story-kicker {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
   .story-stage .opening-note {
-    font-size: 8px;
-    margin-top: 24px;
+    font-size: 9px;
+    margin-top: 20px;
     gap: 8px;
   }
   .scene-instrument {
@@ -3126,93 +3299,96 @@ html[data-sky='light'] .story-navigation .next-scene {
       .mirror-stages,
       .story-signal-action
     ) {
-    padding: 20px;
+    padding: 18px;
   }
-  .story-stage .scene-instrument > .security-console,
-  .story-stage .scene-instrument > .constellation-console {
+  .story-stage .scene-instrument > :is(.security-console, .constellation-console) {
     padding: 0;
   }
+  .story-stage .machine-link {
+    padding: 15px 0;
+  }
   .story-stage .machine-link strong {
-    font-size: 12px;
+    font-size: 18px;
   }
   .story-stage .machine-link > span:not(.machine-symbol) {
-    font-size: 8px;
-  }
-  .story-stage .machine-link {
-    padding: 15px 2px;
+    font-size: 9px;
   }
   .story-stage .story-copy .identity-reveal {
-    font-size: clamp(68px, 21vw, 100px);
+    font-size: clamp(66px, 22vw, 110px);
   }
   .story-stage .present-interaction > p {
     max-width: none;
   }
   .story-stage .final-transmission {
-    inset: 16% 20px 19%;
+    inset: 15% 20px 19%;
     padding: 24px;
   }
   .story-navigation {
     left: 24px;
     right: 24px;
-    bottom: 62px;
+    bottom: 61px;
     gap: 12px;
   }
   .story-index-button svg {
     display: none;
   }
   .story-index-button > span {
-    font-size: 8px;
+    font-size: 9px;
   }
   .story-index-button b {
-    font-size: 9px;
-    max-width: 100px;
+    font-size: 11px;
+    max-width: 110px;
   }
   .chapter-travel {
     gap: 8px;
   }
   .next-scene {
     padding: 0 14px;
-    font-size: 9px;
-    gap: 12px;
+    font-size: 10px;
+    gap: 14px;
   }
   .chapter-progress {
-    bottom: 140px;
     left: 24px;
     right: 24px;
+    bottom: 140px;
   }
   .field-footer {
     padding: 0 20px;
   }
   .field-footer > div:first-child {
-    gap: 13px;
+    gap: 12px;
   }
   .field-footer button {
-    font-size: 8px;
+    font-size: 9px;
   }
   .collected-artifacts > span:not(:last-child) {
     display: none;
   }
   .collected-artifacts > span:last-child {
-    font-size: 8px;
     margin: 0;
+    font-size: 9px;
   }
 }
 @media (max-height: 600px) {
-  .story-stage .scene-composition {
-    top: 110px;
-    bottom: 122px;
+  .field-header {
+    height: 73px;
   }
   .scene-coordinates {
     display: none;
   }
-  .story-stage .story-copy h1 {
-    font-size: 28px;
+  .story-stage .scene-composition {
+    top: 106px;
+    bottom: 122px;
   }
-  .story-stage .is-prologue h1 {
-    font-size: 34px;
+  .story-stage .story-copy h1 {
+    font-size: 40px;
   }
   .story-stage .story-kicker {
     margin-bottom: 12px;
+  }
+  .scene-narrative {
+    font-size: 12px;
+    margin-top: 14px;
   }
   .chapter-progress {
     bottom: 115px;
@@ -3221,22 +3397,445 @@ html[data-sky='light'] .story-navigation .next-scene {
     bottom: 47px;
   }
   .story-stage .scene-composition.is-prologue {
-    bottom: 122px;
+    bottom: 145px;
+  }
+  .story-stage .is-prologue h1 {
+    font-size: 66px;
+  }
+  .story-stage .is-prologue h1 .hero-prelude {
+    margin-bottom: 18px;
+  }
+  .story-stage .is-prologue .story-kicker {
+    margin-bottom: 15px;
   }
   .story-stage .opening-note {
-    margin-top: 16px;
+    margin-top: 18px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chapter-progress > span,
+  .machine-link {
+    transition: none;
+  }
+}
+/* Objects are the navigation; the field instrument appears only when requested. */
+.orbital-stage {
+  position: absolute;
+  left: 40%;
+  right: 0;
+  top: 105px;
+  bottom: 152px;
+  pointer-events: auto;
+  touch-action: pan-y;
+  z-index: 0;
+}
+.orbital-webgl {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  touch-action: pan-y;
+}
+.orbital-stage.is-ready .orbital-webgl {
+  opacity: 1;
+}
+.orbital-hover {
+  position: absolute;
+  left: 10%;
+  bottom: 56px;
+  font: 600 13px var(--sans);
+  color: var(--white);
+  min-height: 20px;
+  pointer-events: none;
+}
+.orbital-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: absolute;
+  bottom: 5px;
+  right: 10%;
+  color: var(--muted);
+}
+.orbital-controls > span {
+  font: 500 9px var(--sans);
+  margin-right: 12px;
+  letter-spacing: 0.06em;
+}
+.orbital-controls > button {
+  min-width: 35px;
+  min-height: 35px;
+  font-size: 16px;
+  color: var(--white);
+  transition: color 0.2s;
+}
+.orbital-controls > button:hover {
+  color: var(--story-accent);
+}
+.story-stage .scene-composition {
+  z-index: 1;
+}
+.story-stage .scene-composition .story-copy {
+  pointer-events: none;
+}
+.story-stage .scene-instrument {
+  position: relative;
+  z-index: 5;
+  height: 100%;
+  background: var(--bg);
+  border-top: 2px solid var(--story-accent);
+  padding: 0 24px 24px;
+  box-shadow: -20px 0 80px color-mix(in srgb, var(--bg), transparent 20%);
+}
+.instrument-heading {
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+  font: 600 11px var(--sans);
+}
+.instrument-heading > button {
+  min-height: 44px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  font-size: 10px;
+}
+.instrument-heading > button > span {
+  font-size: 23px;
+  font-weight: 400;
+}
+.story-stage
+  .scene-instrument
+  > :is(
+    .story-interaction,
+    .story-console,
+    .machine-hotspots,
+    .launch-telemetry,
+    .mirror-stages,
+    .story-signal-action
+  ) {
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+  padding: 24px 0;
+}
+.story-stage .scene-instrument > :is(.security-console, .constellation-console) {
+  padding: 15px 0 0;
+}
+.scene-beacon {
+  position: absolute;
+  bottom: 205px;
+  right: 8vw;
+  z-index: 3;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  text-align: left;
+  pointer-events: auto;
+  min-height: 56px;
+  padding: 0;
+}
+.beacon-mark {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--story-accent);
+  border-radius: 50%;
+  font: 300 26px var(--sans);
+  color: var(--story-accent);
+  transition:
+    transform 0.3s,
+    background 0.3s,
+    color 0.3s;
+}
+.scene-beacon > span:last-child {
+  font: 700 11px var(--sans);
+  color: var(--white);
+}
+.scene-beacon small {
+  display: block;
+  margin-top: 6px;
+  font: 500 9px var(--sans);
+  color: var(--muted);
+}
+.scene-beacon:hover .beacon-mark {
+  transform: rotate(90deg);
+  color: var(--bg);
+  background: var(--story-accent);
+}
+.is-inspecting .orbital-stage {
+  pointer-events: none;
+}
+.is-inspecting .orbital-controls,
+.is-inspecting .orbital-hover {
+  visibility: hidden;
+}
+.chapter-launch .story-copy h1 {
+  font-size: clamp(80px, 10vw, 170px);
+  font-stretch: 70%;
+}
+.chapter-rocket .story-copy h1 {
+  font-size: clamp(52px, 6vw, 102px);
+}
+.scene-watermark {
+  display: none;
+}
+.orbital-cursor {
+  font-family: var(--sans);
+  font-size: 9px;
+  letter-spacing: 0.04em;
+}
+@media (max-width: 1000px) {
+  .orbital-stage {
+    left: 34%;
+  }
+  .scene-beacon {
+    right: 5vw;
   }
 }
 @media (max-width: 700px) {
-  .field-header {
+  .orbital-stage {
+    left: 3%;
+    right: 0;
+    top: 32%;
+    bottom: 154px;
+  }
+  .chapter-night .orbital-stage {
+    top: 36%;
+    left: 22%;
+    bottom: 170px;
+  }
+  .chapter-night .orbital-controls {
+    bottom: 0;
+    right: 18px;
+  }
+  .orbital-controls > span {
+    font-size: 8px;
+  }
+  .orbital-controls {
+    right: 12px;
+    bottom: 3px;
+  }
+  .orbital-hover {
+    bottom: 51px;
+    font-size: 11px;
+  }
+  .scene-beacon {
+    left: 24px;
+    right: auto;
+    bottom: 205px;
     gap: 12px;
   }
-  .field-controls {
-    gap: 8px;
-  }
-  .field-command {
-    display: block;
-    padding: 8px 0 8px 8px;
+  .scene-beacon > span:last-child {
     font-size: 10px;
   }
+  .scene-beacon small {
+    font-size: 8px;
+    max-width: 210px;
+    line-height: 1.5;
+  }
+  .beacon-mark {
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+  }
+  .story-stage.is-inspecting .scene-composition {
+    display: block;
+  }
+  .story-stage.is-inspecting .scene-composition .story-copy {
+    display: none;
+  }
+  .story-stage .scene-instrument {
+    height: 100%;
+    max-height: 100%;
+    padding: 0 18px 18px;
+  }
+  .story-stage
+    .scene-instrument
+    > :is(
+      .story-interaction,
+      .story-console,
+      .machine-hotspots,
+      .launch-telemetry,
+      .mirror-stages
+    ) {
+    padding: 20px 0;
+  }
+  .chapter-launch .story-copy h1 {
+    font-size: 23vw;
+  }
+  .chapter-rocket .story-copy h1 {
+    font-size: 14vw;
+  }
+}
+@media (max-height: 600px) {
+  .orbital-stage {
+    top: 80px;
+    bottom: 120px;
+  }
+  .scene-beacon {
+    bottom: 158px;
+    right: 6%;
+  }
+  .beacon-mark {
+    width: 35px;
+    height: 35px;
+  }
+  .orbital-controls > span {
+    display: none;
+  }
+  .chapter-launch .story-copy h1 {
+    font-size: 68px;
+  }
+  .chapter-rocket .story-copy h1 {
+    font-size: 45px;
+  }
+}
+.orbital-project-link {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  color: var(--white);
+  z-index: 2;
+}
+.orbital-project-link > span {
+  position: absolute;
+  left: 42px;
+  top: 8px;
+  white-space: nowrap;
+  font: 650 12px var(--sans);
+  opacity: 0;
+  pointer-events: none;
+  background: var(--bg);
+  padding: 4px 8px;
+  transition: opacity 0.15s;
+}
+.orbital-project-link:hover > span,
+.orbital-project-link:focus-visible > span {
+  opacity: 1;
+}
+@media (max-width: 700px) {
+  .story-stage .is-prologue h1 {
+    font-size: clamp(60px, 17vw, 110px);
+  }
+}
+.orbital-stage.is-quiet {
+  visibility: hidden;
+  pointer-events: none;
+}
+.orbital-skill {
+  position: absolute;
+  min-width: 72px;
+  min-height: 44px;
+  transform: translate(-50%, -50%);
+  padding: 7px 10px;
+  background: var(--bg);
+  font: 600 12px var(--sans);
+  color: var(--white);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.orbital-skill > span {
+  color: var(--story-accent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.orbital-skill:hover > span,
+.orbital-skill:focus-visible > span {
+  opacity: 1;
+}
+@media (max-height: 420px) and (min-width: 701px) {
+  .story-stage .is-prologue h1 {
+    font-size: 40px;
+  }
+  .story-stage .is-prologue h1 .hero-prelude {
+    font-size: 10px;
+    line-height: 1.4;
+    max-width: none;
+    margin-bottom: 10px;
+  }
+  .story-stage .is-prologue .story-kicker {
+    font-size: 8px;
+    line-height: 1.4;
+    margin-bottom: 10px;
+  }
+  .story-stage .opening-note {
+    font-size: 8px;
+    line-height: 1.4;
+    margin-top: 12px;
+  }
+}
+.scene-beacon {
+  right: auto;
+  left: 56%;
+  max-width: 32%;
+}
+.scene-beacon small {
+  max-width: 230px;
+  line-height: 1.5;
+}
+.orbital-skill {
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  padding: 0;
+  background: transparent;
+}
+.orbital-skill > .orbital-skill-name {
+  position: absolute;
+  left: 35px;
+  white-space: nowrap;
+  background: var(--bg);
+  padding: 4px 7px;
+  opacity: 0;
+  color: var(--white);
+  pointer-events: none;
+}
+.orbital-skill:hover > .orbital-skill-name,
+.orbital-skill:focus-visible > .orbital-skill-name {
+  opacity: 1;
+}
+.story-stage .hero-word {
+  word-spacing: 0.08em;
+}
+@media (max-width: 1000px) {
+  .scene-beacon {
+    left: 51%;
+    max-width: 42%;
+  }
+}
+@media (max-width: 700px) {
+  .scene-beacon {
+    left: 24px;
+    max-width: calc(100% - 48px);
+  }
+}
+.orbital-stage {
+  transition:
+    opacity 0.65s ease,
+    visibility 0s;
+}
+.orbital-stage.is-quiet {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.65s ease,
+    visibility 0s 0.65s;
+}
+html[data-motion='reduced'] :is(.orbital-stage, .orbital-webgl) {
+  transition: none;
 }

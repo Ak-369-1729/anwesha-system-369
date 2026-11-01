@@ -10,6 +10,7 @@ const SecurityLab = dynamic(() => import('@/components/SecurityLab'), {
   loading: () => <p className="eyebrow">Tracing the network…</p>,
 });
 type Props = {
+  initialSkill?: number;
   chapter: number;
   localProgress: number;
   unlocked: string[];
@@ -44,7 +45,7 @@ const machineNames: Record<string, string> = {
 export default function StoryPanels(props: Props) {
   const { chapter, localProgress, onAward, onGoTo, onReact, onStatus, onAction, unlocked } = props;
   const [connections, setConnections] = useState(0);
-  const [tech, setTech] = useState(0);
+  const [tech, setTech] = useState(props.initialSkill ?? 0);
   const [experiment, setExperiment] = useState(0);
   const [memory, setMemory] = useState(0);
   const [alignment, setAlignment] = useState(20);

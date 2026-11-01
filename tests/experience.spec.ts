@@ -7,15 +7,15 @@ const SKY_KEY = 'system369.sky.v2';
 const scenes = [
   'night',
   'signal',
-  'forest',
-  'workshop',
-  'failure',
-  'cyberspace',
-  'engine',
   'rocket',
   'launch',
   'space',
+  'forest',
+  'engine',
+  'workshop',
   'universe',
+  'failure',
+  'cyberspace',
   'lab',
   'door',
   'flight-path',
@@ -23,14 +23,23 @@ const scenes = [
   'human',
   'contact',
 ];
+async function inspectScene(page: Page) {
+  const trigger = page.getByRole('button', { name: /^Inspect scene/ });
+  if (!(await page.locator('.scene-instrument').isVisible())) {
+    await expect(trigger).toBeVisible();
+    await trigger.click();
+  }
+  await expect(page.locator('.scene-instrument')).toBeVisible();
+}
 
-async function openStory(page: Page, path = '/') {
+async function openStory(page: Page, path = '/', inspect = true) {
   await page.goto(path);
   await expect(page.locator('html')).toHaveAttribute('data-motion', /full|reduced/);
   await expect(page.locator('html')).toHaveAttribute('data-experience', 'story');
   await expect(page.locator('canvas.story-world')).toHaveCount(1);
   const expectedScene = path.includes('#') ? path.split('#')[1] : 'night';
   await expect(page.locator('.story-experience')).toHaveAttribute('data-scene', expectedScene);
+  if (expectedScene !== 'night' && inspect) await inspectScene(page);
 }
 async function openQuick(page: Page) {
   await openStory(page);
@@ -38,7 +47,7 @@ async function openQuick(page: Page) {
   await expect(page.locator('html')).toHaveAttribute('data-experience', 'quick');
   await expect(page.locator('.quick-portfolio')).toBeVisible();
 }
-async function jumpTo(page: Page, id: string) {
+async function jumpTo(page: Page, id: string, inspect = true) {
   const index = scenes.indexOf(id);
   if (index < 0) throw new Error('Unknown test scene: ' + id);
   await page.getByRole('button', { name: /Open story chapters/i }).click();
@@ -48,6 +57,7 @@ async function jumpTo(page: Page, id: string) {
   await expect(dialog).toHaveCount(0);
   await expect(page.locator('.story-experience')).toHaveAttribute('data-scene', id);
   await expect(page).toHaveURL(new RegExp('#' + id + '$'));
+  if (id !== 'night' && inspect) await inspectScene(page);
 }
 async function awards(page: Page): Promise<Record<string, number>> {
   return page.evaluate(
@@ -126,9 +136,10 @@ test('signal and code discoveries persist while challenges remain optional', asy
   await expect(page.locator('.syntax-puzzle button.connected')).toHaveCount(3);
   await expect.poll(async () => (await awards(page))['artifact-code']).toBe(20);
   await page.reload();
+  await inspectScene(page);
   await expect(page.locator('.syntax-puzzle button.connected')).toHaveCount(3);
   await page.getByRole('button', { name: /CONTINUE/i }).click();
-  await expect(page.locator('.story-experience')).toHaveAttribute('data-scene', 'workshop');
+  await expect(page.locator('.story-experience')).toHaveAttribute('data-scene', 'engine');
   await jumpTo(page, 'door');
   await page.getByRole('button', { name: /CONTINUE/i }).click();
   await expect(page.locator('.story-experience')).toHaveAttribute('data-scene', 'flight-path');
@@ -162,6 +173,7 @@ test('launch, orbital alignment, research and the why door lead onward', async (
   await openStory(page, '/#rocket');
   await page.getByRole('button', { name: /INITIATE LAUNCH/i }).click();
   await expect(page.locator('.story-experience')).toHaveAttribute('data-scene', 'launch');
+  await inspectScene(page);
   await expect(page.locator('.launch-telemetry')).toContainText('SIMULATED FLIGHT');
   await expect.poll(async () => (await awards(page))['artifact-system']).toBe(20);
   await jumpTo(page, 'space');
@@ -227,6 +239,7 @@ test('workshop mission files return to the continuous constellation', async ({ p
   await page.locator('.file-back').click();
   await expect(page).toHaveURL(/\/#universe$/);
   await expect(page.locator('.story-experience')).toHaveAttribute('data-scene', 'universe');
+  await inspectScene(page);
   await expect(page.locator('.project-atlas')).toBeVisible();
 });
 
@@ -484,60 +497,104 @@ for (const [width, height] of [
   [320, 568],
   [844, 390],
 ]) {
-  test(`all scene text and instruments have separate layout space at ${width}x${height}`, async ({
-    page,
-  }) => {
+  test(`world and on-demand instruments fit ${width}x${height}`, async ({ page }) => {
     test.setTimeout(90_000);
     await page.setViewportSize({ width, height });
     await openStory(page);
     for (const scene of scenes) {
-      if (scene !== 'night') await jumpTo(page, scene);
-      if (scene !== 'night')
-        await expect(page.locator('.scene-instrument > *').first()).toBeVisible();
-      const geometry = await page.evaluate(() => {
-        const rect = (s: string) => {
-          const r = document.querySelector(s)!.getBoundingClientRect();
-          return {
-            x: r.x,
-            y: r.y,
-            right: r.right,
-            bottom: r.bottom,
-            width: r.width,
-            height: r.height,
-          };
-        };
-        const copy = rect('.story-copy');
-        const instrument = document.querySelector('.scene-instrument')
-          ? rect('.scene-instrument')
-          : null;
-        return {
-          copy,
-          instrument,
-          nav: rect('.story-navigation'),
-          header: rect('.field-header'),
-          pageWidth: document.documentElement.scrollWidth,
-          width: innerWidth,
-        };
-      });
-      expect(geometry.copy.y, scene + ' clears header').toBeGreaterThanOrEqual(
-        geometry.header.bottom,
+      if (scene !== 'night') await jumpTo(page, scene, false);
+      const heading = await page.locator('.story-copy').boundingBox();
+      const header = await page.locator('.field-header').boundingBox();
+      const nav = await page.locator('.story-navigation').boundingBox();
+      expect(heading!.y, scene + ' clears header').toBeGreaterThanOrEqual(
+        header!.y + header!.height,
       );
-      expect(geometry.copy.bottom, scene + ' clears navigation').toBeLessThanOrEqual(
-        geometry.nav.y - 8,
+      expect(heading!.y + heading!.height, scene + ' clears navigation').toBeLessThanOrEqual(
+        nav!.y - 8,
       );
-      expect(geometry.pageWidth, scene + ' fits viewport').toBeLessThanOrEqual(geometry.width + 1);
-      if (geometry.instrument) {
-        const a = geometry.copy,
-          b = geometry.instrument;
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth),
+        scene + ' fits width',
+      ).toBeLessThanOrEqual(width + 1);
+      if (scene === 'night') continue;
+      await expect(page.locator('.scene-instrument')).toBeHidden();
+      await inspectScene(page);
+      const instrument = await page.locator('.scene-instrument').boundingBox();
+      expect(instrument!.height).toBeGreaterThan(70);
+      expect(
+        instrument!.y + instrument!.height,
+        scene + ' instrument clears navigation',
+      ).toBeLessThanOrEqual(nav!.y - 8);
+      if (width > 700) {
+        const a = heading!,
+          b = instrument!;
         const overlap =
-          Math.max(0, Math.min(a.right, b.right) - Math.max(a.x, b.x)) *
-          Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.y, b.y));
-        expect(overlap, scene + ' text never overlaps controls').toBeLessThanOrEqual(1);
-        expect(b.height, scene + ' controls remain usable').toBeGreaterThanOrEqual(44);
-        expect(b.bottom, scene + ' controls clear navigation').toBeLessThanOrEqual(
-          geometry.nav.y - 8,
-        );
-      }
+          Math.max(0, Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x)) *
+          Math.max(0, Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y));
+        expect(overlap, scene + ' text and instrument separate').toBeLessThanOrEqual(1);
+      } else await expect(page.locator('.story-copy')).toBeHidden();
+      await page.getByRole('button', { name: 'Close field instrument', exact: true }).click();
+      await expect(page.getByRole('button', { name: /^Inspect scene/ })).toBeFocused();
+      await expect(page.locator('.story-copy')).toBeVisible();
     }
   });
 }
+
+test('the orbital world can be rotated, reset and explored without opening a card', async ({
+  page,
+}) => {
+  await openStory(page);
+  await expect(page.locator('.orbital-stage')).toHaveClass(/is-ready/);
+  const stage = page.locator('.orbital-stage');
+  await expect(stage).toHaveAttribute('data-rotation', '0.300');
+  await page.getByRole('button', { name: 'Rotate observatory right', exact: true }).click();
+  await expect(stage).toHaveAttribute('data-rotation', '0.700');
+  const bounds = await page.locator('canvas.orbital-webgl').boundingBox();
+  await page.mouse.move(bounds!.x + bounds!.width * 0.7, bounds!.y + bounds!.height * 0.5);
+  await page.mouse.down();
+  await page.mouse.move(bounds!.x + bounds!.width * 0.8, bounds!.y + bounds!.height * 0.5, {
+    steps: 6,
+  });
+  await page.mouse.up();
+  await expect(stage).not.toHaveAttribute('data-rotation', '0.700');
+  await page.getByRole('button', { name: 'Reset observatory rotation', exact: true }).click();
+  await expect(stage).toHaveAttribute('data-rotation', '0.300');
+  await jumpTo(page, 'workshop', false);
+  await expect(page.locator('.scene-instrument')).toBeHidden();
+  const satellites = page.getByRole('navigation', { name: 'Project satellites' });
+  await expect(satellites.getByRole('link')).toHaveCount(17);
+  await satellites
+    .getByRole('link', { name: 'Open project satellite — NEXUS', exact: true })
+    .focus();
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL(/\/missions\/nexus\/?$/);
+});
+
+test('the complete journey works when WebGL is unavailable', async ({ page }) => {
+  await page.addInitScript(() => {
+    const original = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (
+      this: HTMLCanvasElement,
+      type: string,
+      ...args: unknown[]
+    ) {
+      if (type.includes('webgl')) return null;
+      return Reflect.apply(original, this, [type, ...args]);
+    } as typeof original;
+  });
+  await openStory(page);
+  await jumpTo(page, 'cyberspace');
+  await expect(page.locator('.security-lab')).toBeVisible();
+  await page.getByRole('button', { name: 'QUICK', exact: true }).click();
+  await expect(page.locator('.quick-portfolio')).toBeVisible();
+});
+
+test('skill constellation opens the selected technical system', async ({ page }) => {
+  await openStory(page, '/#engine', false);
+  await expect(page.locator('.orbital-stage')).toHaveClass(/is-ready/);
+  await page
+    .getByRole('button', { name: 'Inspect skill constellation — Python', exact: true })
+    .focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('.infrastructure-readout h3')).toHaveText('Python');
+});

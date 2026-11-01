@@ -5,39 +5,26 @@ import dynamic from 'next/dynamic';
 import { useExperience } from '@/hooks/useExperience';
 import { useSky } from '@/hooks/useSky';
 import { useStoryProgress } from '@/hooks/useStoryProgress';
-import { storyChapters } from '@/story/chapters';
+import { storyChapters, worldChapters, worldSceneIndex } from '@/story/chapters';
 import { profile, projects } from '@/data/portfolio';
 import SkyControl from '@/components/hud/SkyControl';
 import StoryWorld from '@/components/world/StoryWorld';
+import OrbitalStage from '@/components/world/OrbitalStage';
 const StoryPanels = dynamic(() => import('./StoryPanels'));
 
 const QuickPortfolio = dynamic(() => import('@/components/quick-mode/QuickPortfolio'));
 const Terminal = dynamic(() => import('@/components/Terminal'));
 const CommandPalette = dynamic(() => import('@/components/CommandPalette'));
 
-const aliases: Record<string, number> = {
-  night: 0,
-  signal: 1,
-  origin: 1,
-  forest: 2,
-  workshop: 3,
-  failure: 4,
-  cyberspace: 5,
-  engine: 6,
-  rocket: 7,
-  launch: 8,
-  space: 9,
-  now: 9,
-  universe: 10,
-  lab: 11,
-  door: 12,
-  anomaly: 12,
-  vault: 13,
-  'flight-path': 13,
-  mirror: 14,
-  human: 15,
-  contact: 16,
-};
+const aliases: Record<string, number> = Object.fromEntries(
+  storyChapters.map((chapter, i) => [chapter.id, i]),
+);
+Object.assign(aliases, {
+  origin: aliases.signal,
+  now: aliases.space,
+  anomaly: aliases.door,
+  vault: aliases['flight-path'],
+});
 const constellation = [
   [25, 5],
   [20, 12],
@@ -66,9 +53,14 @@ export default function StoryExperience() {
   const track = useRef<HTMLDivElement>(null);
   const { progressRef, chapter, localProgress, goTo } = useStoryProgress(
     track,
-    storyMode,
+    storyMode && experience.ready,
     experience.reducedMotion,
   );
+  const [skillIndex, setSkillIndex] = useState(0);
+  const [inspection, setInspection] = useState(-1);
+  const inspectionButton = useRef<HTMLButtonElement>(null);
+  const inspectionBody = useRef<HTMLElement>(null);
+  const inspecting = inspection === chapter;
   const [palette, setPalette] = useState(false);
   const [terminal, setTerminal] = useState(false);
   const [navigation, setNavigation] = useState(false);
@@ -82,6 +74,25 @@ export default function StoryExperience() {
   const focusDestination = useRef<number | null>(null);
   const current = storyChapters[chapter] || storyChapters[0];
   const award = experience.award;
+  const inspect = useCallback(() => setInspection(chapter), [chapter]);
+  const closeInspection = useCallback(() => {
+    setInspection(-1);
+    requestAnimationFrame(() => inspectionButton.current?.focus({ preventScroll: true }));
+  }, []);
+  useEffect(() => {
+    if (!inspecting) return;
+    const frame = requestAnimationFrame(() =>
+      inspectionBody.current?.focus({ preventScroll: true }),
+    );
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeInspection();
+    };
+    window.addEventListener('keydown', escape);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('keydown', escape);
+    };
+  }, [inspecting, closeInspection]);
   const react = useCallback(
     (kind: Reaction['kind']) => setReaction((old) => ({ kind, id: (old?.id ?? 0) + 1 })),
     [],
@@ -133,7 +144,7 @@ export default function StoryExperience() {
       else if (key === 'launch') {
         if (storyMode) {
           award('artifact-system', 20);
-          travel(8);
+          travel(aliases.launch);
         } else setStatus('The launch lives in Story Mode. Follow the girl to the launchpad.');
       } else if (key === 'resume') {
         const link = document.createElement('a');
@@ -289,7 +300,9 @@ export default function StoryExperience() {
             FIELD NOTES <b>369</b>
           </span>
         </button>
-        <span className="field-edition">AN EXPLORATION OF WHAT COMES NEXT</span>
+        <span className="field-edition">
+          CURIOSITY IS A PRACTICE. <span>VOL. 369</span>
+        </span>
         <div className="field-controls">
           <div className="experience-switch" role="group" aria-label="Experience mode">
             <button aria-pressed={storyMode} onClick={() => action('explorer')}>
@@ -317,7 +330,26 @@ export default function StoryExperience() {
           hidden={!storyMode}
           aria-label="How a question became an engineer"
         >
-          <div className={`story-stage chapter-${current.id}`}>
+          <div className={`story-stage chapter-${current.id} ${inspecting ? 'is-inspecting' : ''}`}>
+            {storyMode && (
+              <OrbitalStage
+                progressRef={progressRef}
+                sceneId={current.id}
+                theme={theme}
+                reducedMotion={experience.reducedMotion}
+                onInspect={inspect}
+                onProject={(id) => award(`project:${id}`, 20)}
+                onSkill={(index) => {
+                  setSkillIndex(index);
+                  inspect();
+                }}
+                onDiscover={() => {
+                  award('artifact-unknown', 50);
+                  setStatus('A different perspective. A hidden question found.');
+                  react('celebrate');
+                }}
+              />
+            )}
             <div className="scene-watermark" aria-hidden="true">
               {String(chapter + 1).padStart(2, '0')}
             </div>
@@ -333,15 +365,18 @@ export default function StoryExperience() {
                 <div className="story-kicker">
                   <span className="chapter-number">{String(chapter + 1).padStart(2, '0')}</span>
                   <span className="kicker-line" />
-                  {current.kicker}
+                  {current.kicker.replace(/^\d+\s*\/\s*/, '')}
                 </div>
                 <h1 ref={heading} tabIndex={-1} className={chapter === 15 ? 'identity-reveal' : ''}>
                   {chapter === 0 ? (
                     <>
-                      Some people looked at the stars
-                      <br />
-                      <span className="story-soft">and saw light.</span>
-                      <em>She saw questions.</em>
+                      <span className="hero-prelude">
+                        Some people looked at the stars and saw light.
+                      </span>
+                      <span className="hero-word">She saw </span>
+                      <span className="hero-word hero-question">
+                        questions<span className="hero-period">.</span>
+                      </span>
                     </>
                   ) : chapter === 15 ? (
                     <>
@@ -350,9 +385,9 @@ export default function StoryExperience() {
                       KAR<span className="identity-point">.</span>
                     </>
                   ) : (
-                    current.copy.map((line, i) => (
+                    current.headline.map((line, i) => (
                       <span
-                        className={i === current.copy.length - 1 ? 'story-emphasis' : ''}
+                        className={i === current.headline.length - 1 ? 'story-emphasis' : ''}
                         key={line}
                       >
                         {line}
@@ -361,29 +396,68 @@ export default function StoryExperience() {
                   )}
                 </h1>
                 {chapter !== 0 && chapter !== 15 && (
-                  <p className="scene-description sr-only">{current.description}</p>
+                  <p className="scene-narrative">{current.copy.join(' ')}</p>
                 )}
                 {chapter === 0 && (
                   <div className="opening-note">
-                    <span className="opening-spark" /> HOW A QUESTION BECAME AN ENGINEER.
+                    <span className="opening-spark" /> A GIRL. A SIGNAL. AN UNFINISHED STORY.
                   </div>
                 )}
               </div>
               {chapter > 0 && (
-                <div className="scene-instrument">
+                <section
+                  ref={inspectionBody}
+                  tabIndex={-1}
+                  className="scene-instrument"
+                  hidden={!inspecting}
+                  aria-label={`${current.name} — field instrument`}
+                >
+                  <div className="instrument-heading">
+                    <span>
+                      {String(chapter + 1).padStart(2, '0')} / {current.name}
+                    </span>
+                    <button onClick={closeInspection} aria-label="Close field instrument">
+                      CLOSE <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
                   <StoryPanels
-                    chapter={chapter}
+                    key={`${current.id}:${skillIndex}`}
+                    initialSkill={skillIndex}
+                    chapter={worldSceneIndex(current.id)}
                     localProgress={localProgress}
                     unlocked={experience.unlocked}
                     onAward={award}
-                    onGoTo={travel}
+                    onGoTo={(index) => travel(aliases[worldChapters[index].id])}
                     onAction={action}
                     onReact={react}
                     onStatus={setStatus}
                   />
-                </div>
+                </section>
               )}
             </div>
+            {chapter > 0 && !inspecting && (
+              <button
+                ref={inspectionButton}
+                className="scene-beacon"
+                onClick={inspect}
+                aria-label={`Inspect scene — ${current.name}`}
+                aria-expanded={inspecting}
+                data-cursor="INSPECT"
+              >
+                <span className="beacon-mark" aria-hidden="true">
+                  +
+                </span>
+                <span>
+                  EXPLORE {current.name.replace(/^The /, '').toUpperCase()}
+                  <small>
+                    {['workshop', 'universe'].includes(current.id)
+                      ? 'SELECT A SATELLITE OR OPEN THE PROJECT INDEX'
+                      : 'A CLOSER LOOK'}{' '}
+                    ↗
+                  </small>
+                </span>
+              </button>
+            )}
             <div className="scene-alt sr-only" aria-live="polite">
               Scene {chapter + 1} of {storyChapters.length}. {current.name}. {current.description}
             </div>

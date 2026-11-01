@@ -10,8 +10,8 @@
   --green: #b4dfb4;
   --red: #e5a29c;
   --mono: 'IBM Plex Mono', monospace;
-  --display: 'Barlow Condensed', sans-serif;
-  --sans: 'Space Grotesk', sans-serif;
+  --display: 'Archivo Variable', Arial, sans-serif;
+  --sans: 'Archivo Variable', Arial, sans-serif;
   color-scheme: dark;
 }
 * {

@@ -1,4 +1,4 @@
-import { storyChapters } from '@/story/chapters';
+import { worldChapters, worldProgress } from '@/story/chapters';
 import { drawCharacter, type CharacterPose } from './Character';
 import {
   band,
@@ -69,20 +69,20 @@ export function getStorySignal(progress: number, width: number, height: number):
 function palette(day: number, space: number): Palette {
   return {
     sky: mixColor(
-      mixColor('#071523', '#020b1b', space),
-      mixColor('#e6eef0', '#dce7ed', space),
+      mixColor('#141713', '#10151b', space),
+      mixColor('#eeede4', '#dfe7e1', space),
       day,
     ),
     low: mixColor(
-      mixColor('#2c4757', '#0d2440', space),
-      mixColor('#efdbc0', '#c6dbe7', space),
+      mixColor('#343d2c', '#25312e', space),
+      mixColor('#ddd5be', '#d1dfd7', space),
       day,
     ),
     ink: mixColor('#38536a', '#a9bbc1', day),
     rim: mixColor('#8baeb9', '#5e7b96', day),
-    land: mixColor('#102e3a', '#a2b7ae', day),
-    near: mixColor('#09202b', '#768e83', day),
-    signal: mixColor('#f0d598', '#b87c33', day),
+    land: mixColor('#242f24', '#a5b092', day),
+    near: mixColor('#151e17', '#78866c', day),
+    signal: mixColor('#ff9369', '#a44326', day),
     metal: mixColor('#1e3d51', '#c7d4d7', day),
   };
 }
@@ -153,7 +153,7 @@ function sky(ctx: CanvasRenderingContext2D, f: WorldFrame, c: Palette, space: nu
   const r = Math.min(w, h) * (w < 650 ? 0.085 : 0.095);
   for (let celestial = 0; celestial < 2; celestial++) {
     const sun = celestial === 1;
-    const opacity = (sun ? day : 1 - day) * (1 - space * 0.8);
+    const opacity = (sun ? day : 1 - day) * (1 - space * 0.8) * smooth(0.6, 1.7, p);
     if (opacity < 0.002) continue;
     const cx = w * (sun ? 0.78 : 0.84);
     const cy = h * (sun ? 0.91 - smooth(0, 1, day) * 0.55 : 0.22 + smooth(0, 1, day) * 0.65);
@@ -1041,7 +1041,8 @@ function signal(ctx: CanvasRenderingContext2D, f: WorldFrame, c: Palette) {
   ctx.restore();
 }
 
-export function renderWorld(ctx: CanvasRenderingContext2D, f: WorldFrame) {
+export function renderWorld(ctx: CanvasRenderingContext2D, frame: WorldFrame) {
+  const f = { ...frame, progress: worldProgress(frame.progress) };
   const { width: w, height: h, progress: p, day, time } = f;
   const space = band(7.75, 9.0, 11.6, 12.75, p);
   const ground = 1 - band(7.85, 8.85, 12.2, 13, p);
@@ -1051,8 +1052,8 @@ export function renderWorld(ctx: CanvasRenderingContext2D, f: WorldFrame) {
   const lower = Math.floor(clamp(p, 0, 16));
   const next = Math.min(16, lower + 1);
   const fraction = smooth(0, 1, p - lower);
-  const chapter = storyChapters[lower];
-  const following = storyChapters[next] ?? chapter;
+  const chapter = worldChapters[lower];
+  const following = worldChapters[next] ?? chapter;
   const cam = chapter?.camera;
   const camNext = following?.camera;
   ctx.save();
@@ -1069,7 +1070,7 @@ export function renderWorld(ctx: CanvasRenderingContext2D, f: WorldFrame) {
   doorAndMirror(ctx, f, c);
 
   const mirrorApproach = band(13.5, 14.2, 15.4, 16, p);
-  const girlX = w * (w < 650 ? lerp(0.72, 0.55, mirrorApproach) : lerp(0.72, 0.6, mirrorApproach));
+  const girlX = w * (w < 650 ? lerp(0.9, 0.55, mirrorApproach) : lerp(0.92, 0.6, mirrorApproach));
   const girlY = lerp(floor - h * 0.006, h * 0.79, space);
   const characterHeight = w < 650 ? Math.min(102, h * 0.12) : Math.min(145, h * 0.15);
   let pose = (chapter?.character?.pose ?? 'look-up') as CharacterPose;
